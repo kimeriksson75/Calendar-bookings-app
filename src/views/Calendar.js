@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/sv';
 import CalendarMenu from '../components/CalendarMenu';
-import { setCurrentDate, setSelectedDate } from '../actions';
+import { getBookingsByMonth } from '../actions';
 
 moment.locale('sv');
 
 const CalendarView = props => {
 
-  const { calendar } = props;
-  const { currentDate } = calendar;
+  const { bookingData, getBookingsByMonth } = props;
 
   const { year = "", month = "" } = props.match.params;
-  const __currentDate = currentDate ? currentDate : moment().set({ year, month }).subtract(1, 'month');
+
+  const [currentDate, setCurrentDate] = useState(moment())
+
+  useEffect(() => {
+    let __currentDate = moment().set({ year, month }).subtract(1, 'month');
+    getBookingsByMonth(__currentDate.format());
+    setCurrentDate(__currentDate);
+  }, [getBookingsByMonth, setCurrentDate, year, month]);
 
   const CalendarDay = styled.div`
     text-align: center;
@@ -26,7 +32,13 @@ const CalendarView = props => {
       background-color: black;
     }
   `;
-
+  const CalendarDayBooking = styled.div`
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: -4px;
+    left: 30px
+  `;
   const CalendarDayDisabled = styled.div`
     pointer-events: none;
   `
@@ -36,7 +48,7 @@ const CalendarView = props => {
   `;
 
   const firstDayOfMonth = () => {
-    let firstDay = moment(__currentDate)
+    let firstDay = moment(currentDate)
       .startOf("month")
       .format("d");
     return firstDay;
@@ -44,7 +56,7 @@ const CalendarView = props => {
 
   const onDayClicked = event => {
     let date = event.target.attributes.getNamedItem('data-item').value;
-    history.push(`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}/${date}`);
+    history.push(`/calendar/${currentDate.format('YYYY')}/${currentDate.format('MM')}/${date}`);
   }
 
   let blanks = [];
@@ -54,9 +66,34 @@ const CalendarView = props => {
     )
   }
 
+  const calendarDayBooking = day => {
+    const { calendarBookings } = bookingData;
+    if (!calendarBookings) return;
+
+    // return calendarBookings.map((booking) => {
+    //   if (moment(booking.date).format('D') == day) {
+    //     return (<CalendarDayBooking key={booking.date}>
+    //       {booking.timeslots.map((timeslot) => {
+    //         if (timeslot.userId) {
+    //           return <div key={timeslot.id} style={{ 'color': 'white' }}>.</div>;
+    //         } else {
+    //           return (<div key={timeslot.id} style={{ 'color': 'teal' }}>.</div>)
+    //         }
+    //       })}
+    //     </CalendarDayBooking>)
+    //   } else {
+    //     console.log(day)
+    //     return (<CalendarDayBooking key={booking.date}>
+    //       {booking.timeslots.map((timeslot) => {
+    //         return (<div key={timeslot.id} style={{ 'color': 'teal' }}>.</div>)
+    //       })}
+    //     </CalendarDayBooking>)
+    //   }
+    // })
+  }
 
   const calendarDayStyle = day => {
-    let currentMonth = __currentDate.month();
+    let currentMonth = currentDate.month();
     let style;
 
     if (currentMonth >= moment().month() && day > moment().format('D') || currentMonth > moment().month())
@@ -69,7 +106,8 @@ const CalendarView = props => {
   }
 
   let daysInMonth = [];
-  for (let d = 1; d <= __currentDate.daysInMonth(); d++) {
+  for (let d = 1; d <= currentDate.daysInMonth(); d++) {
+
     daysInMonth.push(
       <CalendarDay key={d + 31} className={calendarDayStyle(d)} data-item={d} onClick={onDayClicked}>{d}
       </CalendarDay >);
@@ -102,14 +140,14 @@ const CalendarView = props => {
   })
 
   const onChangeMonth = value => {
-    let dObject = Object.assign({}, __currentDate);
+    let dObject = Object.assign({}, currentDate);
     dObject = moment(dObject).add(value, 'months');
     history.push(`/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}`);
   }
   return (
     <div className="ui container">
       <h3>Kalender</h3>
-      <div><CalendarMenu currentDate={__currentDate} onChangeMonth={onChangeMonth} />
+      <div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
         <div className="ui celled grid">
           <div className="seven column row">
             {weekDaysShortName}
@@ -126,7 +164,7 @@ const CalendarView = props => {
 }
 const mapStateToProps = (state, ownProps) => {
   return ({
-    calendar: state.calendar
+    bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { setCurrentDate, setSelectedDate })(CalendarView);
+export default connect(mapStateToProps, { getBookingsByMonth })(CalendarView);

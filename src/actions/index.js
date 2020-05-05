@@ -9,6 +9,7 @@ import {
   CREATE_USER_SUCCESS,
   CREATE_BOOKING,
   FETCH_BOOKINGS,
+  FETCH_CALENDAR_BOOKINGS,
   FETCH_USER_BOOKINGS,
   EDIT_BOOKING,
   DELETE_BOOKING,
@@ -53,6 +54,20 @@ export const getBookingsByDate = date => async dispatch => {
       handleError(error, dispatch);
     });
 }
+
+export const getBookingsByMonth = date => async dispatch => {
+  bookingsService.getBookingsByMonth(date)
+    .then(booking => {
+      dispatch({
+        type: FETCH_CALENDAR_BOOKINGS,
+        payload: booking.data
+      })
+    })
+    .catch(error => {
+      handleError(error, dispatch);
+    });
+}
+
 export const getBookingByAuthor = userId => async dispatch => {
   bookingsService.getBookingsByAuthor(userId)
     .then(booking => {

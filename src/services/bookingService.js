@@ -40,6 +40,15 @@ const getBookingsByDate = async date => {
     .catch(err => handleError(err))
 }
 
+const getBookingsByMonth = async date => {
+  console.log('getBookingsByMonth', date)
+  return await bookings.get(`/bookings/month/${date}`, requestOptions)
+    .then(booking => {
+      return Promise.resolve(booking);
+    })
+    .catch(err => handleError(err))
+}
+
 const getBookingsByAuthor = async userId => {
   return await bookings.get(`/bookings?timeslots.userId=${userId}`, requestOptions)
     .then(booking => {
@@ -61,6 +70,7 @@ const patchBooking = async booking => {
 const bookingService = {
   create,
   getBookingsByDate,
+  getBookingsByMonth,
   getBookingsByAuthor,
   patchBooking
 };
