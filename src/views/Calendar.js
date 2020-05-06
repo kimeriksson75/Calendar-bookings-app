@@ -62,9 +62,10 @@ const CalendarView = props => {
   const calendarDayStyle = day => {
     let currentMonth = currentDate.month();
     let style;
-
+    // eslint-disable-next-line
     if (currentMonth >= moment().month() && day > moment().format('D') || currentMonth > moment().month())
       style = 'column teal'
+    // eslint-disable-next-line
     else if (currentMonth === moment().month() && day == moment().format('D'))
       style = 'column red';
     else
