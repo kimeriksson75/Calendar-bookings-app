@@ -11,7 +11,7 @@ moment.locale('sv');
 
 const CalendarView = props => {
 
-  const { bookingData, getBookingsByMonth } = props;
+  const { getBookingsByMonth } = props;
 
   const { year = "", month = "" } = props.match.params;
 
@@ -31,13 +31,6 @@ const CalendarView = props => {
     :hover .calendar-day-hover {
       background-color: black;
     }
-  `;
-  const CalendarDayBooking = styled.div`
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    top: -4px;
-    left: 30px
   `;
   const CalendarDayDisabled = styled.div`
     pointer-events: none;
@@ -66,32 +59,6 @@ const CalendarView = props => {
     )
   }
 
-  const calendarDayBooking = day => {
-    const { calendarBookings } = bookingData;
-    if (!calendarBookings) return;
-
-    // return calendarBookings.map((booking) => {
-    //   if (moment(booking.date).format('D') == day) {
-    //     return (<CalendarDayBooking key={booking.date}>
-    //       {booking.timeslots.map((timeslot) => {
-    //         if (timeslot.userId) {
-    //           return <div key={timeslot.id} style={{ 'color': 'white' }}>.</div>;
-    //         } else {
-    //           return (<div key={timeslot.id} style={{ 'color': 'teal' }}>.</div>)
-    //         }
-    //       })}
-    //     </CalendarDayBooking>)
-    //   } else {
-    //     console.log(day)
-    //     return (<CalendarDayBooking key={booking.date}>
-    //       {booking.timeslots.map((timeslot) => {
-    //         return (<div key={timeslot.id} style={{ 'color': 'teal' }}>.</div>)
-    //       })}
-    //     </CalendarDayBooking>)
-    //   }
-    // })
-  }
-
   const calendarDayStyle = day => {
     let currentMonth = currentDate.month();
     let style;
@@ -107,7 +74,6 @@ const CalendarView = props => {
 
   let daysInMonth = [];
   for (let d = 1; d <= currentDate.daysInMonth(); d++) {
-
     daysInMonth.push(
       <CalendarDay key={d + 31} className={calendarDayStyle(d)} data-item={d} onClick={onDayClicked}>{d}
       </CalendarDay >);
