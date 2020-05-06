@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { flow, sortBy, omit, map } from 'lodash/fp';
 import { getBookingByAuthor, newMessage } from '../actions';
 
 const UserBookings = props => {
@@ -13,6 +14,13 @@ const UserBookings = props => {
 
   const { user } = auth;
   const { userBookings } = bookingData;
+  const sortedUserBookings = flow(
+    sortBy(dateObject => new Date(dateObject.date)),
+    omit(dateObject => new Date(dateObject.date) > new Date()),
+    map(dateObject => dateObject)
+  )(userBookings);
+
+  console.log('sortedUserBookings', sortedUserBookings, new Date())
 
   useEffect(() => {
     if (user) getBookingByAuthor(user._id);
@@ -21,24 +29,24 @@ const UserBookings = props => {
 
   const renderDate = date => {
     const updatedDate = moment(date);
-    return updatedDate.format("dddd Do MMMM YYYY");
+    return updatedDate.format("ddd Do MMM YYYY");
   }
 
   const renderTimeslots = timeslots =>
     timeslots.map((timeslot) => timeslot.userId === user._id ?
-      (<div key={timeslot.id} className="item">{`Tidsspann ${timeslot.timeslot}`}</div>) : null)
+      (<div key={timeslot.id} className="item">{`${timeslot.timeslot}`}</div>) : null)
 
   const renderBookings = () =>
-    userBookings.map((booking) => {
+    sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
-        <div key={booking.id} className="item">
-          <i className="large calendar check outline middle aligned icon"></i>
-          <div className="content">
-            <a className="header" href={`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`}>{renderDate(booking.date)}</a>
-            <div className="ui list">
-              {timeslots}
-            </div>
+        <div className="ui two column row celled grid">
+          <div key={booking.id} className="column">
+            <i className="large calendar check outline blue middle aligned icon"></i>
+            <a className="header" style={{ textTransform: 'capitalize' }} href={`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`}>{renderDate(booking.date)}</a>
+          </div>
+          <div className="column teal">
+            {timeslots}
           </div>
         </div>
       ) : null;
@@ -53,9 +61,9 @@ const UserBookings = props => {
 
   return (
     <div className="ui container">
-      <h3>Mina bokningar</h3>
+      <h3>Mina kommande bokningar</h3>
       {auth.isSignedIn ?
-        (<div className="ui relaxed divided list">
+        (<div>
           {userBookings && renderBookings()}
         </div>) : userErrorMessage()
       }
