@@ -11,7 +11,7 @@ const CreateUser = props => {
       console.log(err);
     });
   }
-  return (<div>
+  return (<div className="ui container">
     <h3>Skapa ny användare</h3>
     <CreateUserForm onSubmit={onSubmit} />
 

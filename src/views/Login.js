@@ -10,11 +10,15 @@ const Login = props => {
   const onSubmit = ({ username, password }) => {
     login(username, password)
   }
-  return (<div>
-    <h3>Login</h3>
-    <LoginForm onSubmit={onSubmit} />
-    <Link to="/user/create">Skapa en ny användare</Link>
-  </div>);
+  return (
+    <div className="ui container">
+      <h3>Login</h3>
+      <div>
+        <LoginForm onSubmit={onSubmit} />
+      </div>
+      <div class="ui horizontal divider" />
+      <Link className="ui item " to="/user/create">Skapa en ny användare</Link>
+    </div>);
 }
 const mapStateToProps = (state) => {
   return ({
