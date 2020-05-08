@@ -20,8 +20,6 @@ const UserBookings = props => {
     map(dateObject => dateObject)
   )(userBookings);
 
-  console.log('sortedUserBookings', sortedUserBookings, new Date())
-
   useEffect(() => {
     if (user) getBookingByAuthor(user._id);
   }, [user, getBookingByAuthor]);
@@ -40,8 +38,8 @@ const UserBookings = props => {
     sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
-        <div className="ui two column row celled grid">
-          <div key={booking.id} className="column">
+        <div key={booking.id} className="ui two column row celled grid">
+          <div className="column">
             <i className="large calendar check outline blue middle aligned icon"></i>
             <a className="header" style={{ textTransform: 'capitalize' }} href={`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`}>{renderDate(booking.date)}</a>
           </div>
