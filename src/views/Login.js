@@ -16,7 +16,7 @@ const Login = props => {
       <div>
         <LoginForm onSubmit={onSubmit} />
       </div>
-      <div class="ui horizontal divider" />
+      <div className="ui horizontal divider" />
       <Link className="ui item " to="/user/create">Skapa en ny användare</Link>
     </div>);
 }

@@ -14,7 +14,7 @@ import Login from '../views/Login';
 
 const App = () => {
   return (
-    <div className="ui container">
+    <div>
       <Router history={history}>
         <Header />
         <Message />
