@@ -52,5 +52,6 @@ const validate = formValues => {
 
 export default reduxForm({
   form: 'createUserForm',
-  validate
+  // fix field losing focus on first change!!
+  // validate
 })(CreateUserForm)

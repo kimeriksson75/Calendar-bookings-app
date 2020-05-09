@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 const LoginForm = props => {
-  const { handleSubmit } = props;
+  const { handleSubmit, reset, pristine, submitting } = props;
 
   const onSubmit = formValues => {
     props.onSubmit(formValues);
@@ -19,25 +19,27 @@ const LoginForm = props => {
       )
     }
   }
-  const renderInput = ({ input, label, type, meta }) => {
+  const renderField = ({ input, label, type, meta }) => {
     const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
     return (
       <div className={className}>
         <label>{label}</label>
-        <input {...input} type={type} autoComplete="on" />
+        <input {...input} type={type} />
         {renderError(meta)}
       </div>
     )
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
-      <Field name="username" component={renderInput} label="Användarnamn:" type="text"></Field>
-      <Field name="password" component={renderInput} label="Lösenord:" type="password"></Field>
+      <Field name="username" component={renderField} label="Användarnamn:" type="text" autoComplete="on"></Field>
+      <Field name="password" component={renderField} label="Lösenord:" type="password" autoComplete="on"></Field>
       <button className="ui button primary" type="submit">Login</button>
+      <button className="ui button secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
     </form>
   )
 }
 const validate = formValues => {
+  console.log('formValues', formValues)
   const errors = {};
   if (!formValues.username) errors.username = 'Du måste fylla i ett användarnamn';
   if (!formValues.password) errors.password = 'Du måste fylla i ditt lösenord';
@@ -46,5 +48,6 @@ const validate = formValues => {
 
 export default reduxForm({
   form: 'loginForm',
-  validate
+  // fix field losing focus on first change!!
+  // validate
 })(LoginForm);
