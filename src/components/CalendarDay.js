@@ -85,7 +85,7 @@ const CalendarDay = props => {
         const className = slot => {
           if (!auth.isSignedIn) return 'button small ui red disabled';
           else if (slot.userId && slot.userId !== auth.user._id) return 'button small ui red disabled';
-          else return 'button small ui green selectable';
+          else return 'button small ui teal selectable';
         }
         return (
           <div key={i} className="two column row">
@@ -95,7 +95,7 @@ const CalendarDay = props => {
             <div className="column" key={slot.id} data-label={slot.userId ? slot.userId : ''}>
               {slot.userName && (
                 <div className="ui label">
-                  <i className="check icon green"></i>
+                  <i className="check icon teal"></i>
                   {slot.userName}
                 </div>
               )}
@@ -137,7 +137,7 @@ const CalendarDay = props => {
       {/* <div className="ui divider"></div> */}
       <div className="extra content">
         <div className="ui two buttons">
-          <div className="ui basic green button" onClick={() => onCloseCalendar()} > Tillbaka till kalendermånad</div>
+          <div className="ui teal button" onClick={() => onCloseCalendar()} > Tillbaka till kalendermånad</div>
         </div>
       </div>
     </div>
