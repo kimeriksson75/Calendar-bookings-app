@@ -131,6 +131,14 @@ export const createUser = user => async dispatch => {
         payload: user.data
       })
       history.push('/user/login')
+      dispatch({
+        type: NEW_MESSAGE,
+        payload: {
+          type: 'success',
+          title: `${user.data.firstname} du har nu skapat en avändare`,
+          description: `Logga in med ditt användarnamn ${user.data.username}.`
+        }
+      })
     })
     .catch(error => {
       handleError(error, dispatch);
@@ -150,7 +158,15 @@ export const login = (username, password) => async dispatch => {
         type: SIGN_IN_SUCCESS,
         payload: user.data
       })
-      history.push('/')
+      history.push('/');
+      dispatch({
+        type: NEW_MESSAGE,
+        payload: {
+          type: 'success',
+          title: 'Inloggningen lyckades',
+          description: 'Nu har du tillgång till kalenderbokning.'
+        }
+      })
 
     })
     .catch(error => {

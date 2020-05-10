@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { newMessage } from '../actions';
 import { Modal } from 'semantic-ui-react'
 
 const Message = props => {
-  const { userMessage, newMessage } = props;
+  const { userMessage } = props;
 
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
@@ -61,4 +60,4 @@ const mapStateToProps = (state, ownProps) => {
     userMessage: state.userMessage
   })
 }
-export default connect(mapStateToProps, { newMessage })(Message);
+export default connect(mapStateToProps, {})(Message);

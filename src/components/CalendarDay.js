@@ -59,11 +59,11 @@ const CalendarDay = props => {
       description: 'Logga in och försök igen.'
     })
   }
-  const userSuccessMessage = () => {
+  const userSuccessMessage = description => {
     newMessage({
       type: 'success',
       title: 'Bokningsbekräftelse',
-      description: 'Din bokning har registrerats.'
+      description
     })
   }
   const initiateBooking = event => {
@@ -75,14 +75,14 @@ const CalendarDay = props => {
     booking.timeslots[id].userId = user._id;
     booking.timeslots[id].userName = `${user.username} ${user.apartmentid}`;
     booking.date = emptyApiData ? selectedDate : booking.date;
-    emptyApiData ? createBooking(booking).then(() => userSuccessMessage()) : patchBooking(booking).then(() => userSuccessMessage());
+    emptyApiData ? createBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.')) : patchBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.'));
   }
 
   const initiateDeleteBooking = event => {
     let id = event.target.attributes.getNamedItem('data-label').value;
     booking.timeslots[id].userId = null;
     booking.timeslots[id].userName = null;
-    patchBooking(booking).then(() => userSuccessMessage());
+    patchBooking(booking).then(() => userSuccessMessage('Din bokning har avregistrerats.'));
   }
 
   const renderTimeSlots = () => {

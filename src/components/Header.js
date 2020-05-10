@@ -6,7 +6,6 @@ import Auth from './Auth';
 const Header = props => {
   const [dropDownClass, setDropDownClass] = useState('none');
   const toggleDropDown = () => {
-    console.log('dropdownclass', dropDownClass)
     dropDownClass === 'block' ? setDropDownClass('none') : setDropDownClass('block');
   }
   const __currentDate = moment();
@@ -37,7 +36,7 @@ const Header = props => {
               </div>
             </div>
           </div>
-          <div className="ui vertical accordion borderless fluid menu" style={{ display: dropDownClass }}>
+          <div className="ui vertical accordion borderless fluid menu" style={{ display: dropDownClass }} onClick={() => toggleDropDown()}>
             <a className="item" href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>Kalender</a>
             <a className="item" href="/bookings">Mina bokningar</a>
             <Auth />

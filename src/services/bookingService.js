@@ -41,7 +41,6 @@ const getBookingsByDate = async date => {
 }
 
 const getBookingsByMonth = async date => {
-  console.log('getBookingsByMonth', date)
   return await bookings.get(`/bookings/month/${date}`, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
