@@ -52,8 +52,9 @@ const UserBookings = props => {
 
   const userErrorMessage = () => {
     newMessage({
-      type: 'alert',
-      message: 'Du måste vara inloggad för att kunna se dina bokningar.',
+      type: 'error',
+      title: 'Dennay vy kräver inglogg.',
+      description: 'Logga in och försök igen.'
     })
   }
 

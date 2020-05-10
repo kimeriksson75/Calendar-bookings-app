@@ -55,10 +55,17 @@ const CalendarDay = props => {
   const userErrorMessage = () => {
     newMessage({
       type: 'alert',
-      message: 'Du måste vara inloggad för att kunna boka tider.',
+      title: 'Du måste vara inloggad för att kunna boka tider.',
+      description: 'Logga in och försök igen.'
     })
   }
-
+  const userSuccessMessage = () => {
+    newMessage({
+      type: 'success',
+      title: 'Bokningsbekräftelse',
+      description: 'Din bokning har registrerats.'
+    })
+  }
   const initiateBooking = event => {
     if (!auth.isSignedIn) {
       userErrorMessage();
@@ -68,14 +75,14 @@ const CalendarDay = props => {
     booking.timeslots[id].userId = user._id;
     booking.timeslots[id].userName = `${user.username} ${user.apartmentid}`;
     booking.date = emptyApiData ? selectedDate : booking.date;
-    emptyApiData ? createBooking(booking) : patchBooking(booking);
+    emptyApiData ? createBooking(booking).then(() => userSuccessMessage()) : patchBooking(booking).then(() => userSuccessMessage());
   }
 
   const initiateDeleteBooking = event => {
     let id = event.target.attributes.getNamedItem('data-label').value;
     booking.timeslots[id].userId = null;
     booking.timeslots[id].userName = null;
-    patchBooking(booking);
+    patchBooking(booking).then(() => userSuccessMessage());
   }
 
   const renderTimeSlots = () => {

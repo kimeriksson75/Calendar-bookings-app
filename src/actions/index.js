@@ -25,7 +25,8 @@ const handleError = (error, dispatch) => {
     type: NEW_MESSAGE,
     payload: {
       type: 'error',
-      message: error,
+      title: error,
+      description: ''
     }
   })
 }

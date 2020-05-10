@@ -17,7 +17,6 @@ const App = () => {
     <div>
       <Router history={history}>
         <Header />
-        <Message />
         <Switch>
           <Route path="/" exact component={Home}></Route>
           <Route path="/user/login" component={Login}></Route>
@@ -26,6 +25,7 @@ const App = () => {
           <Route path="/calendar/:year/:month" exact component={Calendar}></Route>
           <Route path="/calendar/:year/:month/:date" component={CaldenarDay}></Route>
         </Switch>
+        <Message />
       </Router>
     </div>)
 }
