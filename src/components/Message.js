@@ -39,10 +39,9 @@ const Message = props => {
         <Modal open={modalOpen} onClick={() => setModalOpen(false)}>
           <Modal.Content>
             <div className={className(userMessage.message.type)}>
-              <i className="close icon"></i>
               <i className={iconClassName(userMessage.message.type)} />
               <div className="content">
-                <div className="header">
+                <div className="header" style={{ textTransform: 'capitalize' }}>
                   {userMessage.message.title}
                 </div>
                 <p>{userMessage.message.description}</p>
