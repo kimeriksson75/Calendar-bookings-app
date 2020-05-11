@@ -19,20 +19,20 @@ const LoginForm = props => {
       )
     }
   }
-  const renderField = ({ input, label, type, meta }) => {
+  const renderField = ({ input, label, autoComplete, type, meta, props }) => {
     const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
     return (
       <div className={className}>
         <label>{label}</label>
-        <input {...input} type={type} />
+        <input {...input} type={type} autoComplete={autoComplete} />
         {renderError(meta)}
       </div>
     )
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
-      <Field name="username" component={renderField} label="Användarnamn:" type="text" autoComplete="on"></Field>
-      <Field name="password" component={renderField} label="Lösenord:" type="password" autoComplete="on"></Field>
+      <Field name="username" component={renderField} label="Användarnamn:" type="text" autoComplete="username"></Field>
+      <Field name="password" component={renderField} label="Lösenord:" type="password" autoComplete="password"></Field>
       <button className="ui button primary" type="submit">Login</button>
       <button className="ui button secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
     </form>
@@ -49,5 +49,7 @@ const validate = formValues => {
 export default reduxForm({
   form: 'loginForm',
   // fix field losing focus on first change!!
-  // validate
+  validate,
+  enableReinitialize: true,
+  asyncBlurFields: [],
 })(LoginForm);

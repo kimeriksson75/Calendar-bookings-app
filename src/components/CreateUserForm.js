@@ -19,23 +19,23 @@ const CreateUserForm = props => {
       )
     }
   }
-  const renderInput = ({ input, label, type, meta }) => {
+  const renderInput = ({ input, label, autoComplete, type, meta }) => {
     const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
     return (
       <div className={className}>
         <label>{label}</label>
-        <input {...input} type={type} autoComplete="on" />
+        <input {...input} type={type} autoComplete={autoComplete} />
         {renderError(meta)}
       </div>
     )
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
-      <Field name="username" component={renderInput} label="Användarnamn:" type="text"></Field>
-      <Field name="firstname" component={renderInput} label="Namn:" type="text"></Field>
-      <Field name="lastname" component={renderInput} label="Efternamn:" type="text"></Field>
-      <Field name="password" component={renderInput} label="Lösenord:" type="password"></Field>
-      <Field name="apartmentid" component={renderInput} label="Lägenhetsnummer:" type="text"></Field>
+      <Field name="username" component={renderInput} label="Användarnamn:" type="text" autoComplete="username"></Field>
+      <Field name="firstname" component={renderInput} label="Namn:" type="text" autoComplete="firstname"></Field>
+      <Field name="lastname" component={renderInput} label="Efternamn:" type="text" autoComplete="lastname"></Field>
+      <Field name="password" component={renderInput} label="Lösenord:" type="password" autoComplete="password"></Field>
+      <Field name="apartmentid" component={renderInput} label="Lägenhetsnummer:" type="text" autoComplete="id"></Field>
       <button className="ui button primary" type="submit">Skicka in</button>
     </form>
   )
@@ -53,5 +53,7 @@ const validate = formValues => {
 export default reduxForm({
   form: 'createUserForm',
   // fix field losing focus on first change!!
-  // validate
+  validate,
+  enableReinitialize: true,
+  asyncBlurFields: [],
 })(CreateUserForm)
