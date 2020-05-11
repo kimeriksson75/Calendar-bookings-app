@@ -34,9 +34,9 @@ const Message = props => {
     }
   }
   return (
-    <>
+    <div onClick={() => setModalOpen(false)}>
       {userMessage && userMessage.message && (
-        <Modal open={modalOpen} onClick={() => setModalOpen(false)}>
+        <Modal open={modalOpen} >
           <Modal.Content>
             <div className={className(userMessage.message.type)}>
               <i className={iconClassName(userMessage.message.type)} />
@@ -51,7 +51,7 @@ const Message = props => {
         </Modal>
       )
       }
-    </>
+    </div>
   )
 }
 const mapStateToProps = (state, ownProps) => {
