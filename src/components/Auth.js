@@ -13,7 +13,7 @@ const Auth = props => {
   return (
     <React.Fragment>
       {isSignedIn ?
-        (<div className="ui item" onClick={() => onLogout()}>{`Logga ut ${user.firstname}`} </div>) :
+        (<Link className="ui item" to="#" onClick={() => onLogout()}>{`Logga ut ${user.firstname}`} </Link>) :
         (<Link className="ui item" to="/user/login">Logga in</Link>)
       }
     </React.Fragment >
