@@ -41,7 +41,7 @@ const Message = props => {
             <div className={className(userMessage.message.type)}>
               <i className={iconClassName(userMessage.message.type)} />
               <div className="content">
-                <div className="header" style={{ textTransform: 'capitalize' }}>
+                <div className="header">
                   {userMessage.message.title}
                 </div>
                 <p>{userMessage.message.description}</p>
