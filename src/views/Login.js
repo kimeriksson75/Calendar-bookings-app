@@ -17,7 +17,7 @@ const Login = props => {
         <LoginForm onSubmit={onSubmit} />
       </div>
       <div className="ui horizontal divider" />
-      <Link className="ui item " to="/user/create">Skapa en ny användare</Link>
+      <Link className="ui item" to="/user/create">Skapa en ny användare</Link>
     </div>);
 }
 const mapStateToProps = (state) => {
