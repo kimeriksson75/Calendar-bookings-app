@@ -1,25 +1,23 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { flow, sortBy, omit, map } from 'lodash/fp';
+import _, { sortBy, omit, map } from 'lodash/fp';
 import { getBookingByAuthor, newMessage } from '../actions';
 
 const UserBookings = props => {
   const {
-    auth,
-    bookingData,
+    auth: { user, isSignedIn },
+    bookingData: { userBookings },
     getBookingByAuthor,
     newMessage
   } = props;
 
-  const { user } = auth;
-  const { userBookings } = bookingData;
-  const sortedUserBookings = flow(
-    sortBy(dateObject => new Date(dateObject.date)),
-    omit(dateObject => new Date(dateObject.date) > new Date()),
-    map(dateObject => dateObject)
-  )(userBookings);
 
+  const sortedUserBookings = _.pipe(
+    sortBy(booking => new Date(booking.date)),
+    map(booking => omit([new Date(booking.date) < new Date()], booking))
+
+  )(userBookings);
   useEffect(() => {
     if (user) getBookingByAuthor(user._id);
   }, [user, getBookingByAuthor]);
@@ -61,7 +59,7 @@ const UserBookings = props => {
   return (
     <div className="ui container">
       <h3>Mina kommande bokningar</h3>
-      {auth.isSignedIn ?
+      {isSignedIn ?
         (<div>
           {userBookings && renderBookings()}
         </div>) : userErrorMessage()

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import _ from 'lodash-fp';
 import moment from 'moment';
 import 'moment/locale/sv';
 import CalendarMenu from '../components/CalendarMenu';
@@ -11,7 +12,7 @@ moment.locale('sv');
 
 const CalendarView = props => {
 
-  const { getBookingsByMonth } = props;
+  const { getBookingsByMonth, bookingData: { calendarBookings } } = props;
 
   const { year = "", month = "" } = props.match.params;
 
@@ -39,7 +40,25 @@ const CalendarView = props => {
     text-align: center;
     text-transform: capitalize;
   `;
+  const CalendarStlothContainer = styled.div`
+    position: absolute;
+    top: 12px;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    `;
 
+  const Sloth = styled.div`
+    border-top: 1px solid white;
+    height: 8px;
+    width: 6px
+    `;
+
+  const OccupiedSloth = styled.div`
+    border-top: 1px solid rgba(0,0,0,0.3);
+    height: 8px;
+    width: 6px
+  `;
   const firstDayOfMonth = () => {
     let firstDay = moment(currentDate)
       .startOf("month")
@@ -48,7 +67,7 @@ const CalendarView = props => {
   }
 
   const onDayClicked = event => {
-    let date = event.target.attributes.getNamedItem('data-item').value;
+    let date = event.target.dataset.item;
     history.push(`/calendar/${currentDate.format('YYYY')}/${currentDate.format('MM')}/${date}`);
   }
 
@@ -73,10 +92,17 @@ const CalendarView = props => {
     return style;
   }
 
+  const renderCaldendarDayBookings = day => {
+    if (!calendarBookings) return null;
+    const bookedDate = _.find(booking => moment(booking.date).format('D') === String(day), calendarBookings);
+    return bookedDate && (<CalendarStlothContainer>
+      {bookedDate.timeslots.map((timeslot) => timeslot.userId ? (<Sloth key={timeslot.id}></Sloth>) : (<OccupiedSloth key={timeslot.id}></OccupiedSloth>))}
+    </CalendarStlothContainer>)
+  }
   let daysInMonth = [];
   for (let d = 1; d <= currentDate.daysInMonth(); d++) {
     daysInMonth.push(
-      <CalendarDay key={d + 31} className={calendarDayStyle(d)} data-item={d} onClick={onDayClicked}>{d}
+      <CalendarDay key={d + 31} className={calendarDayStyle(d)} data-item={d} onClick={onDayClicked}>{d}{renderCaldendarDayBookings(d)}
       </CalendarDay >);
   }
 

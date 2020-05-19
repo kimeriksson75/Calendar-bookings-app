@@ -16,14 +16,14 @@ import history from '../history';
 const CalendarDay = props => {
 
   const {
-    auth,
+    auth: { user, isSignedIn },
     createBooking,
     patchBooking,
     getBookingsByDate,
     newMessage,
-    bookingData } = props;
+    bookingData
+  } = props;
 
-  const { user } = auth;
   const { booking = {} } = bookingData;
   let emptyApiData = _.isEmpty(booking);
 
@@ -67,11 +67,11 @@ const CalendarDay = props => {
     })
   }
   const initiateBooking = event => {
-    if (!auth.isSignedIn) {
+    if (!isSignedIn) {
       userErrorMessage();
       return;
     };
-    let id = event.target.attributes.getNamedItem('data-label').value;
+    let id = event.target.dataset.label;
     booking.timeslots[id].userId = user._id;
     booking.timeslots[id].userName = `${user.username} ${user.apartmentid}`;
     booking.date = emptyApiData ? selectedDate : booking.date;
@@ -79,7 +79,7 @@ const CalendarDay = props => {
   }
 
   const initiateDeleteBooking = event => {
-    let id = event.target.attributes.getNamedItem('data-label').value;
+    let id = event.target.dataset.label;
     booking.timeslots[id].userId = null;
     booking.timeslots[id].userName = null;
     patchBooking(booking).then(() => userSuccessMessage('Din bokning har avregistrerats.'));
@@ -90,8 +90,8 @@ const CalendarDay = props => {
     return (
       timeslots.map((slot, i) => {
         const className = slot => {
-          if (!auth.isSignedIn) return 'button small ui red disabled';
-          else if (slot.userId && slot.userId !== auth.user._id) return 'button small ui red disabled';
+          if (!isSignedIn) return 'button small ui red disabled';
+          else if (slot.userId && slot.userId !== user._id) return 'button small ui red disabled';
           else return 'button small ui teal selectable';
         }
         return (
