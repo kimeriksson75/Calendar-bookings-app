@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Menu, Sidebar, Segment, Icon } from 'semantic-ui-react';
 import _ from 'lodash';
 import moment from 'moment';
-import { Menu, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import {
   setSelectedDate,
   createBooking,
   patchBooking,
   getBookingsByDate,
-  newMessage
+  newMessage,
+  toggleSidebar
 } from '../actions';
 
 import history from '../history';
@@ -21,14 +22,14 @@ const CalendarDay = props => {
     patchBooking,
     getBookingsByDate,
     newMessage,
-    bookingData
+    bookingData,
+    toggleSidebar
   } = props;
 
   const { booking = {} } = bookingData;
   let emptyApiData = _.isEmpty(booking);
 
   const { year = "", month = "", date = "" } = props.match.params;
-
   const [selectedDate, setSelectedDate] = useState(moment());
 
   useEffect(() => {
@@ -119,35 +120,38 @@ const CalendarDay = props => {
     history.push(`/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}/${dObject.format('DD')}`);
   }
   return (
-    <div className="ui container">
-      <h3>Kalenderdag</h3>
-      <Menu>
-        <Menu.Item as="a" icon onClick={() => onChangeDay(-1)}>
-          <Icon name="chevron left" ></Icon>
-        </Menu.Item>
-        <Menu.Item style={{ textTransform: 'capitalize' }}>
-          {selectedDate && selectedDate.format("dddd Do MMMM")}
-        </Menu.Item>
-        <Menu.Item as="a" icon onClick={() => onChangeDay(1)}>
-          <Icon name="chevron right" ></Icon>
-        </Menu.Item>
-      </Menu>
-      <div className="ui celled grid">
-        <div className="two column row">
-          <div className="column">Tider</div>
-          <div className="column">Bokad av</div>
+    <Sidebar.Pusher>
+      <Segment basic>
+        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <h3>Kalenderdag</h3>
+        <Menu>
+          <Menu.Item as="a" icon onClick={() => onChangeDay(-1)}>
+            <Icon name="chevron left" ></Icon>
+          </Menu.Item>
+          <Menu.Item style={{ textTransform: 'capitalize' }}>
+            {selectedDate && selectedDate.format("dddd Do MMMM")}
+          </Menu.Item>
+          <Menu.Item as="a" icon onClick={() => onChangeDay(1)}>
+            <Icon name="chevron right" ></Icon>
+          </Menu.Item>
+        </Menu>
+        <div className="ui celled grid">
+          <div className="two column row">
+            <div className="column">Tider</div>
+            <div className="column">Bokad av</div>
+          </div>
         </div>
-      </div>
-      <div className="ui celled grid">
-        {booking.timeslots && renderTimeSlots()}
-      </div>
-      {/* <div className="ui divider"></div> */}
-      <div className="extra content">
-        <div className="ui two buttons">
-          <div className="ui teal button" onClick={() => onCloseCalendar()} > Tillbaka till kalendermånad</div>
+        <div className="ui celled grid">
+          {booking.timeslots && renderTimeSlots()}
         </div>
-      </div>
-    </div>
+        {/* <div className="ui divider"></div> */}
+        <div className="extra content">
+          <div className="ui two buttons">
+            <div className="ui teal button" onClick={() => onCloseCalendar()} > Tillbaka till kalendermånad</div>
+          </div>
+        </div>
+      </Segment>
+    </Sidebar.Pusher >
   )
 }
 const mapStateToProps = (state, ownProps) => {
@@ -164,5 +168,6 @@ export default connect(mapStateToProps, {
   createBooking,
   patchBooking,
   getBookingsByDate,
-  newMessage
+  newMessage,
+  toggleSidebar
 })(CalendarDay);

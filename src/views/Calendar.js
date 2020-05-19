@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { Sidebar, Segment, Icon } from 'semantic-ui-react';
 import _ from 'lodash-fp';
 import moment from 'moment';
 import 'moment/locale/sv';
 import CalendarMenu from '../components/CalendarMenu';
-import { getBookingsByMonth } from '../actions';
+import { getBookingsByMonth, toggleSidebar } from '../actions';
 
 moment.locale('sv');
 
 const CalendarView = props => {
 
-  const { getBookingsByMonth, bookingData: { calendarBookings } } = props;
+  const { getBookingsByMonth, toggleSidebar, bookingData: { calendarBookings } } = props;
 
   const { year = "", month = "" } = props.match.params;
 
@@ -138,21 +139,24 @@ const CalendarView = props => {
     history.push(`/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}`);
   }
   return (
-    <div className="ui container">
-      <h3>Kalender</h3>
-      <div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
-        <div className="ui celled grid">
-          <div className="seven column row">
-            {weekDaysShortName}
+    <Sidebar.Pusher>
+      <Segment basic>
+        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <h3>Kalender</h3>
+        <div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
+          <div className="ui celled grid">
+            <div className="seven column row">
+              {weekDaysShortName}
+            </div>
+          </div>
+          <div className="ui celled grid">
+            <div className="ui grid">
+              {days}
+            </div>
           </div>
         </div>
-        <div className="ui celled grid">
-          <div className="ui grid">
-            {days}
-          </div>
-        </div>
-      </div>
-    </div >
+      </Segment>
+    </Sidebar.Pusher >
   )
 }
 const mapStateToProps = (state, ownProps) => {
@@ -160,4 +164,4 @@ const mapStateToProps = (state, ownProps) => {
     bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { getBookingsByMonth })(CalendarView);
+export default connect(mapStateToProps, { getBookingsByMonth, toggleSidebar })(CalendarView);

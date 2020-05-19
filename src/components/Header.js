@@ -1,49 +1,71 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
+import { toggleSidebar } from '../actions';
 import Auth from './Auth';
-// import GoogleAuth from './GoogleAuth'; 
+import { Sidebar, Menu, Segment, Icon } from 'semantic-ui-react';
 
 const Header = props => {
-  const [dropDownClass, setDropDownClass] = useState('none');
-  const toggleDropDown = () => {
-    dropDownClass === 'block' ? setDropDownClass('none') : setDropDownClass('block');
-  }
+  const { showSidebar, toggleSidebar } = props;
   const __currentDate = moment();
   return (
-    <div className="ui borderless huge menu" style={{ flexGrow: 1 }}>
-      <div className="ui container grid">
-        <div className="computer tablet only row">
-          <div className="ui secondary menu" style={{ flexGrow: 1 }}>
-            <a className="item" href="/">
-              <i className="calendar alternate outline icon large" />
-            </a>
-            <a className="item" href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>Kalender</a>
-            <a className="item" href="/bookings">Mina bokningar</a>
-            <div className="item">
-              <Auth />
-            </div>
-          </div>
-        </div>
-        {/* End computer only */}
-        <div className="mobile only row">
-          <a className="item" href="/">
-            <i className="calendar alternate outline icon large" />
-          </a>
-          <div className="right menu">
-            <div className="menu item">
-              <div className="ui basic icon toggle button" onClick={() => toggleDropDown()}>
-                <i className="bars icon"></i>
-              </div>
-            </div>
-          </div>
-          <div className="ui vertical accordion borderless fluid menu" style={{ display: dropDownClass }} onClick={() => toggleDropDown()}>
-            <a className="item" href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>Kalender</a>
-            <a className="item" href="/bookings">Mina bokningar</a>
-            <Auth />
-          </div>
-        </div>
-      </div>
-    </div>
+    // <div className="ui borderless huge menu" style={{ flexGrow: 1 }}>
+    //   <div className="ui container">
+    //     <div className="computer tablet only row">
+    //       <div className="ui secondary menu" style={{ flexGrow: 1 }}>
+    //         <a className="item" href="/">
+    //           <i className="calendar alternate outline icon large" />
+    //         </a>
+    //         <a className="item" href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>Kalender</a>
+    //         <a className="item" href="/bookings">Mina bokningar</a>
+    //         <div className="item">
+    //           <Auth />
+    //         </div>
+    //       </div>
+    //     </div>
+    //     {/* End computer only */}
+    //     <div className="mobile only row">
+    <React.Fragment>
+      <Sidebar
+        as={Menu}
+        animation="push"
+        icon="labeled"
+        inverted
+        // onHide={() => toggleSidebar()}
+        vertical
+        visible={showSidebar}
+        width="thin">
+        <Menu.Item
+          as="a"
+          href="/">
+          <Icon name="home"></Icon>
+                  Hem
+              </Menu.Item>
+        <Menu.Item
+          as="a"
+          href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>
+          <Icon name="calendar"></Icon>
+                  Kalender
+              </Menu.Item>
+        <Menu.Item
+          as="a"
+          href="/bookings">
+          <Icon name="user"></Icon>
+                  Mina bokningar
+              </Menu.Item>
+      </Sidebar>
+      {/* <Sidebar.Pusher>
+        <Segment basic>
+          <Icon name="bars" onClick={() => toggleDropDown()}></Icon>
+        </Segment>
+      </Sidebar.Pusher> */}
+    </React.Fragment>
+    // </div>
   )
 }
-export default Header;
+const mapStateToProps = state => {
+  return ({
+    showSidebar: state.application.showSidebar
+  })
+}
+export default connect(mapStateToProps, { toggleSidebar })(Header);

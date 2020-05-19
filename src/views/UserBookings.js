@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Menu, Sidebar, Segment, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import _, { sortBy, omit, map } from 'lodash/fp';
-import { getBookingByAuthor, newMessage } from '../actions';
+import { getBookingByAuthor, newMessage, toggleSidebar } from '../actions';
 
 const UserBookings = props => {
   const {
     auth: { user, isSignedIn },
     bookingData: { userBookings },
     getBookingByAuthor,
-    newMessage
+    newMessage,
+    toggleSidebar
   } = props;
 
 
@@ -57,15 +59,17 @@ const UserBookings = props => {
   }
 
   return (
-    <div className="ui container">
-      <h3>Mina kommande bokningar</h3>
-      {isSignedIn ?
-        (<div>
-          {userBookings && renderBookings()}
-        </div>) : userErrorMessage()
-      }
-
-    </div>
+    <Sidebar.Pusher>
+      <Segment basic>
+        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <h3>Mina kommande bokningar</h3>
+        {isSignedIn ?
+          (<div>
+            {userBookings && renderBookings()}
+          </div>) : userErrorMessage()
+        }
+      </Segment>
+    </Sidebar.Pusher >
   )
 }
 
@@ -75,4 +79,4 @@ const mapStateToProps = (state) => {
     bookingData: state.bookingData
   });
 }
-export default connect(mapStateToProps, { getBookingByAuthor, newMessage })(UserBookings);
+export default connect(mapStateToProps, { getBookingByAuthor, newMessage, toggleSidebar })(UserBookings);

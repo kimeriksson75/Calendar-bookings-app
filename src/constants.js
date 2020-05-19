@@ -22,4 +22,6 @@ export const EDIT_BOOKING = 'EDIT_BOOKING';
 
 export const NEW_MESSAGE = 'NEW_MESSAGE';
 
+export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+
 export const CLIENT_ID = '303832931161-5v8mqd2di5ben74v8u4qqflks68pvpf6.apps.googleusercontent.com';

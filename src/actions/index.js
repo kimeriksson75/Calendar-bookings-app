@@ -13,7 +13,8 @@ import {
   FETCH_USER_BOOKINGS,
   EDIT_BOOKING,
   DELETE_BOOKING,
-  NEW_MESSAGE
+  NEW_MESSAGE,
+  TOGGLE_SIDEBAR
 } from '../constants';
 import history from '../history';
 import { bookings } from '../api';
@@ -195,5 +196,12 @@ export const newMessage = message => {
   return {
     type: NEW_MESSAGE,
     payload: message
+  }
+}
+
+export const toggleSidebar = () => {
+  return {
+    type: TOGGLE_SIDEBAR,
+    payload: null
   }
 }
