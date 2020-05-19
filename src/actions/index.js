@@ -199,9 +199,10 @@ export const newMessage = message => {
   }
 }
 
-export const toggleSidebar = () => {
+export const toggleSidebar = (value = null) => {
+  const payload = typeof value === "boolean" ? value : null;
   return {
     type: TOGGLE_SIDEBAR,
-    payload: null
+    payload
   }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Menu, Sidebar, Segment, Icon } from 'semantic-ui-react';
+import { Sidebar, Segment, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import _, { sortBy, omit, map } from 'lodash/fp';
 import { getBookingByAuthor, newMessage, toggleSidebar } from '../actions';

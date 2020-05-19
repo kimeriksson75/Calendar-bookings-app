@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { toggleSidebar } from '../actions';
 import Auth from './Auth';
-import { Sidebar, Menu, Segment, Icon } from 'semantic-ui-react';
+import { Sidebar, Menu, Icon } from 'semantic-ui-react';
 
 const Header = props => {
   const { showSidebar, toggleSidebar } = props;
@@ -13,38 +13,35 @@ const Header = props => {
       <Sidebar
         as={Menu}
         animation="push"
+        direction="left"
         icon="labeled"
         inverted
-        // onHide={() => toggleSidebar()}
+        onHide={() => toggleSidebar(false)}
         vertical
         visible={showSidebar}
-        width="thin">
+        width="thin"
+        size="tiny">
         <Menu.Item
           as="a"
           href="/">
-          <Icon name="home"></Icon>
-                  Hem
-              </Menu.Item>
+          <Icon name="home" size="small"></Icon>
+            Hem
+          </Menu.Item>
         <Menu.Item
           as="a"
           href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>
-          <Icon name="calendar"></Icon>
-                  Kalender
-              </Menu.Item>
+          <Icon name="calendar alternate outline" size="small"></Icon>
+            Kalender
+          </Menu.Item>
         <Menu.Item
           as="a"
           href="/bookings">
-          <Icon name="user"></Icon>
-                  Mina bokningar
-              </Menu.Item>
+          <Icon name="user" size="small"></Icon>
+            Mina bokningar
+          </Menu.Item>
+        <Auth />
       </Sidebar>
-      {/* <Sidebar.Pusher>
-        <Segment basic>
-          <Icon name="bars" onClick={() => toggleDropDown()}></Icon>
-        </Segment>
-      </Sidebar.Pusher> */}
     </React.Fragment>
-    // </div>
   )
 }
 const mapStateToProps = state => {
