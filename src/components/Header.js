@@ -15,7 +15,6 @@ const Header = props => {
         animation="push"
         direction="left"
         icon="labeled"
-        inverted
         onHide={() => toggleSidebar(false)}
         vertical
         visible={showSidebar}

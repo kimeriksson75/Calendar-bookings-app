@@ -61,7 +61,7 @@ const UserBookings = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
         <h3>Mina kommande bokningar</h3>
         {isSignedIn ?
           (<div>

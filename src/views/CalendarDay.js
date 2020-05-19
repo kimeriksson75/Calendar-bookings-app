@@ -122,7 +122,7 @@ const CalendarDay = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
         <h3>Kalenderdag</h3>
         <Menu>
           <Menu.Item as="a" icon onClick={() => onChangeDay(-1)}>

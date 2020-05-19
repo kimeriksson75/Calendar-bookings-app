@@ -8,7 +8,7 @@ const Home = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <Icon size="large" name="bars" onClick={toggleSidebar}></Icon>
         <h3>Välkommen</h3>
         <p>Klicka på Kalender i menyn ovan för att påbörja din bokning.</p>
       </Segment>

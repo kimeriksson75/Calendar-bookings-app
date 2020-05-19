@@ -14,7 +14,7 @@ const CreateUser = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
         <h3>Login</h3>
         < h3 > Skapa ny användare</h3 >
         <CreateUserForm onSubmit={onSubmit} />

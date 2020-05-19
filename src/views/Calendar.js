@@ -141,7 +141,7 @@ const CalendarView = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" onClick={toggleSidebar}></Icon>
+        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
         <h3>Kalender</h3>
         <div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
           <div className="ui celled grid">

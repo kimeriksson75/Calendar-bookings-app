@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../actions';
-import { Menu, Icon } from 'semantic-ui-react';
+import { Menu, Button, Icon } from 'semantic-ui-react';
 
 const Auth = props => {
   const { isSignedIn, user } = props.auth;
@@ -11,16 +11,17 @@ const Auth = props => {
     logout();
   }
   return (
-    <Menu.Item
-      as="a"
-      href={isSignedIn ? "/" : "/user/login"}>
-      <Icon name={isSignedIn ? "sign-out" : "sign-in"} size="small"></Icon>
+    <React.Fragment>
       {isSignedIn ?
-        (<div onClick={() => onLogout()}>{`Logga ut ${user.firstname}`} </div>) :
-        (<div>Logga in</div>)
-      }
-    </Menu.Item >
-  )
+        (<Menu.Item onClick={() => onLogout()}>
+          <Icon name="sign-out"></Icon>
+          <div>{`Logga ut ${user.firstname}`}</div>
+        </Menu.Item>) :
+        (<Menu.Item as="a" href="/user/login">
+          <Icon name="sign-in"></Icon>
+          <div>Logga in</div>
+        </Menu.Item >)}
+    </React.Fragment>)
 }
 
 const mapStateToProps = (state) => {
