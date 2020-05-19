@@ -9,22 +9,6 @@ const Header = props => {
   const { showSidebar, toggleSidebar } = props;
   const __currentDate = moment();
   return (
-    // <div className="ui borderless huge menu" style={{ flexGrow: 1 }}>
-    //   <div className="ui container">
-    //     <div className="computer tablet only row">
-    //       <div className="ui secondary menu" style={{ flexGrow: 1 }}>
-    //         <a className="item" href="/">
-    //           <i className="calendar alternate outline icon large" />
-    //         </a>
-    //         <a className="item" href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>Kalender</a>
-    //         <a className="item" href="/bookings">Mina bokningar</a>
-    //         <div className="item">
-    //           <Auth />
-    //         </div>
-    //       </div>
-    //     </div>
-    //     {/* End computer only */}
-    //     <div className="mobile only row">
     <React.Fragment>
       <Sidebar
         as={Menu}
