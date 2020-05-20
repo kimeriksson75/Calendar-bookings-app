@@ -37,8 +37,14 @@ const Header = props => {
           href="/bookings">
           <Icon name="user" size="small"></Icon>
             Mina bokningar
-          </Menu.Item>
+        </Menu.Item>
         <Auth />
+        <Menu.Item
+          as="a"
+          href="/user/create">
+          <Icon name="plus" size="small"></Icon>
+            Ny användare
+        </Menu.Item>
       </Sidebar>
     </React.Fragment>
   )
