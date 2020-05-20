@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../actions';
-import { Menu, Button, Icon } from 'semantic-ui-react';
+import { Menu, Icon } from 'semantic-ui-react';
 
 const Auth = props => {
   const { isSignedIn, user } = props.auth;
