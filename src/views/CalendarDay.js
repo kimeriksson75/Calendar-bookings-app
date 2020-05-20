@@ -123,7 +123,7 @@ const CalendarDay = props => {
     <Sidebar.Pusher>
       <Segment basic>
         <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3>Kalenderdag</h3>
+        <h3 className="ui header">Kalenderdag</h3>
         <Menu>
           <Menu.Item as="a" icon onClick={() => onChangeDay(-1)}>
             <Icon name="chevron left" ></Icon>

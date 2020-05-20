@@ -16,12 +16,13 @@ const Login = props => {
     <Sidebar.Pusher>
       <Segment basic>
         <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3>Login</h3>
+        <h3 className="ui header">Login</h3>
         <div>
           <LoginForm onSubmit={onSubmit} />
         </div>
-        <div className="ui horizontal divider" />
-        <Link className="ui item" to="/user/create">Skapa en ny användare</Link>
+        <div className="extra" style={{ paddingTop: '12px' }}>
+          <Link className="" to="/user/create">Eller skapa en ny användare</Link>
+        </div>
       </Segment>
     </Sidebar.Pusher>);
 }
