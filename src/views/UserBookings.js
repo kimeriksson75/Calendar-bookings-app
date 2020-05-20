@@ -27,25 +27,27 @@ const UserBookings = props => {
 
   const renderDate = date => {
     const updatedDate = moment(date);
-    return updatedDate.format("ddd Do MMM YYYY");
+    return updatedDate.format("dddd Do MMMM YYYY");
   }
 
   const renderTimeslots = timeslots =>
     timeslots.map((timeslot) => timeslot.userId === user._id ?
-      (<div key={timeslot.id} className="item">{`${timeslot.timeslot}`}</div>) : null)
+      (<li key={timeslot.id} className="item">{`${timeslot.timeslot}`}</li>) : null)
 
   const renderBookings = () =>
     sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
-        <div key={booking.id} className="ui two column row celled grid">
-          <div className="column">
-            <i className="large calendar check outline blue middle aligned icon"></i>
-            <a className="header" style={{ textTransform: 'capitalize' }} href={`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`}>{renderDate(booking.date)}</a>
-          </div>
-          <div className="column teal">
-            {timeslots}
-          </div>
+        <div key={booking.id} className="ui list">
+          <a className="item" href={`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`}>
+            <i className="large calendar check top aligned green outline icon"></i>
+            <div className="content">
+              <div className="header" style={{ textTransform: 'capitalize' }} >{renderDate(booking.date)}</div>
+              <ul className="description">
+                {timeslots}
+              </ul>
+            </div>
+          </a>
         </div>
       ) : null;
     });
@@ -62,7 +64,9 @@ const UserBookings = props => {
     <Sidebar.Pusher>
       <Segment basic>
         <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3>Mina kommande bokningar</h3>
+        <h3 className="ui header">Mina bokningar
+          <div className="sub header">Kommande sorterat i datumordning</div>
+        </h3>
         {isSignedIn ?
           (<div>
             {userBookings && renderBookings()}
