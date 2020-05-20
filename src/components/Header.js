@@ -17,6 +17,7 @@ const Header = props => {
         icon="labeled"
         onHide={() => toggleSidebar(false)}
         vertical
+        inverted
         visible={showSidebar}
         width="thin"
         size="tiny">
