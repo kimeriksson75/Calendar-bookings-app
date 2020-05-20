@@ -15,6 +15,7 @@ import { Sidebar, Segment } from 'semantic-ui-react';
 const App = () => {
   return (
     <Sidebar.Pushable as={Segment} style={{ 'height': '100vh' }}>
+      <Message />
       <Header />
       <Router history={history}>
         <Switch>
@@ -24,7 +25,6 @@ const App = () => {
           <Route path="/bookings" component={UserBookings}></Route>
           <Route path="/calendar/:year/:month" exact component={Calendar}></Route>
           <Route path="/calendar/:year/:month/:date" component={CaldenarDay}></Route>
-          <Message />
         </Switch>
       </Router>
     </Sidebar.Pushable>)
