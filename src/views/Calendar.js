@@ -8,6 +8,7 @@ import moment from 'moment';
 import 'moment/locale/sv';
 import CalendarMenu from '../components/CalendarMenu';
 import { getBookingsByMonth, toggleSidebar } from '../actions';
+import PusherHeader from '../components/PusherHeader';
 
 moment.locale('sv');
 
@@ -141,8 +142,7 @@ const CalendarView = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3 className="ui header">Kalender</h3>
+        <PusherHeader title="Kalender" subTitle="" />
         <div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
           <div className="ui celled grid">
             <div className="seven column row">

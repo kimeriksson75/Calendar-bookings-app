@@ -4,6 +4,7 @@ import { Sidebar, Segment, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import _, { sortBy, omit, map } from 'lodash/fp';
 import { getBookingByAuthor, newMessage, toggleSidebar } from '../actions';
+import PusherHeader from '../components/PusherHeader';
 
 const UserBookings = props => {
   const {
@@ -18,8 +19,8 @@ const UserBookings = props => {
   const sortedUserBookings = _.pipe(
     sortBy(booking => new Date(booking.date)),
     map(booking => omit([new Date(booking.date) < new Date()], booking))
-
   )(userBookings);
+
   useEffect(() => {
     if (user) getBookingByAuthor(user._id);
   }, [user, getBookingByAuthor]);
@@ -38,9 +39,9 @@ const UserBookings = props => {
     sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
-        <div key={booking.id} className="ui list">
+        <div key={booking.id} className="ui relaxed divided list">
           <a className="item" href={`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`}>
-            <i className="large calendar check top aligned green outline icon"></i>
+            <i className="large calendar check green outline icon"></i>
             <div className="content">
               <div className="header" style={{ textTransform: 'capitalize' }} >{renderDate(booking.date)}</div>
               <ul className="description">
@@ -63,12 +64,9 @@ const UserBookings = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3 className="ui header">Mina bokningar
-          <div className="sub header">Kommande sorterat i datumordning</div>
-        </h3>
+        <PusherHeader title="Mina bokningar" subTitle="Kommande sorterat i datumordning" />
         {isSignedIn ?
-          (<div>
+          (<div className="ui container">
             {userBookings && renderBookings()}
           </div>) : userErrorMessage()
         }

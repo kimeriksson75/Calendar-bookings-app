@@ -1,17 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Sidebar, Segment, Icon } from 'semantic-ui-react';
+import { Sidebar, Segment, Icon, Menu, Header } from 'semantic-ui-react';
 import { toggleSidebar } from '../actions';
-
+import PusherHeader from '../components/PusherHeader';
 const Home = props => {
   const { toggleSidebar } = props;
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon size="large" name="bars" onClick={toggleSidebar}></Icon>
-        <h3 className="ui header">Välkommen
-        <div className="sub header">Klicka på Kalender i menyn ovan för att påbörja din bokning.</div>
-        </h3>
+        <PusherHeader title="Välkommen" subTitle="Klicka på Kalender i menyn ovan för att påbörja din bokning." />
       </Segment>
     </Sidebar.Pusher>
   )

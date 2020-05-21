@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import CreateUserForm from '../components/CreateUserForm';
 import { createUser, toggleSidebar } from '../actions';
 import { Sidebar, Segment, Icon } from 'semantic-ui-react';
+import PusherHeader from '../components/PusherHeader';
 const CreateUser = props => {
   const { createUser, toggleSidebar } = props;
 
@@ -14,8 +15,7 @@ const CreateUser = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3 className="ui header">Skapa ny användare</h3>
+        <PusherHeader title="Skapa ny användare" subTitle="" />
         <CreateUserForm onSubmit={onSubmit} />
       </Segment>
     </Sidebar.Pusher >);

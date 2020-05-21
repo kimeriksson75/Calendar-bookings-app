@@ -5,6 +5,7 @@ import LoginForm from '../components/LoginForm';
 import { login } from '../actions';
 import { Sidebar, Segment, Icon } from 'semantic-ui-react';
 import { toggleSidebar } from '../actions';
+import PusherHeader from '../components/PusherHeader';
 
 const Login = props => {
   const { login, toggleSidebar } = props;
@@ -15,8 +16,7 @@ const Login = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3 className="ui header">Login</h3>
+        <PusherHeader title="Login" subTitle="" />
         <div>
           <LoginForm onSubmit={onSubmit} />
         </div>

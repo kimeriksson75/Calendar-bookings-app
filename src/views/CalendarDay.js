@@ -13,6 +13,7 @@ import {
 } from '../actions';
 
 import history from '../history';
+import PusherHeader from '../components/PusherHeader';
 
 const CalendarDay = props => {
 
@@ -122,8 +123,7 @@ const CalendarDay = props => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
-        <Icon name="bars" size="large" onClick={toggleSidebar}></Icon>
-        <h3 className="ui header">Kalenderdag</h3>
+        <PusherHeader title="Kalenderdag" subTitle="" />
         <Menu>
           <Menu.Item as="a" icon onClick={() => onChangeDay(-1)}>
             <Icon name="chevron left" ></Icon>
