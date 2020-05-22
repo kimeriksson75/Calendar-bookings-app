@@ -2,7 +2,6 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 const validate = formValues => {
-  console.log('formValues', formValues)
   const errors = {};
   if (!formValues.username) errors.username = 'Du måste fylla i ett användarnamn';
   if (!formValues.password) errors.password = 'Du måste fylla i ditt lösenord';
