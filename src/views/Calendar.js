@@ -36,30 +36,43 @@ const CalendarView = props => {
     }
   `;
   const CalendarDayDisabled = styled.div`
+    text-align: center;
     pointer-events: none;
+    opacity: 0.7;
+    border: 1px solid rgba(0,0,0,0.1);
+
   `
+  const CalendarDayInvisible = styled.div`
+    pointer-events: none;
+  `;
   const CalendarWeekDay = styled.div`
     text-align: center;
     text-transform: capitalize;
   `;
   const CalendarStlothContainer = styled.div`
     position: absolute;
-    top: 12px;
-    right: 0px;
+    top: 6px;
+    right: 4px;
     display: flex;
     flex-direction: column;
+    
     `;
 
   const Sloth = styled.div`
-    border-top: 1px solid white;
-    height: 8px;
-    width: 6px
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.5);
+    margin-top: 2px;
     `;
 
   const OccupiedSloth = styled.div`
-    border-top: 1px solid rgba(0,0,0,0.3);
-    height: 8px;
-    width: 6px
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background-color: white;
+    margin-top: 2px;
   `;
   const firstDayOfMonth = () => {
     let firstDay = moment(currentDate)
@@ -76,7 +89,7 @@ const CalendarView = props => {
   let blanks = [];
   for (let i = 0; i < firstDayOfMonth(); i++) {
     blanks.push(
-      <div key={i} className="column empty"><CalendarDayDisabled >{""}</CalendarDayDisabled></div>
+      <div key={i} className="column empty"><CalendarDayInvisible >{""}</CalendarDayInvisible></div>
     )
   }
 
@@ -85,13 +98,15 @@ const CalendarView = props => {
     let style;
     // eslint-disable-next-line
     if (currentMonth >= moment().month() && day > moment().format('D') || currentMonth > moment().month())
-      style = 'column teal'
+      return (<CalendarDay key={day + 31} className="column teal" data-item={day} onClick={onDayClicked}>{day}{renderCaldendarDayBookings(day)}
+      </CalendarDay>);
     // eslint-disable-next-line
     else if (currentMonth === moment().month() && day == moment().format('D'))
-      style = 'column red';
+      return (<CalendarDay key={day + 31} className="column red" data-item={day} onClick={onDayClicked}>{day}{renderCaldendarDayBookings(day)}
+      </CalendarDay>);
     else
-      style = 'column teal';
-    return style;
+      return (<CalendarDayDisabled key={day + 31} className="column teal" data-item={day} onClick={onDayClicked}>{day}{renderCaldendarDayBookings(day)}
+      </CalendarDayDisabled>);
   }
 
   const renderCaldendarDayBookings = day => {
@@ -104,8 +119,7 @@ const CalendarView = props => {
   let daysInMonth = [];
   for (let d = 1; d <= currentDate.daysInMonth(); d++) {
     daysInMonth.push(
-      <CalendarDay key={d + 31} className={calendarDayStyle(d)} data-item={d} onClick={onDayClicked}>{d}{renderCaldendarDayBookings(d)}
-      </CalendarDay >);
+      calendarDayStyle(d));
   }
 
   var totalSlots = [...blanks, ...daysInMonth];
