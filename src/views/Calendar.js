@@ -113,7 +113,7 @@ const CalendarView = props => {
     if (!calendarBookings) return null;
     const bookedDate = _.find(booking => moment(booking.date).format('D') === String(day), calendarBookings);
     return bookedDate && (<CalendarStlothContainer>
-      {bookedDate.timeslots.map((timeslot) => timeslot.userId ? (<Sloth key={timeslot.id}></Sloth>) : (<OccupiedSloth key={timeslot.id}></OccupiedSloth>))}
+      {bookedDate.timeslots.map((timeslot) => timeslot.userId ? (<OccupiedSloth key={timeslot.id}></OccupiedSloth>) : (<Sloth key={timeslot.id}></Sloth>))}
     </CalendarStlothContainer>)
   }
   let daysInMonth = [];
