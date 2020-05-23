@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { toggleSidebar } from '../actions';
-import Auth from './Auth';
+import { toggleSidebar, logout } from '../actions';
 import { Sidebar, Menu, Icon } from 'semantic-ui-react';
+import history from '../history';
 
 const Header = props => {
-  const { showSidebar, toggleSidebar } = props;
+  const { showSidebar, toggleSidebar, logout, auth: { user, isSignedIn } } = props;
+
+  const [url, setUrl] = useState('');
+  const [shouldLogout, setShouldLogout] = useState(false);
   const __currentDate = moment();
+
+  const delayedNav = () => {
+    history.push(url);
+    if (shouldLogout) logout();
+    setShouldLogout(false);
+    setUrl('')
+  }
+  const onMenuItemClick = url => {
+    setUrl(url)
+    toggleSidebar(false);
+  }
+
   return (
     <React.Fragment>
       <Sidebar
@@ -16,43 +31,54 @@ const Header = props => {
         direction="left"
         icon="labeled"
         onHide={() => toggleSidebar(false)}
+        onHidden={() => delayedNav()}
         vertical
         inverted
         visible={showSidebar}
         width="thin"
         size="tiny">
         <Menu.Item
-          as="a"
-          href="/">
+          onClick={() => onMenuItemClick('/')}>
           <Icon name="home" size="small"></Icon>
             Hem
           </Menu.Item>
         <Menu.Item
-          as="a"
-          href={`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`}>
+          onClick={() => { onMenuItemClick(`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`) }}>
           <Icon name="calendar alternate outline" size="small"></Icon>
             Kalender
           </Menu.Item>
         <Menu.Item
-          as="a"
-          href="/bookings">
+          onClick={() => onMenuItemClick('/bookings')}>
           <Icon name="user" size="small"></Icon>
             Mina bokningar
         </Menu.Item>
-        <Auth />
+        {isSignedIn ?
+          (<Menu.Item
+            onClick={() => {
+              setShouldLogout(true)
+              onMenuItemClick()
+            }}>
+            <Icon name="sign-out"></Icon>
+            <div>{`Logga ut ${user.firstname}`}</div>
+          </Menu.Item>) :
+          (<Menu.Item
+            onClick={() => onMenuItemClick('/user/login')}>
+            <Icon name="sign-in"></Icon>
+            <div>Logga in</div>
+          </Menu.Item >)}
         <Menu.Item
-          as="a"
-          href="/user/create">
+          onClick={() => onMenuItemClick('/user/create')}>
           <Icon name="plus" size="small"></Icon>
             Ny användare
         </Menu.Item>
-      </Sidebar>
-    </React.Fragment>
+      </Sidebar >
+    </React.Fragment >
   )
 }
 const mapStateToProps = state => {
   return ({
-    showSidebar: state.application.showSidebar
+    showSidebar: state.application.showSidebar,
+    auth: state.auth
   })
 }
-export default connect(mapStateToProps, { toggleSidebar })(Header);
+export default connect(mapStateToProps, { toggleSidebar, logout })(Header);
