@@ -18,7 +18,7 @@ const UserBookings = props => {
 
   const sortedUserBookings = pipe([
     sortBy(booking => moment(booking.date)),
-    filter(booking => moment(booking.date).format('DD') >= moment().format('DD'))
+    filter(booking => moment(booking.date) >= moment().startOf('day'))
   ])(userBookings);
 
   useEffect(() => {
