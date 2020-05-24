@@ -17,8 +17,8 @@ const UserBookings = props => {
 
 
   const sortedUserBookings = pipe([
-    sortBy(booking => new Date(booking.date)),
-    filter(booking => new Date(booking.date) > new Date())
+    sortBy(booking => moment(booking.date)),
+    filter(booking => moment(booking.date).format('DD') >= moment().format('DD'))
   ])(userBookings);
 
   useEffect(() => {
@@ -31,12 +31,12 @@ const UserBookings = props => {
 
   const renderDate = date => {
     const updatedDate = moment(date);
-    return updatedDate.format("dddd Do MMMM YYYY");
+    return updatedDate.format("ddd Do MMM YYYY");
   }
 
   const renderTimeslots = timeslots =>
-    timeslots.map((timeslot) => timeslot.userId === user._id ?
-      (<div className="ui item">
+    timeslots.map((timeslot, i) => timeslot.userId === user._id ?
+      (<div key={i} className="ui item">
         <div key={timeslot.id} className="ui label">
           <i className="check icon teal"></i>
           {timeslot.timeslot}
@@ -47,15 +47,15 @@ const UserBookings = props => {
     sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
-        <div className="ui celled grid">
-          <div key={booking.id} className="three column row" onClick={() => onBookingClick(`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
+        <div key={booking.id} className="ui divided grid">
+          <div key={booking.id + 1} className="three column row" onClick={() => onBookingClick(`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
             <div className="two wide column">
               <i className="large calendar check green centered outline icon"></i>
             </div>
-            <div className="five wide column">
+            <div className="seven wide column">
               <div className="ui label" style={{ textTransform: 'capitalize' }} >{renderDate(booking.date)}</div>
             </div>
-            <div className="four wide column">
+            <div className="seven wide column">
               <div className="ui divided items">
                 {timeslots}
               </div>
