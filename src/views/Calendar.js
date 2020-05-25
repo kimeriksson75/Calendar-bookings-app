@@ -2,28 +2,34 @@ import React, { useEffect, useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Sidebar, Segment, Icon } from 'semantic-ui-react';
+import { Sidebar, Segment } from 'semantic-ui-react';
 import _ from 'lodash-fp';
 import moment from 'moment';
 import 'moment/locale/sv';
 import CalendarMenu from '../components/CalendarMenu';
-import { getBookingsByMonth, toggleSidebar } from '../actions';
+import { getBookingsByMonth } from '../actions';
 import PusherHeader from '../components/PusherHeader';
 
-moment.locale('sv');
+moment.locale('sv', {
+  week: {
+    dow: 1
+  }
+});
 
 const CalendarView = props => {
 
-  const { getBookingsByMonth, toggleSidebar, bookingData: { calendarBookings } } = props;
+  const { getBookingsByMonth, bookingData: { calendarBookings = null } } = props;
 
   const { year = "", month = "" } = props.match.params;
 
   const [currentDate, setCurrentDate] = useState(moment())
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     let __currentDate = moment().set({ year, month }).subtract(1, 'month');
-    getBookingsByMonth(__currentDate.format());
     setCurrentDate(__currentDate);
+    getBookingsByMonth(__currentDate.format());
   }, [getBookingsByMonth, setCurrentDate, year, month]);
 
   const CalendarDay = styled.div`
@@ -86,16 +92,8 @@ const CalendarView = props => {
     history.push(`/calendar/${currentDate.format('YYYY')}/${currentDate.format('MM')}/${date}`);
   }
 
-  let blanks = [];
-  for (let i = 0; i < firstDayOfMonth(); i++) {
-    blanks.push(
-      <div key={i} className="column empty"><CalendarDayInvisible >{""}</CalendarDayInvisible></div>
-    )
-  }
-
   const calendarDayStyle = day => {
     let currentMonth = currentDate.month();
-    let style;
     // eslint-disable-next-line
     if (currentMonth >= moment().month() && day > moment().format('D') || currentMonth > moment().month())
       return (<CalendarDay key={day + 31} className="column teal" data-item={day} onClick={onDayClicked}>{day}{renderCaldendarDayBookings(day)}
@@ -116,7 +114,15 @@ const CalendarView = props => {
       {bookedDate.timeslots.map((timeslot) => timeslot.userId ? (<OccupiedSloth key={timeslot.id}></OccupiedSloth>) : (<Sloth key={timeslot.id}></Sloth>))}
     </CalendarStlothContainer>)
   }
+
+  let blanks = [];
   let daysInMonth = [];
+  for (let i = 0; i < firstDayOfMonth() - 1; i++) {
+    blanks.push(
+      <div key={i} className="column empty"><CalendarDayInvisible >{""}</CalendarDayInvisible></div>
+    )
+  }
+
   for (let d = 1; d <= currentDate.daysInMonth(); d++) {
     daysInMonth.push(
       calendarDayStyle(d));
@@ -141,7 +147,7 @@ const CalendarView = props => {
   })
 
 
-  let weekDaysShort = moment.weekdaysShort();
+  let weekDaysShort = moment.weekdaysShort(true);
   let weekDaysShortName = weekDaysShort.map(day => {
     return (<CalendarWeekDay key={day} className="column">
       {day}
@@ -157,18 +163,21 @@ const CalendarView = props => {
     <Sidebar.Pusher>
       <Segment basic>
         <PusherHeader title="Kalender" subTitle="" />
-        <div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
-          <div className="ui celled grid">
-            <div className="seven column row">
-              {weekDaysShortName}
+        {!calendarBookings ?
+          (<div className="ui active centered inline loader"></div>) :
+          (<div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
+            <div className="ui celled grid">
+              <div className="seven column row">
+                {weekDaysShortName}
+              </div>
+            </div>
+            <div className="ui celled grid">
+              <div className="ui grid">
+                {days}
+              </div>
             </div>
           </div>
-          <div className="ui celled grid">
-            <div className="ui grid">
-              {days}
-            </div>
-          </div>
-        </div>
+          )}
       </Segment>
     </Sidebar.Pusher >
   )
@@ -178,4 +187,4 @@ const mapStateToProps = (state, ownProps) => {
     bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { getBookingsByMonth, toggleSidebar })(CalendarView);
+export default connect(mapStateToProps, { getBookingsByMonth })(CalendarView);
