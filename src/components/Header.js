@@ -8,15 +8,15 @@ import history from '../history';
 const Header = props => {
   const { showSidebar, toggleSidebar, logout, auth: { user, isSignedIn } } = props;
 
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(null);
   const [shouldLogout, setShouldLogout] = useState(false);
   const __currentDate = moment();
 
   const delayedNav = () => {
-    history.push(url);
+    url && history.push(url);
     if (shouldLogout) logout();
     setShouldLogout(false);
-    setUrl('')
+    setUrl(null)
   }
   const onMenuItemClick = url => {
     setUrl(url)
