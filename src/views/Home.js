@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Sidebar, Segment, Icon, Menu, Header } from 'semantic-ui-react';
-import { toggleSidebar } from '../actions';
+import { Sidebar, Segment } from 'semantic-ui-react';
 import PusherHeader from '../components/PusherHeader';
-const Home = props => {
-  const { toggleSidebar } = props;
+const Home = () => {
   return (
     <Sidebar.Pusher>
       <Segment basic>
@@ -13,4 +11,4 @@ const Home = props => {
     </Sidebar.Pusher>
   )
 }
-export default connect(null, { toggleSidebar })(Home);
+export default connect(null, {})(Home);

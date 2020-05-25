@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 import { login } from '../actions';
-import { Sidebar, Segment, Icon } from 'semantic-ui-react';
-import { toggleSidebar } from '../actions';
+import { Sidebar, Segment } from 'semantic-ui-react';
 import PusherHeader from '../components/PusherHeader';
 
 const Login = props => {
-  const { login, toggleSidebar } = props;
+  const { login } = props;
 
   const onSubmit = ({ username, password }) => {
     login(username, password);
@@ -31,4 +30,4 @@ const mapStateToProps = (state) => {
     auth: state.auth
   })
 }
-export default connect(mapStateToProps, { login, toggleSidebar })(Login);
+export default connect(mapStateToProps, { login })(Login);

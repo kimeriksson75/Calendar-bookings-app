@@ -9,7 +9,6 @@ import {
   patchBooking,
   getBookingsByDate,
   newMessage,
-  toggleSidebar
 } from '../actions';
 
 import history from '../history';
@@ -24,7 +23,6 @@ const CalendarDay = props => {
     getBookingsByDate,
     newMessage,
     bookingData,
-    toggleSidebar
   } = props;
 
   const { booking = {} } = bookingData;
@@ -169,5 +167,4 @@ export default connect(mapStateToProps, {
   patchBooking,
   getBookingsByDate,
   newMessage,
-  toggleSidebar
 })(CalendarDay);

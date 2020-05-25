@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CreateUserForm from '../components/CreateUserForm';
-import { createUser, toggleSidebar } from '../actions';
-import { Sidebar, Segment, Icon } from 'semantic-ui-react';
+import { createUser } from '../actions';
+import { Sidebar, Segment } from 'semantic-ui-react';
 import PusherHeader from '../components/PusherHeader';
 const CreateUser = props => {
-  const { createUser, toggleSidebar } = props;
+  const { createUser } = props;
 
   const onSubmit = formValues => {
     createUser(formValues).then(user => console.log(user)).catch(err => {
@@ -25,4 +25,4 @@ const mapStateToProps = (state) => {
     user: state.user
   })
 }
-export default connect(mapStateToProps, { createUser, toggleSidebar })(CreateUser);
+export default connect(mapStateToProps, { createUser })(CreateUser);

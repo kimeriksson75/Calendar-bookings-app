@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import history from '../history';
-import { Sidebar, Segment, Icon } from 'semantic-ui-react';
+import { Sidebar, Segment } from 'semantic-ui-react';
 import moment from 'moment';
 import { pipe, sortBy, filter } from 'lodash/fp';
 import { getBookingByAuthor, newMessage } from '../actions';
@@ -47,7 +47,7 @@ const UserBookings = props => {
     sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
-        <div key={booking.id} className="ui divided grid">
+        <div key={booking.id} className="ui vertically divided grid">
           <div key={booking.id + 1} className="three column row" onClick={() => onBookingClick(`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
             <div className="two wide column">
               <i className="large calendar check green centered outline icon"></i>
