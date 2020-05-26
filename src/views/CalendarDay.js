@@ -23,6 +23,7 @@ const CalendarDay = props => {
     getBookingsByDate,
     newMessage,
     bookingData,
+    isFetching
   } = props;
 
   const { booking = {} } = bookingData;
@@ -134,23 +135,28 @@ const CalendarDay = props => {
             <Icon name="chevron right" ></Icon>
           </Menu.Item>
         </Menu>
-        <div className="ui celled grid">
-          <div className="two column row">
-            <div className="column">Tider</div>
-            <div className="column">Bokad av</div>
-          </div>
-        </div>
-        <div className="ui celled grid">
-          {booking.timeslots && renderTimeSlots()}
-        </div>
-        {/* <div className="ui divider"></div> */}
-        <div className="extra content">
-          <div className="ui two buttons">
-            <div className="ui teal button" onClick={() => onCloseCalendar()} > Tillbaka till kalendermånad</div>
-          </div>
-        </div>
+        {isFetching ?
+          (<div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="ui active centered inline loader"></div>
+          </div>) :
+          (<React.Fragment>
+            <div className="ui celled grid">
+              <div className="two column row">
+                <div className="column">Tider</div>
+                <div className="column">Bokad av</div>
+              </div>
+            </div>
+            <div className="ui celled grid">
+              {booking.timeslots && renderTimeSlots()}
+            </div>
+            <div className="extra content">
+              <div className="ui two buttons">
+                <div className="ui teal button" onClick={() => onCloseCalendar()} > Tillbaka till kalendermånad</div>
+              </div>
+            </div>
+          </React.Fragment>)}
       </Segment>
-    </Sidebar.Pusher >
+    </Sidebar.Pusher>
   )
 }
 const mapStateToProps = (state, ownProps) => {
@@ -158,7 +164,8 @@ const mapStateToProps = (state, ownProps) => {
     selectedDate: state.calendar.selectedDate,
     auth: state.auth,
     userProfile: state.auth.userProfile,
-    bookingData: state.bookingData
+    bookingData: state.bookingData,
+    isFetching: state.isFetching
   })
 
 }

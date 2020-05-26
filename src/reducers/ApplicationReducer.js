@@ -1,6 +1,10 @@
 import { TOGGLE_SIDEBAR } from '../constants';
 
-export default (state = [], action) => {
+const INIITAL_STATE = {
+  showSidebar: false
+}
+
+export default (state = INIITAL_STATE, action) => {
   switch (action.type) {
     case TOGGLE_SIDEBAR:
       const { showSidebar } = state;

@@ -8,16 +8,24 @@ import {
   CREATE_USER,
   CREATE_USER_SUCCESS,
   CREATE_BOOKING,
+  CREATE_BOOKING_ERROR,
+  CREATE_BOOKING_SUCCESS,
   FETCH_BOOKINGS,
+  FETCH_BOOKINGS_ERROR,
+  FETCH_BOOKINGS_SUCCESS,
   FETCH_CALENDAR_BOOKINGS,
+  FETCH_CALENDAR_BOOKINGS_ERROR,
+  FETCH_CALENDAR_BOOKINGS_SUCCESS,
   FETCH_USER_BOOKINGS,
+  FETCH_USER_BOOKINGS_ERROR,
+  FETCH_USER_BOOKINGS_SUCCESS,
   EDIT_BOOKING,
-  DELETE_BOOKING,
+  EDIT_BOOKING_ERROR,
+  EDIT_BOOKING_SUCCESS,
   NEW_MESSAGE,
-  TOGGLE_SIDEBAR
+  TOGGLE_SIDEBAR,
 } from '../constants';
 import history from '../history';
-import { bookings } from '../api';
 import userService from '../services/userService';
 import bookingsService from '../services/bookingService';
 
@@ -32,77 +40,108 @@ const handleError = (error, dispatch) => {
   })
 }
 export const createBooking = booking => async dispatch => {
+  dispatch({
+    type: CREATE_BOOKING,
+    payload: null
+  })
   bookingsService.create(booking)
     .then(booking => {
       dispatch({
-        type: CREATE_BOOKING,
+        type: CREATE_BOOKING_SUCCESS,
         payload: booking.data
       })
     })
     .catch(error => {
+      dispatch({
+        type: CREATE_BOOKING_ERROR,
+        payload: null
+      })
       handleError(error, dispatch);
     });
 }
 
 export const getBookingsByDate = date => async dispatch => {
+  dispatch({
+    type: FETCH_BOOKINGS,
+    payload: null
+  })
   bookingsService.getBookingsByDate(date)
     .then(booking => {
       dispatch({
-        type: FETCH_BOOKINGS,
+        type: FETCH_BOOKINGS_SUCCESS,
         payload: booking.data
       })
     })
     .catch(error => {
+      dispatch({
+        type: FETCH_BOOKINGS_ERROR,
+        payload: null
+      })
       handleError(error, dispatch);
     });
 }
 
 export const getBookingsByMonth = date => async dispatch => {
+  dispatch({
+    type: FETCH_CALENDAR_BOOKINGS,
+    payload: null
+  })
   bookingsService.getBookingsByMonth(date)
     .then(booking => {
       dispatch({
-        type: FETCH_CALENDAR_BOOKINGS,
+        type: FETCH_CALENDAR_BOOKINGS_SUCCESS,
         payload: booking.data
       })
     })
     .catch(error => {
+      dispatch({
+        type: FETCH_CALENDAR_BOOKINGS_ERROR,
+        payload: null
+      })
       handleError(error, dispatch);
     });
 }
 
 export const getBookingByAuthor = userId => async dispatch => {
+  dispatch({
+    type: FETCH_USER_BOOKINGS,
+    payload: null
+  })
   bookingsService.getBookingsByAuthor(userId)
     .then(booking => {
       dispatch({
-        type: FETCH_USER_BOOKINGS,
+        type: FETCH_USER_BOOKINGS_SUCCESS,
         payload: booking.data
       })
     })
     .catch(error => {
+      dispatch({
+        type: FETCH_USER_BOOKINGS_ERROR,
+        payload: null
+      })
       handleError(error, dispatch);
     });
 }
 
 export const patchBooking = booking => async dispatch => {
+  dispatch({
+    type: EDIT_BOOKING,
+    payload: null
+  })
   bookingsService.patchBooking(booking)
     .then(booking => {
       dispatch({
-        type: EDIT_BOOKING,
+        type: EDIT_BOOKING_SUCCESS,
         payload: booking.data
       })
     })
     .catch(error => {
+      dispatch({
+        type: EDIT_BOOKING_ERROR,
+        payload: null
+      })
       handleError(error, dispatch);
     });
-}
-
-export const deleteBooking = booking => async dispatch => {
-  const { id } = booking;
-  const response = await bookings.delete(`/bookings/${id}`);
-  dispatch({
-    type: DELETE_BOOKING,
-    payload: response.data
-  })
 }
 
 export const setCurrentDate = date => dispatch => {

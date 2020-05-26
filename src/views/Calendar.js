@@ -18,13 +18,11 @@ moment.locale('sv', {
 
 const CalendarView = props => {
 
-  const { getBookingsByMonth, bookingData: { calendarBookings = null } } = props;
+  const { getBookingsByMonth, isFetching, bookingData: { calendarBookings = null } } = props;
 
   const { year = "", month = "" } = props.match.params;
 
   const [currentDate, setCurrentDate] = useState(moment())
-
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let __currentDate = moment().set({ year, month }).subtract(1, 'month');
@@ -117,7 +115,7 @@ const CalendarView = props => {
 
   let blanks = [];
   let daysInMonth = [];
-  for (let i = 0; i < firstDayOfMonth() - 1; i++) {
+  for (let i = 1; i < firstDayOfMonth(); i++) {
     blanks.push(
       <div key={i} className="column empty"><CalendarDayInvisible >{""}</CalendarDayInvisible></div>
     )
@@ -163,7 +161,7 @@ const CalendarView = props => {
     <Sidebar.Pusher>
       <Segment basic>
         <PusherHeader title="Kalender" subTitle="" />
-        {!calendarBookings ?
+        {isFetching ?
           (<div className="ui active centered inline loader"></div>) :
           (<div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
             <div className="ui celled grid">
@@ -184,7 +182,8 @@ const CalendarView = props => {
 }
 const mapStateToProps = (state, ownProps) => {
   return ({
-    bookingData: state.bookingData
+    bookingData: state.bookingData,
+    isFetching: state.isFetching
   })
 }
 export default connect(mapStateToProps, { getBookingsByMonth })(CalendarView);
