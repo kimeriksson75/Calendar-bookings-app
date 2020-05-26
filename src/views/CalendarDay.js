@@ -33,8 +33,9 @@ const CalendarDay = props => {
 
   useEffect(() => {
     let _selectedDate = moment()
-      .set({ year, month, date })
-      .subtract(1, 'month');
+      .set({ year, month })
+      .subtract(1, 'month')
+      .set({ date });
     getBookingsByDate(_selectedDate.format());
     setSelectedDate(_selectedDate);
   }, [getBookingsByDate, year, month, date, setSelectedDate])
