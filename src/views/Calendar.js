@@ -161,21 +161,26 @@ const CalendarView = props => {
     <Sidebar.Pusher>
       <Segment basic>
         <PusherHeader title="Kalender" subTitle="" />
-        {isFetching ?
-          (<div className="ui active centered inline loader"></div>) :
-          (<div><CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
-            <div className="ui celled grid">
+        <div>
+          <CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />
+          {isFetching ?
+            (<div style={{ height: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div className="ui active centered inline loader" ></div>
+            </div>) :
+            (<React.Fragment><div className="ui celled grid">
               <div className="seven column row">
                 {weekDaysShortName}
               </div>
             </div>
-            <div className="ui celled grid">
-              <div className="ui grid">
-                {days}
+              <div className="ui celled grid">
+                <div className="ui grid">
+                  {days}
+                </div>
               </div>
-            </div>
-          </div>
-          )}
+            </React.Fragment>
+            )}
+        </div>
+
       </Segment>
     </Sidebar.Pusher >
   )

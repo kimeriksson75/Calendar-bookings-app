@@ -136,8 +136,8 @@ const CalendarDay = props => {
           </Menu.Item>
         </Menu>
         {isFetching ?
-          (<div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div className="ui active centered inline loader"></div>
+          (<div style={{ height: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="ui active centered inline loader" ></div>
           </div>) :
           (<React.Fragment>
             <div className="ui celled grid">
