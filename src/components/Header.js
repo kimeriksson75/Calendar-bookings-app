@@ -9,7 +9,8 @@ const Header = props => {
   const {
     showSidebar,
     toggleSidebar,
-    logout, auth: { user, isSignedIn },
+    logout,
+    auth,
     service: { selectedService = null }
   } = props;
 
@@ -48,25 +49,25 @@ const Header = props => {
             Hem
           </Menu.Item>
         <Menu.Item
-          disabled={Boolean(!selectedService)}
+          disabled={!auth.isSignedIn || !selectedService}
           onClick={() => { onMenuItemClick(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`) }}>
           <Icon name="calendar alternate outline" size="small"></Icon>
             Kalender
           </Menu.Item>
         <Menu.Item
-          disabled={Boolean(!selectedService)}
+          disabled={!auth.isSignedIn || !selectedService}
           onClick={() => onMenuItemClick(`/${selectedService.id}/bookings`)}>
           <Icon name="user" size="small"></Icon>
             Mina bokningar
         </Menu.Item>
-        {isSignedIn ?
+        {auth.isSignedIn ?
           (<Menu.Item
             onClick={() => {
               setShouldLogout(true)
               onMenuItemClick()
             }}>
             <Icon name="sign-out"></Icon>
-            <div>{`Logga ut ${user.firstname}`}</div>
+            <div>{`Logga ut ${auth.user.firstname}`}</div>
           </Menu.Item>) :
           (<Menu.Item
             onClick={() => onMenuItemClick('/user/login')}>
