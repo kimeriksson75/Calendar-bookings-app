@@ -10,6 +10,7 @@ import PusherHeader from '../components/PusherHeader';
 const UserBookings = props => {
   const {
     auth: { user, isSignedIn },
+    selectedService,
     bookingData: { userBookings },
     getBookingByAuthor,
     newMessage
@@ -22,7 +23,7 @@ const UserBookings = props => {
   ])(userBookings);
 
   useEffect(() => {
-    if (user) getBookingByAuthor(user._id);
+    if (user && selectedService) getBookingByAuthor(selectedService.id, user._id);
   }, [user, getBookingByAuthor]);
 
   const onBookingClick = url => {
@@ -48,7 +49,7 @@ const UserBookings = props => {
       const timeslots = renderTimeslots(booking.timeslots);
       return Boolean(timeslots.find(value => value !== null)) ? (
         <div key={booking.id} className="ui vertically divided grid">
-          <div key={booking.id + 1} className="three column row" onClick={() => onBookingClick(`/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
+          <div key={booking.id + 1} className="three column row" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
             <div className="two wide column">
               <i className="large calendar check green centered outline icon"></i>
             </div>
@@ -90,6 +91,7 @@ const UserBookings = props => {
 const mapStateToProps = (state) => {
   return ({
     auth: state.auth,
+    selectedService: state.service.selectedService,
     bookingData: state.bookingData
   });
 }

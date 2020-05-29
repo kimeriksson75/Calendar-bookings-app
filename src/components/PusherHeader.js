@@ -13,7 +13,7 @@ const PusherHeader = props => {
           <Icon size="large" name="bars" onClick={toggleSidebar}></Icon>
         </Menu.Item>
         <Menu.Item>
-          <Header>{selectedService.name}</Header>
+          <Header>{selectedService && selectedService.name}</Header>
         </Menu.Item>
       </Menu>
       <h4 className="ui header">{title}
