@@ -22,12 +22,17 @@ import {
   EDIT_BOOKING,
   EDIT_BOOKING_ERROR,
   EDIT_BOOKING_SUCCESS,
+  FETCH_SERVICES,
+  FETCH_SERVICES_ERROR,
+  FETCH_SERVICES_SUCCESS,
+  SET_SELECTED_SERVICE,
   NEW_MESSAGE,
   TOGGLE_SIDEBAR,
 } from '../constants';
 import history from '../history';
 import userService from '../services/userService';
 import bookingsService from '../services/bookingService';
+import serviceService from '../services/serviceService';
 
 const handleError = (error, dispatch) => {
   dispatch({
@@ -39,6 +44,35 @@ const handleError = (error, dispatch) => {
     }
   })
 }
+export const getAvailableServices = () => async dispatch => {
+  dispatch({
+    type: FETCH_SERVICES,
+    payload: null
+  })
+  serviceService.getServices()
+    .then(services => {
+      dispatch({
+        type: FETCH_SERVICES_SUCCESS,
+        payload: services.data
+      })
+    })
+    .catch(error => {
+      dispatch({
+        type: FETCH_SERVICES_ERROR,
+        payload: null
+      });
+      handleError(error, dispatch);
+    });
+}
+
+export const setSelectedService = service => dispatch => {
+  dispatch({
+    type: SET_SELECTED_SERVICE,
+    payload: service
+  });
+  localStorage.setItem('service', JSON.stringify(service));
+}
+
 export const createBooking = booking => async dispatch => {
   dispatch({
     type: CREATE_BOOKING,
@@ -60,12 +94,12 @@ export const createBooking = booking => async dispatch => {
     });
 }
 
-export const getBookingsByDate = date => async dispatch => {
+export const getBookingsByDate = (service, date) => async dispatch => {
   dispatch({
     type: FETCH_BOOKINGS,
     payload: null
   })
-  bookingsService.getBookingsByDate(date)
+  bookingsService.getBookingsByDate(service, date)
     .then(booking => {
       dispatch({
         type: FETCH_BOOKINGS_SUCCESS,
@@ -81,12 +115,12 @@ export const getBookingsByDate = date => async dispatch => {
     });
 }
 
-export const getBookingsByMonth = date => async dispatch => {
+export const getBookingsByMonth = (service, date) => async dispatch => {
   dispatch({
     type: FETCH_CALENDAR_BOOKINGS,
     payload: null
   })
-  bookingsService.getBookingsByMonth(date)
+  bookingsService.getBookingsByMonth(service, date)
     .then(booking => {
       dispatch({
         type: FETCH_CALENDAR_BOOKINGS_SUCCESS,
@@ -102,12 +136,13 @@ export const getBookingsByMonth = date => async dispatch => {
     });
 }
 
-export const getBookingByAuthor = userId => async dispatch => {
+export const getBookingByAuthor = (service, userId) => async dispatch => {
   dispatch({
     type: FETCH_USER_BOOKINGS,
     payload: null
-  })
-  bookingsService.getBookingsByAuthor(userId)
+  });
+
+  bookingsService.getBookingsByAuthor(service, userId)
     .then(booking => {
       dispatch({
         type: FETCH_USER_BOOKINGS_SUCCESS,

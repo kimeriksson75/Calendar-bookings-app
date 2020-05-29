@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { toggleSidebar, logout } from '../actions';
+import { toggleSidebar, logout, setSelectedService } from '../actions';
 import { Sidebar, Menu, Icon } from 'semantic-ui-react';
 import history from '../history';
 
 const Header = props => {
-  const { showSidebar, toggleSidebar, logout, auth: { user, isSignedIn } } = props;
+  const {
+    showSidebar,
+    toggleSidebar,
+    logout, auth: { user, isSignedIn },
+    service: { selectedService = null }
+  } = props;
 
   const [url, setUrl] = useState(null);
   const [shouldLogout, setShouldLogout] = useState(false);
@@ -33,7 +38,7 @@ const Header = props => {
         onHide={() => toggleSidebar(false)}
         onHidden={() => delayedNav()}
         vertical
-        inverted
+
         visible={showSidebar}
         width="thin"
         size="tiny">
@@ -43,12 +48,14 @@ const Header = props => {
             Hem
           </Menu.Item>
         <Menu.Item
-          onClick={() => { onMenuItemClick(`/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`) }}>
+          disabled={Boolean(!selectedService)}
+          onClick={() => { onMenuItemClick(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`) }}>
           <Icon name="calendar alternate outline" size="small"></Icon>
             Kalender
           </Menu.Item>
         <Menu.Item
-          onClick={() => onMenuItemClick('/bookings')}>
+          disabled={Boolean(!selectedService)}
+          onClick={() => onMenuItemClick(`/${selectedService.id}/bookings`)}>
           <Icon name="user" size="small"></Icon>
             Mina bokningar
         </Menu.Item>
@@ -78,7 +85,8 @@ const Header = props => {
 const mapStateToProps = state => {
   return ({
     showSidebar: state.application.showSidebar,
-    auth: state.auth
+    auth: state.auth,
+    service: state.service
   })
 }
 export default connect(mapStateToProps, { toggleSidebar, logout })(Header);

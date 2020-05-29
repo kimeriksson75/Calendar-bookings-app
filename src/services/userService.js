@@ -48,8 +48,10 @@ export const signIn = async (username, password) => {
       return handleError(err);
     })
 }
-export const signOut = () => localStorage.removeItem('user');
-
+export const signOut = () => {
+  localStorage.removeItem('user');
+  localStorage.removeItem('service');
+}
 const userService = {
   register,
   signIn,

@@ -18,6 +18,7 @@ const CalendarDay = props => {
 
   const {
     auth: { user, isSignedIn },
+    selectedService,
     createBooking,
     patchBooking,
     getBookingsByDate,
@@ -37,21 +38,14 @@ const CalendarDay = props => {
       .set({ year, month })
       .subtract(1, 'month')
       .set({ date });
-    getBookingsByDate(_selectedDate.format());
+    getBookingsByDate(selectedService.id, _selectedDate.format());
     setSelectedDate(_selectedDate);
   }, [getBookingsByDate, year, month, date, setSelectedDate])
 
-  const timeslots = [
-    { timeslot: '07.00 - 10.00', id: 0 },
-    { timeslot: '10.00 - 14.00', id: 1 },
-    { timeslot: '14.00 - 18.00', id: 2 },
-    { timeslot: '18.00 - 21.00', id: 3 },
-  ];
-
-  if (emptyApiData) booking.timeslots = timeslots
+  if (emptyApiData) booking.timeslots = selectedService.timeslots;
 
   const onCloseCalendar = () => {
-    history.push(`/calendar/${year}/${month}`);
+    history.push(`/${selectedService.id}/calendar/${year}/${month}`);
   }
 
   const userErrorMessage = () => {
@@ -77,6 +71,7 @@ const CalendarDay = props => {
     booking.timeslots[id].userId = user._id;
     booking.timeslots[id].userName = `${user.lastname} ${user.apartmentid}`;
     booking.date = emptyApiData ? selectedDate : booking.date;
+    booking.service = selectedService.id;
     emptyApiData ? createBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.')) : patchBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.'));
   }
 
@@ -118,7 +113,7 @@ const CalendarDay = props => {
   const onChangeDay = value => {
     let dObject = Object.assign({}, selectedDate);
     dObject = moment(dObject).add(value, 'day');
-    history.push(`/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}/${dObject.format('DD')}`);
+    history.push(`/${selectedService.id}/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}/${dObject.format('DD')}`);
   }
   return (
     <Sidebar.Pusher>
@@ -165,7 +160,8 @@ const mapStateToProps = (state, ownProps) => {
     auth: state.auth,
     userProfile: state.auth.userProfile,
     bookingData: state.bookingData,
-    isFetching: state.isFetching
+    isFetching: state.isFetching,
+    selectedService: state.service.selectedService
   })
 
 }

@@ -18,7 +18,7 @@ moment.locale('sv', {
 
 const CalendarView = props => {
 
-  const { getBookingsByMonth, isFetching, bookingData: { calendarBookings = null } } = props;
+  const { selectedService, getBookingsByMonth, isFetching, bookingData: { calendarBookings = null } } = props;
 
   const { year = "", month = "" } = props.match.params;
 
@@ -27,8 +27,8 @@ const CalendarView = props => {
   useEffect(() => {
     let __currentDate = moment().set({ year, month }).subtract(1, 'month');
     setCurrentDate(__currentDate);
-    getBookingsByMonth(__currentDate.format());
-  }, [getBookingsByMonth, setCurrentDate, year, month]);
+    getBookingsByMonth(selectedService.id, __currentDate.format());
+  }, [selectedService, getBookingsByMonth, setCurrentDate, year, month]);
 
   const CalendarDay = styled.div`
     text-align: center;
@@ -87,7 +87,7 @@ const CalendarView = props => {
 
   const onDayClicked = event => {
     let date = event.target.dataset.item;
-    history.push(`/calendar/${currentDate.format('YYYY')}/${currentDate.format('MM')}/${date}`);
+    history.push(`/${selectedService.id}/calendar/${currentDate.format('YYYY')}/${currentDate.format('MM')}/${date}`);
   }
 
   const calendarDayStyle = day => {
@@ -155,7 +155,7 @@ const CalendarView = props => {
   const onChangeMonth = value => {
     let dObject = Object.assign({}, currentDate);
     dObject = moment(dObject).add(value, 'months');
-    history.push(`/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}`);
+    history.push(`/${selectedService.id}/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}`);
   }
   return (
     <Sidebar.Pusher>
@@ -188,7 +188,8 @@ const CalendarView = props => {
 const mapStateToProps = (state, ownProps) => {
   return ({
     bookingData: state.bookingData,
-    isFetching: state.isFetching
+    isFetching: state.isFetching,
+    selectedService: state.service.selectedService
   })
 }
 export default connect(mapStateToProps, { getBookingsByMonth })(CalendarView);

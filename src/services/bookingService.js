@@ -1,4 +1,4 @@
-import { bookings } from '../api';
+import { bookings, services } from '../api';
 import _ from 'lodash';
 
 const handleError = err => {
@@ -25,31 +25,31 @@ const requestOptions = {
 };
 
 const create = async booking => {
-  return await bookings.post('/bookings/create', booking, requestOptions)
+  return await bookings.post('/create', booking, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
     })
     .catch(err => handleError(err))
 }
 
-const getBookingsByDate = async date => {
-  return await bookings.get(`/bookings/date/${date}`, requestOptions)
+const getBookingsByDate = async (service, date) => {
+  return await bookings.get(`/${service}/date/${date}`, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
     })
     .catch(err => handleError(err))
 }
 
-const getBookingsByMonth = async date => {
-  return await bookings.get(`/bookings/month/${date}`, requestOptions)
+const getBookingsByMonth = async (service, date) => {
+  return await bookings.get(`/${service}/month/${date}`, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
     })
     .catch(err => handleError(err))
 }
 
-const getBookingsByAuthor = async userId => {
-  return await bookings.get(`/bookings?timeslots.userId=${userId}`, requestOptions)
+const getBookingsByAuthor = async (service, userId) => {
+  return await bookings.get(`/${service}/?timeslots.userId=${userId}`, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
     })
@@ -59,7 +59,7 @@ const getBookingsByAuthor = async userId => {
 const patchBooking = async booking => {
   const { _id } = booking;
   const modyfiedBooking = _.omit(booking, ['_id', 'id', 'date']);
-  return await bookings.patch(`/bookings/${_id}`, modyfiedBooking)
+  return await bookings.patch(`/${_id}`, modyfiedBooking)
     .then(booking => {
       return Promise.resolve(booking);
     })

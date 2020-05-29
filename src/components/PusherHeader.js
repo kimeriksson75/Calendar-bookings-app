@@ -4,7 +4,7 @@ import { Menu, Header, Icon } from 'semantic-ui-react';
 import { toggleSidebar } from '../actions';
 
 const PusherHeader = props => {
-  const { toggleSidebar, title, subTitle } = props;
+  const { selectedService, toggleSidebar, title, subTitle } = props;
 
   return (
     <React.Fragment>
@@ -13,7 +13,7 @@ const PusherHeader = props => {
           <Icon size="large" name="bars" onClick={toggleSidebar}></Icon>
         </Menu.Item>
         <Menu.Item>
-          <Header>App logo</Header>
+          <Header>{selectedService.name}</Header>
         </Menu.Item>
       </Menu>
       <h4 className="ui header">{title}
@@ -22,4 +22,9 @@ const PusherHeader = props => {
     </React.Fragment>
   )
 }
-export default connect(null, { toggleSidebar })(PusherHeader)
+const mapStateToProps = state => {
+  return ({
+    selectedService: state.service.selectedService
+  })
+}
+export default connect(mapStateToProps, { toggleSidebar })(PusherHeader)
