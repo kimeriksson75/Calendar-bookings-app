@@ -6,7 +6,7 @@ import { Sidebar, Segment, Dropdown } from 'semantic-ui-react';
 import PusherHeader from '../components/PusherHeader';
 
 const Home = props => {
-  const { auth: { isSignedIn = false }, service: { services = [] }, getAvailableServices, setSelectedService
+  const { auth: { isSignedIn = false }, service: { services = [], selectedService = {} }, getAvailableServices, setSelectedService
   } = props;
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const Home = props => {
       <Segment basic>
         <PusherHeader title="Välkommen" subTitle="Välj vad det är du avser boka från listan." />
         {services && renderServices(services)}
+        {selectedService && <p>Nu kan du påbörja din bokning. Klicka på Kalender i menyn.</p>}
       </Segment>
     </Sidebar.Pusher>
   )

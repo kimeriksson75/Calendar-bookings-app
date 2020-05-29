@@ -50,7 +50,6 @@ export const signIn = async (username, password) => {
 }
 export const signOut = () => {
   localStorage.removeItem('user');
-  localStorage.removeItem('service');
 }
 const userService = {
   register,

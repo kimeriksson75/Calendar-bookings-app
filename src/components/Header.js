@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { toggleSidebar, logout, setSelectedService } from '../actions';
+import { toggleSidebar, logout, unsetSelectedService } from '../actions';
 import { Sidebar, Menu, Icon } from 'semantic-ui-react';
 import history from '../history';
 
@@ -10,6 +10,7 @@ const Header = props => {
     showSidebar,
     toggleSidebar,
     logout,
+    unsetSelectedService,
     auth,
     service: { selectedService = null }
   } = props;
@@ -20,7 +21,10 @@ const Header = props => {
 
   const delayedNav = () => {
     url && history.push(url);
-    if (shouldLogout) logout();
+    if (shouldLogout) {
+      logout();
+      unsetSelectedService();
+    }
     setShouldLogout(false);
     setUrl(null)
   }
@@ -90,4 +94,4 @@ const mapStateToProps = state => {
     service: state.service
   })
 }
-export default connect(mapStateToProps, { toggleSidebar, logout })(Header);
+export default connect(mapStateToProps, { toggleSidebar, logout, unsetSelectedService })(Header);
