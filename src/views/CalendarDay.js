@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, Sidebar, Segment, Icon } from 'semantic-ui-react';
-import _ from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash-fp';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
@@ -28,7 +28,8 @@ const CalendarDay = props => {
   } = props;
 
   const { booking = {} } = bookingData;
-  let emptyApiData = _.isEmpty(booking);
+  const { timeslots = [] } = selectedService;
+  let emptyApiData = isEmpty(booking);
 
   const { year = "", month = "", date = "" } = props.match.params;
   const [selectedDate, setSelectedDate] = useState(moment());
@@ -42,7 +43,7 @@ const CalendarDay = props => {
     setSelectedDate(_selectedDate);
   }, [getBookingsByDate, year, month, date, setSelectedDate])
 
-  if (emptyApiData) booking.timeslots = selectedService.timeslots;
+  if (emptyApiData) booking.timeslots = cloneDeep(timeslots);
 
   const onCloseCalendar = () => {
     history.push(`/${selectedService.id}/calendar/${year}/${month}`);
