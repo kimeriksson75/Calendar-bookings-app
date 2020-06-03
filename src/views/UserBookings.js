@@ -24,7 +24,7 @@ const UserBookings = props => {
 
   useEffect(() => {
     if (user && selectedService) getBookingByAuthor(selectedService.id, user._id);
-  }, [user, getBookingByAuthor]);
+  }, [user, getBookingByAuthor, selectedService]);
 
   const onBookingClick = url => {
     history.push(url);

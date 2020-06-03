@@ -41,7 +41,7 @@ const CalendarDay = props => {
       .set({ date });
     getBookingsByDate(selectedService.id, _selectedDate.format());
     setSelectedDate(_selectedDate);
-  }, [getBookingsByDate, year, month, date, setSelectedDate])
+  }, [selectedService, getBookingsByDate, year, month, date, setSelectedDate])
 
   if (emptyApiData) booking.timeslots = cloneDeep(timeslots);
 
