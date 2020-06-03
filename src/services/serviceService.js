@@ -1,5 +1,4 @@
 import { services } from '../api';
-import _ from 'lodash';
 
 const handleError = err => {
   if (err.response) {

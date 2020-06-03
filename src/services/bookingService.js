@@ -1,4 +1,4 @@
-import { bookings, services } from '../api';
+import { bookings } from '../api';
 import _ from 'lodash';
 
 const handleError = err => {

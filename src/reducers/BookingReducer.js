@@ -12,7 +12,6 @@ import {
   EDIT_BOOKING,
   EDIT_BOOKING_ERROR,
   EDIT_BOOKING_SUCCESS,
-  DELETE_BOOKING,
   FETCH_BOOKINGS_ERROR,
   FETCH_BOOKINGS_SUCCESS
 } from '../constants';
@@ -51,7 +50,7 @@ export default (state = INIITAL_STATE, action) => {
       return { ...state, isFetching: true }
     case EDIT_BOOKING_ERROR:
       return { ...state, isFetching: false }
-    case EDIT_BOOKING_ERROR:
+    case EDIT_BOOKING_SUCCESS:
       return { ...state, booking: action.payload, isFetching: false }
     default:
       return state;
