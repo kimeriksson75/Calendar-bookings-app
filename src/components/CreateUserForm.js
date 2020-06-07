@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { omit } from 'lodash-fp';
 
 const validate = formValues => {
   const errors = {};
@@ -7,6 +8,8 @@ const validate = formValues => {
   if (!formValues.firstname) errors.firstname = 'Du måste fylla i ditt namn';
   if (!formValues.lastname) errors.lastname = 'Du måste fylla i ditt efternamn';
   if (!formValues.password) errors.password = 'Du måste fylla i ett lösenord';
+  if (!formValues.repeatpassword) errors.repeatpassword = 'Du måste fylla i ditt lösenord ditt lösenord igen';
+  if (formValues.repeatpassword !== formValues.password) errors.repeatpassword = 'Det upprepade lösenordet stämmer inte med lösenordet';
   if (!formValues.apartmentid) errors.apartmentid = 'Du måste fylla i ditt lägenhetsnummer';
   return errors;
 }
@@ -43,7 +46,8 @@ const CreateUserForm = props => {
   const { handleSubmit, reset, pristine, submitting } = props;
 
   const onSubmit = formValues => {
-    props.onSubmit(formValues);
+    const reducedFormValues = omit('repeatpassword', formValues);
+    props.onSubmit(reducedFormValues);
   }
 
   return (
@@ -52,6 +56,7 @@ const CreateUserForm = props => {
       <Field name="firstname" component={renderInput} label="Namn:" type="text" autoComplete="firstname"></Field>
       <Field name="lastname" component={renderInput} label="Efternamn:" type="text" autoComplete="lastname"></Field>
       <Field name="password" component={renderInput} label="Lösenord:" type="password" autoComplete="password"></Field>
+      <Field name="repeatpassword" component={renderInput} label="Upprepa lösenord:" type="password" autoComplete="password"></Field>
       <Field name="apartmentid" component={renderInput} label="Lägenhetsnummer:" type="text" autoComplete="id"></Field>
       <button className="ui button primary" disabled={pristine} loading={submitting.toString()} type="submit">Skicka in</button>
       <button className="ui button secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
