@@ -1,4 +1,4 @@
-import { services } from '../api';
+import { services, requestOptions } from '../api';
 
 const handleError = err => {
   if (err.response) {
@@ -16,13 +16,6 @@ const handleError = err => {
     return Promise.reject('unknown error');
   }
 }
-
-
-const requestOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-};
-
 
 const getServices = async () => {
   return await services.get(`/`, requestOptions)

@@ -1,5 +1,7 @@
-import { bookings } from '../api';
+import { bookings, requestOptions } from '../api';
 import _ from 'lodash';
+const token = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).data.token;
+
 
 const handleError = err => {
   if (err.response) {
@@ -17,12 +19,6 @@ const handleError = err => {
     return Promise.reject('unknown error');
   }
 }
-
-
-const requestOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-};
 
 const create = async booking => {
   return await bookings.post('/create', booking, requestOptions)
@@ -59,7 +55,7 @@ const getBookingsByAuthor = async (service, userId) => {
 const patchBooking = async booking => {
   const { _id } = booking;
   const modyfiedBooking = _.omit(booking, ['_id', 'id', 'date']);
-  return await bookings.patch(`/${_id}`, modyfiedBooking)
+  return await bookings.patch(`/${_id}`, modyfiedBooking, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
     })
