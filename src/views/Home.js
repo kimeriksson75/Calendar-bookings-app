@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import history from '../history';
 import { getAvailableServices, setSelectedService } from '../actions';
 import { find } from 'lodash-fp';
@@ -10,6 +11,8 @@ const Home = props => {
   const { auth: { isSignedIn = false }, service: { services = [], selectedService = {} }, getAvailableServices, setSelectedService
   } = props;
 
+  const __currentDate = moment();
+
   if (!isSignedIn) history.push('/user/login')
 
   useEffect(() => {
@@ -18,7 +21,8 @@ const Home = props => {
 
   const onChangeService = (e, data) => {
     const service = find({ id: data.value }, services)
-    setSelectedService(service)
+    setSelectedService(service);
+    history.push(`/${data.value}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`)
   }
   const renderServices = services => {
     return (
