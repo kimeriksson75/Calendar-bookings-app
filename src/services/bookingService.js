@@ -45,7 +45,7 @@ const getBookingsByMonth = async (service, date) => {
 }
 
 const getBookingsByAuthor = async (service, userId) => {
-  return await bookings.get(`/${service}/?timeslots.userId=${userId}`, requestOptions)
+  return await bookings.get(`/${service}/user/${userId}`, requestOptions)
     .then(booking => {
       return Promise.resolve(booking);
     })
