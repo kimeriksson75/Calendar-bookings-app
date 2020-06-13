@@ -16,6 +16,14 @@ export const services = axios.create({
   baseURL: env === 'development' ? 'http://localhost:3000/services' : 'https://calendar-bookings.herokuapp.com/services',
 });
 
+export const residences = axios.create({
+  baseURL: env === 'development' ? 'http://localhost:3000/residences' : 'https://calendar-bookings.herokuapp.com/residences',
+});
+
+export const apartments = axios.create({
+  baseURL: env === 'development' ? 'http://localhost:3000/apartments' : 'https://calendar-bookings.herokuapp.com/apartments',
+});
+
 export const requestOptions = {
   headers: {
     'Content-Type': 'application/json',
