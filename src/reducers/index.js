@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import auth from './AuthReducer';
 import calendar from './CalendarReducer';
 import service from './ServiceReducer';
+import residences from './ResidenceReducer'
+import apartments from './ApartmentReducer'
 import bookingData from './BookingReducer';
 import userMessage from './MessageReducer';
 import application from './ApplicationReducer';
@@ -13,6 +15,8 @@ export default combineReducers({
   calendar,
   bookingData,
   service,
+  residences,
+  apartments,
   userMessage,
   application,
   form: formReducer

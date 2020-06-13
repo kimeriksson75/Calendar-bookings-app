@@ -6,6 +6,8 @@ import {
 export * from './userActions';
 export * from './bookingActions';
 export * from './serviceActions';
+export * from './residenceActions';
+export * from './apartmentActions';
 
 export const newMessage = message => {
   return {
