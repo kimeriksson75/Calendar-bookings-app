@@ -70,7 +70,7 @@ const CalendarDay = props => {
     };
     let id = event.target.dataset.label;
     booking.timeslots[id].userId = user._id;
-    booking.timeslots[id].userName = `${user.lastname} ${user.apartmentid}`;
+    booking.timeslots[id].userName = `${user.lastname}`;
     booking.date = emptyApiData ? selectedDate : booking.date;
     booking.service = selectedService.id;
     emptyApiData ? createBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.')) : patchBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.'));
