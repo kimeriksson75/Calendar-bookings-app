@@ -29,7 +29,6 @@ export const createUser = user => async dispatch => {
 
   userService.register(user)
     .then(user => {
-      console.log(user.data)
       dispatch({
         type: CREATE_USER_SUCCESS,
         payload: user.data
@@ -57,7 +56,6 @@ export const login = (username, password) => async dispatch => {
 
   userService.signIn(username, password)
     .then(user => {
-      console.log('user', user)
       dispatch({
         type: SIGN_IN_SUCCESS,
         payload: user.data

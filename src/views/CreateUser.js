@@ -8,9 +8,7 @@ const CreateUser = props => {
   const { createUser } = props;
 
   const onSubmit = formValues => {
-    createUser(formValues).then(user => console.log(user)).catch(err => {
-      console.log(err);
-    });
+    createUser(formValues);
   }
   return (
     <Sidebar.Pusher>
