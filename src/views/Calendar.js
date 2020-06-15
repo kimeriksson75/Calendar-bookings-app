@@ -10,12 +10,59 @@ import CalendarMenu from '../components/CalendarMenu';
 import { getBookingsByMonth } from '../actions';
 import PusherHeader from '../components/PusherHeader';
 
-moment.locale('sv', {
+moment.updateLocale('sv', {
   week: {
     dow: 1
   }
 });
+const CalendarDay = styled.div`
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1);
+    width: 90%;
+    :hover .calendar-day-hover {
+      background-color: black;
+    }
+  `;
+const CalendarDayDisabled = styled.div`
+    text-align: center;
+    pointer-events: none;
+    opacity: 0.7;
+    border: 1px solid rgba(0,0,0,0.1);
 
+  `
+const CalendarDayInvisible = styled.div`
+    pointer-events: none;
+  `;
+const CalendarWeekDay = styled.div`
+    text-align: center;
+    text-transform: capitalize;
+  `;
+const CalendarStlothContainer = styled.div`
+    position: absolute;
+    top: 6px;
+    right: 4px;
+    display: flex;
+    flex-direction: column;
+    
+    `;
+
+const Sloth = styled.div`
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.5);
+    margin-top: 2px;
+    `;
+
+const OccupiedSloth = styled.div`
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background-color: white;
+    margin-top: 2px;
+  `;
 const CalendarView = props => {
 
   const { selectedService, getBookingsByMonth, isFetching, bookingData: { calendarBookings = null } } = props;
@@ -30,54 +77,7 @@ const CalendarView = props => {
     getBookingsByMonth(selectedService.id, __currentDate.format());
   }, [selectedService, getBookingsByMonth, setCurrentDate, year, month]);
 
-  const CalendarDay = styled.div`
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid rgba(0,0,0,0.1);
-    width: 90%;
-    :hover .calendar-day-hover {
-      background-color: black;
-    }
-  `;
-  const CalendarDayDisabled = styled.div`
-    text-align: center;
-    pointer-events: none;
-    opacity: 0.7;
-    border: 1px solid rgba(0,0,0,0.1);
 
-  `
-  const CalendarDayInvisible = styled.div`
-    pointer-events: none;
-  `;
-  const CalendarWeekDay = styled.div`
-    text-align: center;
-    text-transform: capitalize;
-  `;
-  const CalendarStlothContainer = styled.div`
-    position: absolute;
-    top: 6px;
-    right: 4px;
-    display: flex;
-    flex-direction: column;
-    
-    `;
-
-  const Sloth = styled.div`
-    height: 6px;
-    width: 6px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.5);
-    margin-top: 2px;
-    `;
-
-  const OccupiedSloth = styled.div`
-    height: 6px;
-    width: 6px;
-    border-radius: 50%;
-    border: 1px solid white;
-    background-color: white;
-    margin-top: 2px;
-  `;
   const firstDayOfMonth = () => {
     let firstDay = moment(currentDate)
       .startOf("month")
