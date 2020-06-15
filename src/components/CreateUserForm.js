@@ -56,14 +56,18 @@ const renderSelect = ({
   meta: { error, touched } }) => {
   const className = `field ${error && touched ? 'error' : ''}`;
 
-  return (<div className={className}>
-    <label>{label}</label>
-    <select className="ui fluid selction dropdown" {...input} type={type} autoComplete={autoComplete}>
-      <option value="">{defaultOption}</option>{options && options.map(option =>
-        <option value={option.id} key={option.id}>{option.name}</option>)}
-    </select>
-    {renderError(meta)}
-  </div>)
+  return (
+    <div className={className}>
+      <label>{label}</label>
+      <select className=""
+        {...input}
+        type={type}
+        autoComplete={autoComplete}>
+        <option value="">{defaultOption}</option>{options && options.map(option =>
+          <option value={option.id} key={option.id}>{option.name}</option>)}
+      </select>
+      {renderError(meta)}
+    </div>)
 };
 
 let CreateUserForm = props => {
@@ -79,12 +83,10 @@ let CreateUserForm = props => {
     apartments: { apartments = [] }
   } = props;
 
-  console.log(apartments)
-
   useEffect(() => {
     getAvailableResidences();
     residence && getAvailableApartments(residence);
-  }, [getAvailableResidences, residence]);
+  }, [getAvailableResidences, residence, getAvailableApartments]);
 
 
   const onSubmit = formValues => {
