@@ -6,6 +6,7 @@
 /api/node_modules
 /server/node_modules
 /.pnp
+/.firebase
 .pnp.js
 
 # testing
