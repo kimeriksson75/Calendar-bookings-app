@@ -16,40 +16,40 @@ import {
   EDIT_BOOKING,
   EDIT_BOOKING_ERROR,
   EDIT_BOOKING_SUCCESS,
-  NEW_MESSAGE
+  NEW_MESSAGE,
 } from '../constants';
 
 import bookingsService from '../services/bookingService';
+import { handleError } from './index';
 
-const handleError = (error, dispatch) => {
-  dispatch({
-    type: NEW_MESSAGE,
-    payload: {
-      type: 'error',
-      title: error,
-      description: ''
-    }
-  })
-}
-export const createBooking = booking => async dispatch => {
+export const createBooking = (booking, userId) => async dispatch => {
+
   dispatch({
     type: CREATE_BOOKING,
     payload: null
   })
-  bookingsService.create(booking)
-    .then(booking => {
-      dispatch({
-        type: CREATE_BOOKING_SUCCESS,
-        payload: booking.data
-      })
+
+  try {
+    const createdBooking = await bookingsService.create(booking, userId)
+    dispatch({
+      type: CREATE_BOOKING_SUCCESS,
+      payload: createdBooking.data
     })
-    .catch(error => {
-      dispatch({
-        type: CREATE_BOOKING_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
+    dispatch({
+      type: NEW_MESSAGE,
+      payload: {
+        type: 'success',
+        title: 'Bokningsbekräftelse',
+        description: 'Din bokning är nu bekräftad'
+      }
     });
+  } catch (error) {  
+    dispatch({
+      type: CREATE_BOOKING_ERROR,
+      payload: null
+    })
+      handleError(error, dispatch);
+    }
 }
 
 export const getBookingsByDate = (service, date) => async dispatch => {
@@ -116,25 +116,33 @@ export const getBookingByAuthor = (service, userId) => async dispatch => {
     });
 }
 
-export const patchBooking = booking => async dispatch => {
+export const patchBooking = (booking, userId) => async dispatch => {
   dispatch({
     type: EDIT_BOOKING,
     payload: null
   })
-  bookingsService.patchBooking(booking)
-    .then(booking => {
-      dispatch({
-        type: EDIT_BOOKING_SUCCESS,
-        payload: booking.data
-      })
+
+  try {
+    const patchedBooking = await bookingsService.patchBooking(booking, userId)
+    dispatch({
+      type: EDIT_BOOKING_SUCCESS,
+      payload: patchedBooking.data
     })
-    .catch(error => {
-      dispatch({
-        type: EDIT_BOOKING_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
+    dispatch({
+      type: NEW_MESSAGE,
+      payload: {
+        type: 'success',
+        title: 'Bokningsbekräftelse',
+        description: 'Din bokning är nu bekräftad'
+      }
     });
+  } catch (error) {
+    dispatch({
+      type: EDIT_BOOKING_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
 export const setCurrentDate = date => dispatch => {

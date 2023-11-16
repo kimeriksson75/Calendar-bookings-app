@@ -1,8 +1,14 @@
 export const handleError = err => {
   if (err.response) {
-    const { data } = err.response;
-    const response = data.message ? data.message : 'Unknown error';
-    return Promise.reject(response);
+    console.log(err.response)
+    const { data, status, statusText } = err.response;
+    const errorObject  = {
+      status,
+      statusText,
+      message: data?.message ? data.message : 'Unknown error'  ,
+      errors: data.errors
+    }
+    return Promise.reject(errorObject);
   } else if (err.request) {
     return Promise.reject('request error');
   } else if (err.message) {

@@ -1,0 +1,46 @@
+.user-bookings-container {
+    margin: 0 12px 0 12px;
+    display: flex;
+    flex-direction: column;
+}
+.user-bookings {
+}
+.user-booking {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    transition: background-color .2s ease-out;
+    cursor: pointer;
+    font-size: 14px;
+    color: darken($color-message-success, 20%);
+    border-left: 8px solid darken($color-message-success, 20%);;
+    background-color: lighten($color-message-success, 10%);
+    &:hover {
+        color: var(--white);
+        background-color: var(--gray-dark);
+        border-left: 8px solid darken($color-message-success, 40%);;
+
+    }
+}
+
+.user-booking-timesloth {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user-booking-date {
+    text-transform: lowercase;
+    &:first-letter {
+        text-transform: uppercase;
+    }
+}
+
+@media (min-width: 768px) {
+    .user-booking {
+        font-size: 16px;
+    }
+}

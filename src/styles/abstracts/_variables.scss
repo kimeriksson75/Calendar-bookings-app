@@ -1,0 +1,36 @@
+:root {
+    --white: #C6C7C4;
+    --black: #252422;
+    --gray: #ccc5b9;
+    --gray-light: #c8c8c8;
+    --gray-dark: #403d39;
+    --orange: #eb5e28;
+    --yellow: #f6aa1c;
+    --green: #5C7457;
+    $color-primary: #eb5e28;
+    $color-primary-light: #ff7b4f;
+}
+
+body.dark {
+    /* Dark mode variables go here */
+    --white: #fff;
+    --black: #252422;
+    --gray: #ccc5b9;
+    --gray-light: #c8c8c8;
+    --gray-dark: #403d39;
+}
+
+$color-white: --white;
+$color-black: var(--black);
+$color-orange: #eb5e28;
+$color-blue: #62929E;
+$color-nav-background: var(--black);
+$color-nav-text: var(--white);
+$color-nav-button: var(--black);
+$color-nav-button-hover: #eb5e28;
+
+$color-message-success: #5C7457;
+$color-message-info: #06BEE1;
+$color-message-warning: #f6aa1c;
+$color-message-error: #eb5e28;
+

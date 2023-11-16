@@ -1,57 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 
-const Message = props => {
+const UserMessage = props => {
   const { userMessage } = props;
-
+  const timer = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
     setModalOpen(Boolean(userMessage));
   }, [userMessage])
+
+  useEffect(() => {
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => {
+      setModalOpen(false);
+    }, 3000);
+    return () => clearTimeout(timer.current);
+  }, [modalOpen, userMessage, timer]);
+
   const className = type => {
     switch (type) {
       case 'alert':
-        return 'ui icon message warning';
+        return 'message message--warning';
       case 'error':
-        return 'ui icon message negative';
+        return 'message message--negative';
       case 'success':
-        return 'ui icon message success';
+        return 'message message--success';
       default:
-        return 'ui icon message';
+        return 'message message';
     }
   }
   const iconClassName = type => {
     switch (type) {
       case 'alert':
-        return 'disabled warning sign icon'
+        return 'warning sign'
       case 'error':
-        return 'disabled warning sign icon'
+        return 'warning sign'
       case 'success':
-        return 'check circle outline icon'
+        return 'check circle'
       default:
-
+        return 'info circle'
     }
   }
   return (
-    <div onClick={() => setModalOpen(false)}>
-      {userMessage && userMessage.message && (
-        <Modal open={modalOpen} >
-          <Modal.Content>
-            <div className={className(userMessage.message.type)}>
-              <i className={iconClassName(userMessage.message.type)} />
-              <div className="content">
-                <div className="header">
-                  {userMessage.message.title}
-                </div>
-                <p>{userMessage.message.description}</p>
-              </div>
-            </div>
-          </Modal.Content>
-        </Modal>
-      )
-      }
-    </div>
+    <div className={`message-container ${modalOpen && userMessage?.message ? 'message-container-show' : 'message-container-hide'}`}>
+      <div className={className(userMessage?.message?.type || '')}>
+        <Icon size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
+        <p>{`${userMessage?.message?.description}`}</p>
+        </div>
+      </div>
   )
 }
 const mapStateToProps = (state, ownProps) => {
@@ -59,4 +56,4 @@ const mapStateToProps = (state, ownProps) => {
     userMessage: state.userMessage
   })
 }
-export default connect(mapStateToProps, {})(Message);
+export default connect(mapStateToProps, {})(UserMessage);

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, Sidebar, Segment, Icon } from 'semantic-ui-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Menu, Sidebar, Container, Icon } from 'semantic-ui-react';
 import { cloneDeep, isEmpty } from 'lodash-fp';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import {
 
 import history from '../history';
 import PusherHeader from '../components/PusherHeader';
+import InfoBar from '../components/InfoBar';
 
 const CalendarDay = props => {
 
@@ -27,21 +28,26 @@ const CalendarDay = props => {
     isFetching
   } = props;
 
-  const { booking = {} } = bookingData;
-  const { timeslots = [] } = selectedService;
+  const { booking = {} } = bookingData || {};
+  const { timeslots = [] } = selectedService || {};
   let emptyApiData = isEmpty(booking);
 
   const { year = "", month = "", date = "" } = props.match.params;
   const [selectedDate, setSelectedDate] = useState(moment());
-
-  useEffect(() => {
+  
+  const updateBooking = useCallback(() => {
+    if(!selectedService) return;
     let _selectedDate = moment()
       .set({ year, month })
       .subtract(1, 'month')
       .set({ date });
-    getBookingsByDate(selectedService.id, _selectedDate.format());
     setSelectedDate(_selectedDate);
-  }, [selectedService, getBookingsByDate, year, month, date, setSelectedDate])
+    getBookingsByDate(selectedService.id, _selectedDate.format());
+  }, [year, month, date, selectedService, getBookingsByDate]);
+
+  useEffect(() => {
+    updateBooking();
+  }, [year, month, date, updateBooking])
 
   if (emptyApiData) booking.timeslots = cloneDeep(timeslots);
 
@@ -63,24 +69,33 @@ const CalendarDay = props => {
       description
     })
   }
-  const initiateBooking = event => {
+  const initiateBooking = async event => {
     if (!isSignedIn) {
       userErrorMessage();
       return;
     };
+    console.log(event.target.dataset)
     let id = event.target.dataset.label;
-    booking.timeslots[id].userId = user._id;
-    booking.timeslots[id].userName = `${user.lastname}`;
+    const issuedTimeslot = booking.timeslots.find(({ _id }) => _id === id);
+    issuedTimeslot.userid = user._id;
+    issuedTimeslot.username = user.lastname;
     booking.date = emptyApiData ? selectedDate : booking.date;
     booking.service = selectedService.id;
-    emptyApiData ? createBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.')) : patchBooking(booking).then(() => userSuccessMessage('Din bokning har registrerats.'));
+    emptyApiData ? await createBooking(booking) : await patchBooking(booking);
+    userSuccessMessage('Din bokning har registrerats.')
+    updateBooking();
+    
   }
 
   const initiateDeleteBooking = event => {
     let id = event.target.dataset.label;
-    booking.timeslots[id].userId = null;
-    booking.timeslots[id].userName = null;
-    patchBooking(booking).then(() => userSuccessMessage('Din bokning har avregistrerats.'));
+    const issuedTimeslot = booking.timeslots.find(({ _id }) => _id === id);
+    issuedTimeslot.userid = null;
+    issuedTimeslot.username = "";
+    patchBooking(booking).then(() => {
+      userSuccessMessage('Din bokning har avregistrerats.')
+      updateBooking();
+    });
   }
 
   const renderTimeSlots = () => {
@@ -89,19 +104,19 @@ const CalendarDay = props => {
       timeslots.map((slot, i) => {
         const className = slot => {
           if (!isSignedIn) return 'button small ui red disabled';
-          else if (slot.userId && slot.userId !== user._id) return 'button small ui red disabled';
+          else if (slot.userid && slot.userid !== user._id) return 'button small ui red disabled';
           else return 'button small ui teal selectable';
         }
         return (
           <div key={i} className="two column row">
             <div className="column" key={slot.timeslot} >
-              <button className={className(slot)} data-label={slot.id} onClick={slot.userId ? initiateDeleteBooking : initiateBooking}>{slot.timeslot}</button>
+              <button className={className(slot)} data-label={slot._id} onClick={slot.userid ? initiateDeleteBooking : initiateBooking}>{slot.timeslot}</button>
             </div>
-            <div className="column" key={slot.id} data-label={slot.userId ? slot.userId : ''}>
-              {slot.userName && (
+            <div className="column" key={slot._id} data-label={slot.userid ? slot.userid : ''}>
+              {slot.userid && (
                 <div className="ui label">
                   <i className="check icon teal"></i>
-                  {slot.userName}
+                  { slot.username || 'Bokad av okänd användare' }
                 </div>
               )}
             </div>
@@ -117,9 +132,9 @@ const CalendarDay = props => {
     history.push(`/${selectedService.id}/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}/${dObject.format('DD')}`);
   }
   return (
-    <Sidebar.Pusher>
-      <Segment basic>
-        <PusherHeader title="Kalenderdag" subTitle="" />
+    <>
+      <Container>
+        <InfoBar title="Kalenderdag" />
         <Menu>
           <Menu.Item as="a" icon onClick={() => onChangeDay(-1)}>
             <Icon name="chevron left" ></Icon>
@@ -151,8 +166,8 @@ const CalendarDay = props => {
               </div>
             </div>
           </React.Fragment>)}
-      </Segment>
-    </Sidebar.Pusher>
+      </Container>
+    </>
   )
 }
 const mapStateToProps = (state, ownProps) => {

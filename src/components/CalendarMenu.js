@@ -10,7 +10,6 @@ const CalendarMenu = props => {
     props.onChangeMonth(value)
   }
   return (
-    <div>
       <Menu>
         <Menu.Item as="a" icon onClick={() => onChangeMonth(-1)}>
           <Icon name="chevron left" ></Icon>
@@ -22,7 +21,6 @@ const CalendarMenu = props => {
           <Icon name="chevron right"></Icon>
         </Menu.Item>
       </Menu>
-    </div>
   )
 }
 export default CalendarMenu

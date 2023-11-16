@@ -1,7 +1,10 @@
 import {
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
-  SIGN_OUT,
+  SIGN_OUT_REQUEST,
+  SIGN_OUT_SUCCESS,
+  REQUEST_NEW_PASSWORD,
+  REQUEST_NEW_PASSWORD_SUCCESS,
   USER_PROFILE,
   CREATE_USER,
   CREATE_USER_SUCCESS,
@@ -9,17 +12,7 @@ import {
 } from '../constants';
 import userService from '../services/userService';
 import history from '../history';
-
-const handleError = (error, dispatch) => {
-  dispatch({
-    type: NEW_MESSAGE,
-    payload: {
-      type: 'error',
-      title: error,
-      description: ''
-    }
-  })
-}
+import { handleError } from './index';
 
 export const createUser = user => async dispatch => {
   dispatch({
@@ -60,7 +53,6 @@ export const login = (username, password) => async dispatch => {
         type: SIGN_IN_SUCCESS,
         payload: user.data
       })
-      history.push('/');
       dispatch({
         type: NEW_MESSAGE,
         payload: {
@@ -69,23 +61,91 @@ export const login = (username, password) => async dispatch => {
           description: 'Nu har du tillgång till kalenderbokning.'
         }
       })
-
     })
     .catch(error => {
       handleError(error, dispatch);
     })
 }
 
-export const logout = () => dispatch => {
-  userService.signOut();
+export const signInWithToken = (token) => async dispatch => {
   dispatch({
-    type: SIGN_OUT,
+    type: SIGN_IN_REQUEST,
     payload: null
   });
-  history.push('/user/login')
-
+  console.log('user action signInWithToken', token)
+  userService.signInWithToken(token)  
+    .then((user) => {
+      dispatch({
+        type: SIGN_IN_SUCCESS,
+        payload: user.data
+      })
+      dispatch({
+        type: NEW_MESSAGE,
+        payload: {
+          type: 'success',
+          title: 'Inloggningen lyckades',
+          description: 'Nu har du tillgång till kalenderbokning.'
+        }
+      })
+    })
+    .catch(error => {
+      handleError(error, dispatch);
+    })
 }
 
+export const logout = (tokens) => dispatch => {
+  
+  dispatch({
+    type: SIGN_OUT_REQUEST,
+    payload: null
+  });
+  userService.signOut(tokens)
+    .then(() => {
+      dispatch({
+        type: SIGN_OUT_SUCCESS,
+        payload: null
+      })
+      history.push('/user/login')
+      dispatch({
+        type: NEW_MESSAGE,
+        payload: {
+          type: 'success',
+          title: 'Du har loggat ut',
+          description: 'Du har nu loggat ut från kalenderbokning.'
+        }
+      })
+   })
+  .catch(error => {
+    handleError(error, dispatch);
+  })
+}
+
+export const requestNewPassword = (email) => dispatch => {
+  dispatch({
+    type: REQUEST_NEW_PASSWORD,
+    payload: null
+  });
+
+  userService.requestNewPassword(email)
+    .then(() => {
+      dispatch({
+        type: REQUEST_NEW_PASSWORD_SUCCESS,
+        payload: null
+      })
+      // history.push('/user/login')
+      dispatch({
+        type: NEW_MESSAGE,
+        payload: {
+          type: 'success',
+          title: 'Du har begärt ett nytt lösenord',
+          description: 'Ett länk har skickats till din e-post.'
+        }
+      })
+    })
+    .catch(error => {
+      handleError(error, dispatch);
+    })
+}
 export const setUserProfile = userProfile => {
   return {
     type: USER_PROFILE,

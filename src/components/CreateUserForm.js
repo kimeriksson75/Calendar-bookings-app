@@ -12,8 +12,8 @@ const validate = formValues => {
   if (!formValues.password) errors.password = 'Du måste fylla i ett lösenord';
   if (!formValues.repeatpassword) errors.repeatpassword = 'Du måste fylla i ditt lösenord ditt lösenord igen';
   if (formValues.repeatpassword !== formValues.password) errors.repeatpassword = 'Det upprepade lösenordet stämmer inte med lösenordet';
-  if (!formValues.residenceid) errors.residenceid = 'Du måste välja ett bostadshus';
-  if (!formValues.apartmentid) errors.apartmentid = 'Du måste fylla i ditt lägenhetsnummer';
+  if (!formValues.residence) errors.residence = 'Du måste välja ett bostadshus';
+  if (!formValues.apartment) errors.apartment = 'Du måste fylla i ditt lägenhetsnummer';
   return errors;
 }
 
@@ -96,12 +96,13 @@ let CreateUserForm = props => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
       <Field name="username" component={renderInput} label="Användarnamn:" type="text" autoComplete="username"></Field>
+      <Field name="email" component={renderInput} label="Email:" type="email" autoComplete="email"></Field>
       <Field name="firstname" component={renderInput} label="Namn:" type="text" autoComplete="firstname"></Field>
       <Field name="lastname" component={renderInput} label="Efternamn:" type="text" autoComplete="lastname"></Field>
       <Field name="password" component={renderInput} label="Lösenord:" type="password" autoComplete="password"></Field>
       <Field name="repeatpassword" component={renderInput} label="Upprepa lösenord:" type="password" autoComplete="password"></Field>
-      <Field name="residenceid" component={renderSelect} label="Bostadshus:" defaultOption="Välj bostadshus" options={residences} type="select" autoComplete="residence"></Field>
-      <Field name="apartmentid" component={renderSelect} label="Lägenhetsnummer:" defaultOption="Välj lägenhetsnummer" options={apartments} type="text" autoComplete="apartmentid"></Field>
+      <Field name="residence" component={renderSelect} label="Bostadshus:" defaultOption="Välj bostadshus" options={residences} type="select" autoComplete="residence"></Field>
+      <Field name="apartment" component={renderSelect} label="Lägenhetsnummer:" defaultOption="Välj lägenhetsnummer" options={apartments} type="text" autoComplete="apartment"></Field>
       <button className="ui button primary" disabled={pristine} loading={submitting.toString()} type="submit">Skicka in</button>
       <button className="ui button secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
     </form>
@@ -120,7 +121,7 @@ const selector = formValueSelector('createUserForm')
 const mapStateToProps = state => {
   return ({
     residences: state.residences,
-    residence: selector(state, 'residenceid'),
+    residence: selector(state, 'residence'),
     apartments: state.apartments
   })
 }

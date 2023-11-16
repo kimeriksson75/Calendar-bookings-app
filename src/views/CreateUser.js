@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CreateUserForm from '../components/CreateUserForm';
 import { createUser } from '../actions';
-import { Sidebar, Segment } from 'semantic-ui-react';
-import PusherHeader from '../components/PusherHeader';
+import InfoBar from '../components/InfoBar';
 const CreateUser = props => {
   const { createUser } = props;
 
@@ -11,12 +10,13 @@ const CreateUser = props => {
     createUser(formValues);
   }
   return (
-    <Sidebar.Pusher>
-      <Segment basic>
-        <PusherHeader title="Skapa ny användare" subTitle="" />
+    <>
+      <div className="page-container">
+        <InfoBar title="Skapa användare" />
         <CreateUserForm onSubmit={onSubmit} />
-      </Segment>
-    </Sidebar.Pusher >);
+      </div>
+    </>
+  );
 };
 const mapStateToProps = (state) => {
   return ({

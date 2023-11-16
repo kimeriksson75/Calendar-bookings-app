@@ -2,7 +2,7 @@ import { apartments, requestOptions } from '../api';
 import { handleError } from './handleError';
 
 const getApartments = async residence => {
-  return await apartments.get(`/${residence}`, requestOptions)
+  return await apartments.get(`/residence/${residence}`, requestOptions())
     .then(apartments => {
       return Promise.resolve(apartments);
     })

@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import history from '../history';
 import LoginForm from '../components/LoginForm';
 import { login } from '../actions';
-import { Sidebar, Segment } from 'semantic-ui-react';
-import PusherHeader from '../components/PusherHeader';
+import InfoBar from '../components/InfoBar';
 
 const Login = props => {
-  const { login } = props;
-
+  const {
+    login,
+    auth: {
+      isSignedIn
+    },
+  } = props;
+  useEffect(() => {
+    if (isSignedIn) {
+      history.push('/');
+    }
+  }, [isSignedIn]);
   const onSubmit = ({ username, password }) => {
     login(username, password);
   }
   return (
-    <Sidebar.Pusher>
-      <Segment basic>
-        <PusherHeader title="Login" subTitle="" />
+      <div className="page-container">
+        <InfoBar title="Login" />
         <div>
           <LoginForm onSubmit={onSubmit} />
         </div>
         <div className="extra" style={{ paddingTop: '12px' }}>
+          <Link className="" to="/user/forgot-password">Glömt lösenord?</Link>
+        </div>
+        <div className="extra" style={{ paddingTop: '12px' }}>
           <Link className="" to="/user/create">Eller skapa en ny användare</Link>
         </div>
-      </Segment>
-    </Sidebar.Pusher>);
+      </div>)
 }
 const mapStateToProps = (state) => {
   return ({

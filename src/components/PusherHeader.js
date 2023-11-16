@@ -8,15 +8,19 @@ const PusherHeader = props => {
 
   return (
     <React.Fragment>
-      <Menu>
+      <Menu
+        inverted
+        style={{ 'width': '100%', 'borderRadius': '0px', 'margin': '0px' }}
+        size="small">
+        
         <Menu.Item>
           <Icon size="large" name="bars" onClick={toggleSidebar}></Icon>
         </Menu.Item>
         <Menu.Item>
-          <Header className="">{selectedService && selectedService.name}</Header>
+          <Header inverted>{selectedService && selectedService.name}</Header>
         </Menu.Item>
       </Menu>
-      <h4 className="ui header">{title}
+      <h4 className="ui header" style={{"marginLeft": "16px"}}>{title}
         <div className="sub header">{subTitle}</div>
       </h4>
     </React.Fragment>

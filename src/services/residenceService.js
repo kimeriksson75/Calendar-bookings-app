@@ -2,7 +2,7 @@ import { residences, requestOptions } from '../api';
 import { handleError } from './handleError';
 
 const getResidences = async () => {
-  return await residences.get(`/`, requestOptions)
+  return await residences.get(`/`, requestOptions())
     .then(residences => {
       return Promise.resolve(residences);
     })

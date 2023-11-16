@@ -2,21 +2,14 @@ import {
   FETCH_SERVICES,
   FETCH_SERVICES_ERROR,
   FETCH_SERVICES_SUCCESS,
+  FETCH_SERVICES_BY_RESIDENCE,
+  FETCH_SERVICES_BY_RESIDENCE_ERROR,
+  FETCH_SERVICES_BY_RESIDENCE_SUCCESS,
   SET_SELECTED_SERVICE,
-  NEW_MESSAGE,
 } from '../constants';
 import serviceService from '../services/serviceService';
+import { handleError } from './index';
 
-const handleError = (error, dispatch) => {
-  dispatch({
-    type: NEW_MESSAGE,
-    payload: {
-      type: 'error',
-      title: error,
-      description: ''
-    }
-  })
-}
 export const getAvailableServices = () => async dispatch => {
   dispatch({
     type: FETCH_SERVICES,
@@ -34,6 +27,27 @@ export const getAvailableServices = () => async dispatch => {
         type: FETCH_SERVICES_ERROR,
         payload: null
       });
+      handleError(error, dispatch);
+    });
+}
+
+export const getServicesByResidence = residence => async dispatch => {
+  dispatch({
+    type: FETCH_SERVICES_BY_RESIDENCE,
+    payload: null
+  })
+  serviceService.getServicesByResidence(residence)
+    .then(services => {
+      dispatch({
+        type: FETCH_SERVICES_BY_RESIDENCE_SUCCESS,
+        payload: services.data
+      })
+    })
+    .catch(error => {
+      dispatch({
+        type: FETCH_SERVICES_BY_RESIDENCE_ERROR,
+        payload: null
+      })
       handleError(error, dispatch);
     });
 }

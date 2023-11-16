@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   
+
+}
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: $roboto-slab;
+    font-size: 1rem;
+    height: 100dvh;
+}
+a {
+    text-decoration: none;
+    color: var(--white);
+}
+ul {
+    list-style: none;
+}
+form .field > label {
+    color: var(--white)!important;
+}

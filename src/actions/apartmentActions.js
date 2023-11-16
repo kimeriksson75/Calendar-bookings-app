@@ -2,20 +2,10 @@ import {
   FETCH_APARTMENTS,
   FETCH_APARTMENTS_ERROR,
   FETCH_APARTMENTS_SUCCESS,
-  NEW_MESSAGE,
 } from '../constants';
 import apartmentService from '../services/apartmentsService';
+import { handleError } from './index';
 
-const handleError = (error, dispatch) => {
-  dispatch({
-    type: NEW_MESSAGE,
-    payload: {
-      type: 'error',
-      title: error,
-      description: ''
-    }
-  })
-}
 export const getAvailableApartments = residence => async dispatch => {
   dispatch({
     type: FETCH_APARTMENTS,

@@ -1,0 +1,26 @@
+.app-header{
+    background-color: var(--black);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.app-header-info-bar {
+    margin-bottom: 12px;
+}
+
+/* Logo */
+.logo{
+    display: inline-block;
+    color: var(--white);
+    font-size: 24px;
+    margin: 14px 10px;
+}
+
+@media (min-width: 768px) {
+    .logo{
+        font-size: 48px;
+        margin: 34px 20px;
+    }
+}

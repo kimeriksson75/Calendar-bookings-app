@@ -2,27 +2,43 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import history from '../history';
-import { getAvailableServices, setSelectedService } from '../actions';
-import { find } from 'lodash-fp';
-import { Sidebar, Segment, Dropdown, Icon } from 'semantic-ui-react';
-import PusherHeader from '../components/PusherHeader';
+import { getServicesByResidence, setSelectedService } from '../actions';
+import { find, isEmpty } from 'lodash-fp';
+import { Dropdown, Icon } from 'semantic-ui-react';
+import InfoBar from '../components/InfoBar';
 
 const Home = props => {
-  const { auth: { isSignedIn = false }, service: { services = [], selectedService = {} }, getAvailableServices, setSelectedService
+  const {
+    auth: {
+      isSignedIn = false,
+      user = {},
+    },
+    service: {
+      services = [],
+      selectedService = {}
+    },
+    getServicesByResidence,
+    setSelectedService
   } = props;
 
   const __currentDate = moment();
 
   if (!isSignedIn) history.push('/user/login')
 
+  
   useEffect(() => {
-    isSignedIn && getAvailableServices();
-  }, [isSignedIn, getAvailableServices]);
+    isSignedIn && user?.residence && getServicesByResidence(user.residence);
+  }, [isSignedIn, getServicesByResidence, user]);
+
+  useEffect(() => {
+    if (selectedService && !isEmpty(selectedService)) {
+      history.push(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`)
+    }
+  }, [selectedService, __currentDate]);
 
   const onChangeService = (e, data) => {
     const service = find({ id: data.value }, services)
     setSelectedService(service);
-    history.push(`/${data.value}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`)
   }
   const renderServices = services => {
     return (
@@ -31,7 +47,7 @@ const Home = props => {
         fluid
         selection
         onChange={onChangeService}
-        defaultValue={selectedService && selectedService.id}
+        // defaultValue={selectedService && selectedService.id}
         options={services.map(service => ({
           key: service.id,
           value: service.id,
@@ -40,21 +56,20 @@ const Home = props => {
     )
   }
   return (
-    <Sidebar.Pusher>
-      <Segment basic>
-        <PusherHeader title="Välkommen" subTitle="Välj bland tillgängliga bokningstjänster." />
+    <div className="page-container">
+      <InfoBar title="Välkommen"/>
+
         {services && renderServices(services)}
         {selectedService && (<div>
           <div className="ui divider"></div>
           <p>Nu kan du påbörja din bokning. Klicka på Kalendern i menyn <Icon size="small" name="bars"></Icon>.</p></div>)}
-      </Segment>
-    </Sidebar.Pusher>
+    </div>
   )
 }
 const mapStateToProps = state => {
   return ({
     auth: state.auth,
-    service: state.service
+    service: state.service,
   })
 }
-export default connect(mapStateToProps, { getAvailableServices, setSelectedService })(Home);
+export default connect(mapStateToProps, { getServicesByResidence, setSelectedService })(Home);

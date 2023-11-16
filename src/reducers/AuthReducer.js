@@ -2,7 +2,9 @@ import {
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
   SIGN_IN_ERROR,
-  SIGN_OUT,
+  SIGN_OUT_REQUEST,
+  SIGN_OUT_SUCCESS,
+  SIGN_OUT_ERROR,
   USER_PROFILE,
   CREATE_USER,
   CREATE_USER_SUCCESS
@@ -24,8 +26,12 @@ export default (state = INITIAL_AUTH_STATE, action) => {
       return { ...state, isSignedIn: true, fetching: false, user: action.payload };
     case SIGN_IN_ERROR:
       return { ...state, isSignedIn: false, fetching: false, user: null };
-    case SIGN_OUT:
-      return { ...state, isSignedIn: false, user: null };
+    case SIGN_OUT_REQUEST:
+      return { ...state, isSignedIn: true, fetching: true };
+    case SIGN_OUT_SUCCESS:
+      return { ...state, isSignedIn: false, fetching: false, user: null };
+    case SIGN_OUT_ERROR:
+      return { ...state, isSignedIn: true, fetching: false, user: null };
     case USER_PROFILE:
       return { ...state, userProfile: action.payload }
     case CREATE_USER:
