@@ -99,7 +99,6 @@ const CalendarView = props => {
       </button>);
     // eslint-disable-next-line
     
-    
     else
       return (<button key={day + 31} className="calendar-day calendar-day--disabled" data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
