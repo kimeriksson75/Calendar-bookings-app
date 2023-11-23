@@ -14,7 +14,6 @@ import {
   newMessage,
 } from '../actions';
 
-
 moment.updateLocale('sv', {
   week: {
     dow: 1
