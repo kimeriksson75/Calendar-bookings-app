@@ -48,6 +48,7 @@
         pointer-events: none;
 
     }
+
     &--weekday {
         text-align: center;
         text-transform: capitalize;
@@ -61,6 +62,10 @@
 
     &--today {
         background-color: var(--orange);
+    }
+
+    &--weekend {
+        color: var(--orange);
     }
 
     &:hover {
@@ -88,6 +93,21 @@
     &--occupied {
         border: 1px solid var(--white);
         background-color: var(--white);
+    }
+}
+.calendar-day-bookings-animate {
+    animation-duration: 0.5s;
+    animation-name: animate-fade;
+    animation-delay: 0s;
+    animation-fill-mode: backwards;
+  }
+  
+  @keyframes animate-fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 .calendar-day-bookings {

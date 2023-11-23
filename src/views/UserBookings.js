@@ -34,21 +34,25 @@ const UserBookings = props => {
     return updatedDate.format("ddd Do MMM YYYY");
   }
 
-  const renderTimeslots = timeslots =>
-      timeslots.map((timeslot, i) => timeslot.userid === user._id ?
-        (
-          <div key={i} className="">
-            <div key={timeslot.id} className="">
-              <i className="check icon"></i>
-              {timeslot.timeslot}
-            </div>
-          </div>) : null )
+  const renderTimeslots = ({ timeslots = [], alternateTimeslots = [] }) => {
+    const slots = [ ...timeslots, ...alternateTimeslots];
+    console.log('renderTimeslots', slots)
+    return slots?.map((timeslot, i) => timeslot.userid === user._id ?
+    (
+        <div key={i} className="">
+          <div key={timeslot.id} className="">
+            <i className="check icon"></i>
+            {timeslot.timeslot}
+          </div>
+        </div>
+      ) : null
+    )}
 
   const renderBookings = () =>
   (<div className="user-bookings-container">
     {
     sortedUserBookings.map((booking) => {
-      const timeslots = booking?.timeslots ? renderTimeslots(booking.timeslots) : null;
+      const timeslots = renderTimeslots(booking);
       return Boolean(timeslots.find(value => value !== null)) ? (
         <div key={booking.id} className="user-bookings">
           <div key={booking.id + 1} className="user-booking" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>

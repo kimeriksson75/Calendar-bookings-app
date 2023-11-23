@@ -11,6 +11,7 @@ import CreateUser from '../views/CreateUser';
 import Login from '../views/Login';
 import SignInWithToken from './SignInWithToken';
 import ForgotPassword from '../views/ForgotPassword';
+import Logout from '../views/Logout';
 
 const App = () => { 
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Home}></Route>
           <Route path="/user/login" component={Login}></Route>
+          <Route path="/user/logout" component={Logout}></Route>
           <Route path="/user/authenticate/:token/:serviceId/:residenceId" component={SignInWithToken}></Route>
           <Route path="/user/forgot-password" component={ForgotPassword}></Route>
           <Route path="/user/create" component={CreateUser}></Route>

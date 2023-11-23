@@ -32,7 +32,7 @@ const Home = props => {
 
   useEffect(() => {
     if (selectedService && !isEmpty(selectedService)) {
-      history.push(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`)
+      history.push(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}/${__currentDate.format('D')}`)
     }
   }, [selectedService, __currentDate]);
 

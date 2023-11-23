@@ -33,7 +33,7 @@ const CalendarView = props => {
     bookingData: { calendarBookings = [] }
   } = props;
   
-  const { timeslots = [] } = selectedService || {};
+  const { timeslots = [], alternateTimeslots = []} = selectedService || {};
 
   const { year = "", month = "", day = "" } = props.match.params;
   const [totalSlots, setTotalSlots] = useState([]);
@@ -46,18 +46,22 @@ const CalendarView = props => {
     if (selectedService?.id) {
       let __currentDate = moment().set({ year, month }).subtract(1, 'month');
       setCurrentDate(__currentDate);
-      getBookingsByMonth(selectedService?.id, __currentDate.format());
-      setSelectedDay(moment().format('D'));
+      getBookingsByMonth(selectedService?.id, selectedDate.format());
 
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedService?.id, getBookingsByMonth, setCurrentDate, setSelectedDay, year, month]);
+  }, [selectedService?.id, selectedDate]);
 
   useEffect(() => {
-    if (day) {
-      setSelectedDay(day);
+    if (year && month) {
+      let __currentDate = moment().set({ year, month }).subtract(1, 'month');
+      if (day) {
+        setSelectedDay(day);
+        __currentDate = moment().set({ year, month, date: day }).subtract(1, 'month');
+      }
+      setSelectedDate(__currentDate);
     }
-  }, [setSelectedDay, day]);
+  }, [year, month, day, selectedService?.id]);
   
   const firstDayOfMonth = () => {
     let firstDay = moment(currentDate)
@@ -65,7 +69,20 @@ const CalendarView = props => {
       .format("d");
     return firstDay;
   }
+  const isWeekDay = (day) => {
+    const dayOfWeek = moment(currentDate)
+      .set({ date: day })
+      .isoWeekday();
+    return dayOfWeek !== 6 && dayOfWeek !== 7;
+  }
 
+  const timeslotsByDate = booking => {
+    const hasAlternateTimeslots = booking?.alternateTimeslots;
+    if (!hasAlternateTimeslots) {
+      return booking.timeslots;
+    }
+    return isWeekDay(moment(booking.date).format('D')) ? booking.timeslots : booking.alternateTimeslots;
+  }
   const calendarDayStyle = day => {
     let currentMonth = currentDate.month();
     let currentYear = currentDate.year();
@@ -79,7 +96,7 @@ const CalendarView = props => {
       </button>);
 
     else if ((currentMonth >= moment().month() && day > moment().format('D')) || currentMonth > moment().month() || currentYear > moment().year())
-      return (<button key={day + 31} className="calendar-day" data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
+      return (<button key={day + 31} className={`calendar-day ${isWeekDay(day) ? '' : 'calendar-day--weekend'}`} data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
     // eslint-disable-next-line
     
@@ -88,14 +105,13 @@ const CalendarView = props => {
       return (<button key={day + 31} className="calendar-day calendar-day--disabled" data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
   }
-
+  
   const renderCalendarDayBookings = day => {
     if (!calendarBookings || !isSignedIn) return null;
     const bookedDate = calendarBookings.find(booking => moment(booking.date).format('D') === String(day));
     // const fullyBooked = bookedDate?.timeslots.every(timeslot => timeslot.userid);
     return bookedDate && (<div className="sloth-container">
-      
-      {bookedDate.timeslots.map((timeslot, i) => timeslot.userid ? (<div className="sloth sloth--occupied" key={i}></div>) : (<div className="sloth" key={i}></div>))}
+      {timeslotsByDate(bookedDate)?.map((timeslot, i) => timeslot.userid ? (<div className="sloth sloth--occupied" key={i}></div>) : (<div className="sloth" key={i}></div>))}
     </div>)
   }
   useEffect(() => {
@@ -138,27 +154,33 @@ const CalendarView = props => {
       return;
     }
     const date = event.target.dataset.item
-    setSelectedDay(date);
     const _selectedDate = moment()
-      .set({ year, month })
-      .subtract(1, 'month')
-      .set({ date })
-      .format();
-    setSelectedDate(_selectedDate);
+    .set({ year, month })
+    .subtract(1, 'month')
+    .set({ date })
+    history.push(`/${selectedService.id}/calendar/${_selectedDate.format('YYYY')}/${_selectedDate.format('MM')}/${_selectedDate.format('DD')}`);
+  }
+  const isAlternateTimeslots = (day) => {
+    const hasAlternateTimeslots = alternateTimeslots.length > 0;
+    if (!hasAlternateTimeslots) {
+      return true;
+    }
+    return isWeekDay(day);
   }
 
   const initiateBooking = async event => {
+    let id = event.target.dataset.label;
     let currentDayBooking = calendarBookings.find(booking => moment(booking.date).format('D') === String(selectedDay));
     const emptyApiData = !currentDayBooking;
     if (emptyApiData) {
       currentDayBooking = {
         date: selectedDate,
         service: selectedService.id,
-        timeslots: cloneDeep(timeslots)
+        timeslots: cloneDeep(timeslots),
+        ...(alternateTimeslots.length > 0 && { alternateTimeslots: cloneDeep(alternateTimeslots)})
       }
     }
-    let id = event.target.dataset.label;
-    const issuedTimeslot = currentDayBooking.timeslots[id];
+    const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = user._id;
     issuedTimeslot.username = user.lastname;
     const method = emptyApiData ? createBooking : patchBooking;
@@ -170,7 +192,7 @@ const CalendarView = props => {
   const initiateDeleteBooking = async event => {
     let id = event.target.dataset.label;
     let currentDayBooking = calendarBookings.find(booking => moment(booking.date).format('D') === String(selectedDay));
-    const issuedTimeslot = currentDayBooking.timeslots[id];
+    const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = null;
     issuedTimeslot.username = "";
     await patchBooking(currentDayBooking, user._id);
@@ -193,17 +215,23 @@ const CalendarView = props => {
     if (!calendarBookings || !isSignedIn) {
       return;
     }
+    console.log('selectedDay', selectedDay)
+    // console.log('calendarBookings ', calendarBookings  )
     let dayBookings = calendarBookings.find(booking => moment(booking.date).format('D') === String(selectedDay));
+    // console.log('dayBookings', dayBookings)
     if (!dayBookings) {
       dayBookings = {
-        timeslots: cloneDeep(timeslots)
+        timeslots: cloneDeep(timeslots),
+        alternateTimeslots: cloneDeep(alternateTimeslots)
+        
       }
     }
+    let renderTimeslots = isAlternateTimeslots(selectedDay) ? dayBookings.timeslots : dayBookings.alternateTimeslots;
     return (
         <ul>
-          {dayBookings.timeslots.map((slot, i) => {
+          {renderTimeslots?.map((slot, i) => {
             return (
-              <li className={`calendar-day-bookings${calendarDayBookingsStyle(slot)}`} key={i} data-label={i} onClick={slot.userid ? initiateDeleteBooking : initiateBooking}>
+              <li className={`calendar-day-bookings-animate calendar-day-bookings${calendarDayBookingsStyle(slot)}`} key={i} data-label={i} onClick={slot.userid ? initiateDeleteBooking : initiateBooking}>
                 <div className="calendar-day-bookings__content__timeslot"><strong>{slot?.timeslot || ''}</strong></div>
                 <div className="calendar-day-bookings__content__user">{slot?.username || ''}</div>
               </li>
@@ -232,8 +260,12 @@ const CalendarView = props => {
             )}
       </div>
         <div className="calendar-day-bookings">
-          <p>{`Bokningar ${selectedDay}/${month}`}</p>
-          {selectedDay && calendarBookings && calendarDayBookings()}
+        { selectedDay && calendarBookings && (
+          <>
+            <h2>{`Bokningar ${selectedDay}/${month}`}</h2>
+            {calendarDayBookings()}
+          </>
+        )}
         </div>
       </div>
   )
