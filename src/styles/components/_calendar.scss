@@ -160,7 +160,7 @@
     }
 }
 
-@media (min-width: 920px) {
+@media (min-width: $breakpoint-tablet) {
     .calendar-container {
         max-width: 960px;
         width: 100%;

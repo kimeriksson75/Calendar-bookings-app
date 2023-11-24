@@ -45,7 +45,7 @@
     }
 }
 
-@media (min-width: 920px) {
+@media (min-width: $breakpoint-tablet) {
     .nav{
         max-height: none;
         top: 0;
