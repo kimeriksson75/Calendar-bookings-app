@@ -1,15 +1,16 @@
 .message-container {
-    position: absolute;
-    bottom: 0px;
-    width: 90%;
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
+    bottom: -40px;
+    // left: 50%;
+    // transform: translateX(-50%);
+    padding: 0 12px;
     transition: all 0.2s ease-out;
-    max-width: 90%;
-    opacity: 0;
+    width: 100%;
+    opacity: 1;
+    z-index: 2;
     &-show {
         opacity: 1;
-        bottom: 52px;
+        bottom: 0;
     }
 
 }
@@ -22,7 +23,7 @@
     padding: 8px;
     background-color: var(--orange);
     border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 8px;
+    border-radius: 0;
     color: var(--white);
     transition: all 0.2s ease-out;
     // box-shadow: -1px -3px 10px 4px rgba(0,0,0,0.22);

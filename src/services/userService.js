@@ -1,12 +1,8 @@
-import { users } from '../api';
+import { users, requestOptions } from '../api';
 import { handleError } from './handleError';
 
 export const register = async user => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  };
-  return await users.post('/', user, requestOptions)
+  return await users.post('/', user, requestOptions())
     .then(user => {
       return Promise.resolve(user);
     })
@@ -16,12 +12,8 @@ export const register = async user => {
 }
 
 export const signIn = async (username, password) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  };
 
-  return await users.post('/authenticate', { username, password }, requestOptions)
+  return await users.post('/authenticate', { username, password }, requestOptions())
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user));
@@ -34,12 +26,8 @@ export const signIn = async (username, password) => {
 }
 
 export const signInWithToken = async (token) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  };
 
-  return await users.post('/authenticate/token', { token }, requestOptions)
+  return await users.post('/authenticate/token', { token }, requestOptions())
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user));
@@ -51,12 +39,8 @@ export const signInWithToken = async (token) => {
     })
 }
 export const signOut = async ({ refreshToken, accessToken}) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  };
 
-  return await users.post('/sign-out', { refreshToken, accessToken }, requestOptions) 
+  return await users.post('/sign-out', { refreshToken, accessToken }, requestOptions()) 
     .then(() => {
       localStorage.removeItem('user');
       return Promise.resolve();
@@ -67,12 +51,8 @@ export const signOut = async ({ refreshToken, accessToken}) => {
 }
 
 export const requestNewPassword = async (email) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  };
 
-  return await users.post('/reset-password-link', { email }, requestOptions)
+  return await users.post('/reset-password-link', { email }, requestOptions())
     .then(() => {
       return Promise.resolve();
     })

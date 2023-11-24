@@ -30,8 +30,8 @@ const App = () => {
           <Route path="/:service/calendar/:year/:month/:day" exact component={Calendar}></Route>
         </Switch>
       </Router>
-      <UserMessage />
       <Footer />
+      <UserMessage />
     </>);
 }
 

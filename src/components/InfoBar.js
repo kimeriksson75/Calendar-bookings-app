@@ -4,7 +4,7 @@ const InfoBar = ({ title }) => {
     return (
         <div className="info-bar">
             <div className="info-bar__title">
-                <h2>{title}</h2>
+                <h3>{title}</h3>
             </div>
         </div>
     );

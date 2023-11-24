@@ -41,6 +41,8 @@ const CalendarView = props => {
 
   const [selectedDay, setSelectedDay] = useState(0)
 
+  const [dayBookingsCache, setDayBookingsCache] = useState(null);
+
   useEffect(() => {
     if (selectedService?.id) {
       let __currentDate = moment().set({ year, month }).subtract(1, 'month');
@@ -105,7 +107,7 @@ const CalendarView = props => {
   }
   
   const renderCalendarDayBookings = day => {
-    if (!calendarBookings || !isSignedIn) return null;
+    if (!calendarBookings || !isSignedIn) return;
     const bookedDate = calendarBookings.find(booking => moment(booking.date).format('D') === String(day));
     // const fullyBooked = bookedDate?.timeslots.every(timeslot => timeslot.userid);
     return bookedDate && (<div className="sloth-container">
@@ -166,9 +168,27 @@ const CalendarView = props => {
     return isWeekDay(day);
   }
 
+  const tempCurrentDayBooking = () => {
+    const dayBooking = calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay));
+    
+    if (!dayBooking) {
+      return null;
+    }
+    if (!dayBooking && dayBookingsCache) {
+      return dayBookingsCache;
+    }
+    setDayBookingsCache(dayBooking);
+    return {
+      ...dayBooking
+    };
+  }
+
   const initiateBooking = async event => {
-    let id = event.target.dataset.label;
-    let currentDayBooking = calendarBookings.find(booking => moment(booking.date).format('D') === String(selectedDay));
+    let id = event.currentTarget.getAttribute('data-label');
+    if (!id) {
+      return;
+    }
+    let currentDayBooking = tempCurrentDayBooking()
     const emptyApiData = !currentDayBooking;
     if (emptyApiData) {
       currentDayBooking = {
@@ -188,8 +208,12 @@ const CalendarView = props => {
   }
 
   const initiateDeleteBooking = async event => {
-    let id = event.target.dataset.label;
-    let currentDayBooking = calendarBookings.find(booking => moment(booking.date).format('D') === String(selectedDay));
+    console.log(event.currentTarget.getAttribute('data-label'))
+    let id = event.currentTarget.getAttribute('data-label');
+    if (!id) {
+      return;
+    }
+    let currentDayBooking = tempCurrentDayBooking()
     const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = null;
     issuedTimeslot.username = "";
@@ -210,13 +234,10 @@ const CalendarView = props => {
     }
   }
   const calendarDayBookings = () => {
-    if (!calendarBookings || !isSignedIn) {
-      return;
-    }
-    console.log('selectedDay', selectedDay)
-    // console.log('calendarBookings ', calendarBookings  )
-    let dayBookings = calendarBookings.find(booking => moment(booking.date).format('D') === String(selectedDay));
-    // console.log('dayBookings', dayBookings)
+    
+    let dayBookings =  calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay)) || dayBookingsCache;
+    
+    
     if (!dayBookings) {
       dayBookings = {
         timeslots: cloneDeep(timeslots),
@@ -224,12 +245,17 @@ const CalendarView = props => {
         
       }
     }
+    
     let renderTimeslots = isAlternateTimeslots(selectedDay) ? dayBookings.timeslots : dayBookings.alternateTimeslots;
     return (
         <ul>
           {renderTimeslots?.map((slot, i) => {
             return (
               <li className={`calendar-day-bookings-animate calendar-day-bookings${calendarDayBookingsStyle(slot)}`} key={i} data-label={i} onClick={slot.userid ? initiateDeleteBooking : initiateBooking}>
+                {slot.userid ?
+                  <i className="large calendar check centered outline icon"></i>
+                  :
+                  <i className="large calendar centered outline icon"></i>}
                 <div className="calendar-day-bookings__content__timeslot"><strong>{slot?.timeslot || ''}</strong></div>
                 <div className="calendar-day-bookings__content__user">{slot?.username || ''}</div>
               </li>
@@ -258,12 +284,10 @@ const CalendarView = props => {
             )}
       </div>
         <div className="calendar-day-bookings">
-        { selectedDay && calendarBookings && (
           <>
-            <h2>{`Bokningar ${selectedDay}/${month}`}</h2>
+            <h3>{`Bokningar ${selectedDay}/${month}`}</h3>
             {calendarDayBookings()}
           </>
-        )}
         </div>
       </div>
   )

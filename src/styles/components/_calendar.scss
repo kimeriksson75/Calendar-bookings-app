@@ -125,18 +125,20 @@
     li {
         display: flex;
         flex-direction: row;
+        align-items: center;
         padding: 8px 12px;
         transition: background-color .2s ease-out;
         cursor: pointer;
-        &:hover {
-            color: var(--white);
-            background-color: var(--gray-dark);
-        }
+    }
+
+    i {
+        margin-right: 16px;
+        margin-top: -3px;
     }
     
     &--occupied {
         pointer-events: none;
-        text-decoration: line-through;
+        // text-decoration: line-through;
         border-left: 8px solid var(--orange);
         background-color: var( --gray-dark);
     }
@@ -163,5 +165,12 @@
         max-width: 960px;
         width: 100%;
         margin: 0 auto;
+    }
+    .calendar-day-bookings {
+        
+        li:hover {
+            color: var(--white);
+            background-color: var(--gray-dark);
+        }
     }
 }

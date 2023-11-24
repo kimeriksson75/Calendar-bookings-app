@@ -41,7 +41,7 @@ const Header = props => {
   return (
     <>
       <header className="app-header">
-          <a href="/" className="logo">{title}</a>
+          <a href="/" className="logo"><i className="large calendar centered outline icon"></i></a>
         <input
           className="side-menu"
           type="checkbox"

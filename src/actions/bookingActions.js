@@ -35,14 +35,14 @@ export const createBooking = (booking, userId) => async dispatch => {
       type: CREATE_BOOKING_SUCCESS,
       payload: createdBooking.data
     })
-    dispatch({
-      type: NEW_MESSAGE,
-      payload: {
-        type: 'success',
-        title: 'Bokningsbekräftelse',
-        description: 'Din bokning är nu bekräftad'
-      }
-    });
+    // dispatch({
+    //   type: NEW_MESSAGE,
+    //   payload: {
+    //     type: 'success',
+    //     title: 'Bokningsbekräftelse',
+    //     description: 'Din bokning är nu bekräftad'
+    //   }
+    // });
   } catch (error) {  
     dispatch({
       type: CREATE_BOOKING_ERROR,
@@ -128,14 +128,14 @@ export const patchBooking = (booking, userId) => async dispatch => {
       type: EDIT_BOOKING_SUCCESS,
       payload: patchedBooking.data
     })
-    dispatch({
-      type: NEW_MESSAGE,
-      payload: {
-        type: 'success',
-        title: 'Bokningsbekräftelse',
-        description: 'Din bokning är nu bekräftad'
-      }
-    });
+    // dispatch({
+    //   type: NEW_MESSAGE,
+    //   payload: {
+    //     type: 'success',
+    //     title: 'Bokningsbekräftelse',
+    //     description: 'Din bokning är nu bekräftad'
+    //   }
+    // });
   } catch (error) {
     dispatch({
       type: EDIT_BOOKING_ERROR,
