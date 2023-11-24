@@ -105,7 +105,6 @@ export const logout = (tokens) => dispatch => {
         type: SIGN_OUT_SUCCESS,
         payload: null
       })
-      history.push('/user/logout')
       dispatch({
         type: NEW_MESSAGE,
         payload: {

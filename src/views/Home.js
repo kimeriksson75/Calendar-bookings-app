@@ -23,11 +23,13 @@ const Home = props => {
 
   const __currentDate = moment();
 
-  if (!isSignedIn) history.push('/user/login')
 
   
   useEffect(() => {
     isSignedIn && user?.residence && getServicesByResidence(user.residence);
+    if (!isSignedIn) {
+      history.push('/user/login')
+    }
   }, [isSignedIn, getServicesByResidence, user]);
 
   useEffect(() => {

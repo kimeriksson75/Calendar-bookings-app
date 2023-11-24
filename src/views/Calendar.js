@@ -44,14 +44,14 @@ const CalendarView = props => {
   const [dayBookingsCache, setDayBookingsCache] = useState(null);
 
   useEffect(() => {
-    if (selectedService?.id) {
+    if (selectedService?.id && isSignedIn) {
       let __currentDate = moment().set({ year, month }).subtract(1, 'month');
       setCurrentDate(__currentDate);
       getBookingsByMonth(selectedService?.id, selectedDate.format());
 
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedService?.id, selectedDate]);
+  }, [selectedService?.id, selectedDate, isSignedIn]);
 
   useEffect(() => {
     if (year && month) {
@@ -115,7 +115,7 @@ const CalendarView = props => {
     </div>)
   }
   useEffect(() => {
-    if (!calendarBookings || !isSignedIn) {
+    if (!calendarBookings || !isSignedIn || !user) {
       return;
     }
     

@@ -7,7 +7,6 @@ import '../styles/main.scss';
 
 const Header = props => {
   const {
-    title = "KB.",
     showSidebar,
     toggleSidebar,
     logout,
@@ -19,8 +18,6 @@ const Header = props => {
   const __currentDate = moment();
 
   const delayedNav = (url) => {
-    console.log('url:', url)  
-
     url && history.push(url);
   }
   
@@ -31,9 +28,9 @@ const Header = props => {
     });
     unsetSelectedService();
     toggleSidebar(false);
+    history.push('/user/logout')
   }
   const onMenuItemClick = async url => {
-    delayedNav(url);
     toggleSidebar(false);
     delayedNav(url);
   }
@@ -91,71 +88,6 @@ const Header = props => {
           </nav>
       </header>
     </>)
-      // <Sidebar
-      //   as={Menu}
-      //   animation="overlay"
-      //   duration={100}
-      //   direction="left"
-      //   icon="labeled"
-      //   onHide={() => toggleSidebar(false)}
-      //   onHidden={() => delayedNav()}
-      //   vertical
-      //   inverted
-      //   color="teal"
-      //   size="mini"
-      //   visible={showSidebar}
-      //   style={{
-      //     'width': '25%'
-      //   }}
-      //   >
-      //   <Menu.Item
-      //     onClick={() => toggleSidebar(false)}>
-      //     <Icon name="close" size="small"></Icon>
-      //       Stäng
-      //     </Menu.Item>
-      //   <Menu.Item
-      //     onClick={() => onMenuItemClick('/')}>
-      //     <Icon name="home" size="small"></Icon>
-      //       Hem
-      //     </Menu.Item>
-      //   <Menu.Item
-      //     disabled={!auth.isSignedIn || !selectedService}
-      //     onClick={() => { onMenuItemClick(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`) }}>
-      //     <Icon name="calendar alternate outline" size="small"></Icon>
-      //       Kalender
-      //     </Menu.Item>
-      //   <Menu.Item
-      //     disabled={!auth.isSignedIn || !selectedService}
-      //     onClick={() => onMenuItemClick(`/${selectedService.id}/bookings`)}>
-      //     <Icon name="user" size="small"></Icon>
-      //     {/* { auth?.user?.email &&
-      //         <img
-      //           alt="Gravatar"
-      //           src={`https://www.gravatar.com/avatar/${auth.user.email}?d=identicon&s=24`} />
-      //       } */}
-      //       Mina bokningar
-      //   </Menu.Item>
-      //   {auth.isSignedIn ?
-      //     (<Menu.Item
-      //       onClick={() => {
-      //         setShouldLogout(true)
-      //         onMenuItemClick()
-      //       }}>
-      //       <Icon name="sign-out"></Icon>
-      //       <div>{`Logga ut ${auth?.user?.firstname}`}</div>
-      //     </Menu.Item>) :
-      //     (<Menu.Item
-      //       onClick={() => onMenuItemClick('/user/login')}>
-      //       <Icon name="sign-in"></Icon>
-      //       <div>Logga in</div>
-      //     </Menu.Item >)}
-      //   <Menu.Item
-      //     onClick={() => onMenuItemClick('/user/create')}>
-      //     <Icon name="plus" size="small"></Icon>
-      //       Ny användare
-      //   </Menu.Item>
-      // </Sidebar >
-  // )
 }
 const mapStateToProps = state => {
   return ({
