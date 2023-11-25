@@ -13,7 +13,7 @@ import {
   patchBooking,
   newMessage,
 } from '../actions';
-
+import useSocketIO from '../hooks/useSocketIO';
 moment.updateLocale('sv', {
   week: {
     dow: 1
@@ -32,7 +32,7 @@ const CalendarView = props => {
     bookingData: { calendarBookings = [] }
   } = props;
   
-  const { timeslots = [], alternateTimeslots = []} = selectedService || {};
+  const { timeslots = [], alternateTimeslots = [] } = selectedService || {};
 
   const { year = "", month = "", day = "" } = props.match.params;
   const [totalSlots, setTotalSlots] = useState([]);
@@ -42,7 +42,21 @@ const CalendarView = props => {
   const [selectedDay, setSelectedDay] = useState(0)
 
   const [dayBookingsCache, setDayBookingsCache] = useState(null);
+  const { updatedBookings } = useSocketIO();
 
+  
+  useEffect(() => {
+    if (updatedBookings) {
+      const { service = null, date = null } = updatedBookings;
+      if (!service || !date) {
+        return;
+      }
+      if (service === selectedService?.id && moment(date).format('YYYY-MM') === selectedDate.format('YYYY-MM')) {
+        getBookingsByMonth(selectedService?.id, selectedDate.format());
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatedBookings, selectedService?.id]);
   useEffect(() => {
     if (selectedService?.id && isSignedIn) {
       let __currentDate = moment().set({ year, month }).subtract(1, 'month');
@@ -62,6 +76,7 @@ const CalendarView = props => {
       }
       setSelectedDate(__currentDate);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month, day, selectedService?.id]);
   
   const firstDayOfMonth = () => {
@@ -208,7 +223,6 @@ const CalendarView = props => {
   }
 
   const initiateDeleteBooking = async event => {
-    console.log(event.currentTarget.getAttribute('data-label'))
     let id = event.currentTarget.getAttribute('data-label');
     if (!id) {
       return;

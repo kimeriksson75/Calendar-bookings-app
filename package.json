@@ -29,6 +29,7 @@
     "sass": "^1.69.5",
     "semantic-ui-calendar-react": "^0.15.3",
     "semantic-ui-react": "^0.88.2",
+    "socket.io-client": "^4.7.2",
     "styled-components": "^5.1.0"
   },
   "scripts": {
