@@ -1,3 +1,3 @@
 import io from "socket.io-client";
-const socket = io.connect('http://192.168.0.4:3000');
+const socket = io.connect('https://calendar-bookings-api-25317944a4a4.herokuapp.com');
 export default socket;
