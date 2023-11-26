@@ -198,11 +198,11 @@ const CalendarView = props => {
   const tempCurrentDayBooking = () => {
     const dayBooking = calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay));
     
-    if (!dayBooking) {
-      return null;
-    }
     if (!dayBooking && dayBookingsCache) {
       return dayBookingsCache;
+    }
+    if (!dayBooking) {
+      return null;
     }
     setDayBookingsCache(dayBooking);
     return {
@@ -258,8 +258,7 @@ const CalendarView = props => {
     }
   }
   const calendarDayBookings = () => {
-    
-    let dayBookings =  calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay));
+    let dayBookings = calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay)) || dayBookingsCache;
     
     if (!dayBookings) {
       dayBookings = {
