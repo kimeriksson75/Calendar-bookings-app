@@ -70,15 +70,23 @@ const CalendarView = props => {
   useEffect(() => {
     if (year && month) {
       let __currentDate = moment().set({ year, month }).subtract(1, 'month');
-      if (day) {
-        setSelectedDay(day);
-        __currentDate = moment().set({ year, month, date: day }).subtract(1, 'month');
-      }
+      
       setSelectedDate(__currentDate);
+      setDayBookingsCache(null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month, day, selectedService?.id]);
   
+  useEffect(() => {
+    if (day) {
+      
+      setSelectedDay(day);
+      let __currentDate = moment().set({ year, month, date: day }).subtract(1, 'month');
+      setSelectedDate(__currentDate);
+      setDayBookingsCache(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [day, year, month, selectedService?.id]);
   const firstDayOfMonth = () => {
     let firstDay = moment(currentDate)
       .startOf("month")
@@ -161,7 +169,11 @@ const CalendarView = props => {
   const onChangeMonth = value => {
     let dObject = Object.assign({}, currentDate);
     dObject = moment(dObject).add(value, 'months');
-    history.push(`/${selectedService.id}/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}`);
+    let day = moment().format('D');
+    if (dObject.isAfter(moment())) {
+      day = '1';
+    }
+    history.push(`/${selectedService.id}/calendar/${dObject.format('YYYY')}/${dObject.format('MM')}/${day}`);
   }
 
   const onDayClicked = event => {
@@ -173,7 +185,7 @@ const CalendarView = props => {
     .set({ year, month })
     .subtract(1, 'month')
     .set({ date })
-    history.push(`/${selectedService.id}/calendar/${_selectedDate.format('YYYY')}/${_selectedDate.format('MM')}/${_selectedDate.format('DD')}`);
+    history.push(`/${selectedService.id}/calendar/${_selectedDate.format('YYYY')}/${_selectedDate.format('MM')}/${_selectedDate.format('D')}`);
   }
   const isAlternateTimeslots = (day) => {
     const hasAlternateTimeslots = alternateTimeslots.length > 0;
@@ -218,7 +230,6 @@ const CalendarView = props => {
     issuedTimeslot.username = user.lastname;
     const method = emptyApiData ? createBooking : patchBooking;
     await method(currentDayBooking, user._id);
-    getBookingsByMonth(selectedService.id, currentDate.format());
 
   }
 
@@ -232,7 +243,6 @@ const CalendarView = props => {
     issuedTimeslot.userid = null;
     issuedTimeslot.username = "";
     await patchBooking(currentDayBooking, user._id);
-    getBookingsByMonth(selectedService.id, currentDate.format());
 
   }
 
@@ -249,8 +259,7 @@ const CalendarView = props => {
   }
   const calendarDayBookings = () => {
     
-    let dayBookings =  calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay)) || dayBookingsCache;
-    
+    let dayBookings =  calendarBookings?.find(booking => moment(booking.date).format('D') === String(selectedDay));
     
     if (!dayBookings) {
       dayBookings = {
