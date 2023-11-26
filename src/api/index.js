@@ -1,7 +1,7 @@
 import axios from 'axios';
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000';
 const version = process.env.REACT_APP_API_VERSION || 'v1';
-const apiURL = `${apiBaseUrl}/${version}`;
+const apiURL = `${apiBaseUrl}/api/${version}`;
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 console.log('process.env.REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL)
 console.log('process.env.REACT_APP_API_VERSION:', process.env.REACT_APP_API_VERSION)
