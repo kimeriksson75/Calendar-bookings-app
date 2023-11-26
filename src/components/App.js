@@ -12,6 +12,7 @@ import Login from '../views/Login';
 import SignInWithToken from './SignInWithToken';
 import ForgotPassword from '../views/ForgotPassword';
 import Logout from '../views/Logout';
+import Loader from './Loader';
 
 const App = () => { 
   return (
@@ -32,6 +33,7 @@ const App = () => {
       </Router>
       <Footer />
       <UserMessage />
+      <Loader />
     </>);
 }
 
