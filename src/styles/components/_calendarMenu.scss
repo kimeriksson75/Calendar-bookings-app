@@ -1,0 +1,28 @@
+.calendar-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: var(--gray);
+    color: var(--gray-dark);
+    font-size: 16px;
+    font-weight: 900;
+    
+    p,
+    h3 {
+        margin: 0;
+    }
+
+    button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        color: var(--gray-dark);
+
+        margin-right: 8px;
+        &:last-child {
+            margin-left: 12px;
+        }
+    }
+}

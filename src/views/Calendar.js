@@ -307,7 +307,7 @@ const CalendarView = props => {
       </div>
         <div className="calendar-day-bookings">
           <>
-            <h3>{`Bokningar ${selectedDay}/${month}`}</h3>
+          <h3><span>{`Bokningar ${selectedDate.locale('SE').format('ddd')} `}</span>{`${selectedDate.locale('SE').format('Do')} `}<span>{`${selectedDate.locale('SE').format('MMMM')}`}</span></h3>
             {calendarDayBookings()}
           </>
         </div>

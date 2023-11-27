@@ -56,8 +56,8 @@
     }
 
     &--selected {
-        color: var(--black);
-        background-color: var(--white);
+        color: var(--gray-dark);
+        background-color: var(--gray);
     }
 
     &--today {
@@ -69,8 +69,8 @@
     }
 
     &:hover {
-        color: var(--black);
-        background-color: var(--white); 
+        color: var(--gray-dark);
+        background-color: var(--gray); 
     }
 }
 
@@ -115,7 +115,12 @@
     margin-top: auto;
     display: flex;
     flex-direction: column;
-
+    
+    h3 {
+        span {
+            text-transform: capitalize;
+        }
+    }
     ul {
         display: flex;
         flex-direction: column;
@@ -139,20 +144,21 @@
     &--occupied {
         pointer-events: none;
         // text-decoration: line-through;
-        border-left: 8px solid var(--orange);
-        background-color: var( --gray-dark);
+        color: darken($color-calendar-day-slot--occupied, 20%);
+        border-left: 8px solid darken($color-calendar-day-slot--occupied, 20%);
+        background-color: lighten($color-calendar-day-slot--occupied, 10%);
     }
 
     &--vacant {
-        color: darken($color-message-success, 20%);
-        border-left: 8px solid lighten($color-message-success, 20%);;
-        background-color: lighten($color-message-success, 10%);
+        color: darken($color-calendar-day-slot--vacant, 40%);
+        border-left: 8px solid darken($color-calendar-day-slot--vacant, 20%);
+        background-color: lighten($color-calendar-day-slot--vacant, 0%);
     }
 
     &--booked {
-        color: darken($color-message-success, 20%);
-        border-left: 8px solid lighten($color-message-success, 20%);
-        background-color: lighten($color-message-success, 10%);
+        color: darken($color-calendar-day-slot--booked, 20%);
+        border-left: 8px solid darken($color-calendar-day-slot--booked, 20%);
+        background-color: lighten($color-calendar-day-slot--booked, 10%);
     }
 
     &__content__timeslot {

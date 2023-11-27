@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 
 const CalendarMenu = props => {
   const { currentDate } = props;
@@ -10,17 +10,17 @@ const CalendarMenu = props => {
     props.onChangeMonth(value)
   }
   return (
-      <Menu>
-        <Menu.Item as="a" icon onClick={() => onChangeMonth(-1)}>
+      <div className="calendar-menu">
+        <button icon onClick={() => onChangeMonth(-1)}>
           <Icon name="chevron left" ></Icon>
-        </Menu.Item>
-        <Menu.Item style={{ textTransform: 'capitalize' }}>
+        </button>
+        <p style={{ textTransform: 'capitalize' }}>
           {`${currentMonthName} ${currentYear}`}
-        </Menu.Item>
-        <Menu.Item as="a" icon onClick={() => onChangeMonth(1)}>
+        </p>
+        <button as="a" icon onClick={() => onChangeMonth(1)}>
           <Icon name="chevron right"></Icon>
-        </Menu.Item>
-      </Menu>
+        </button>
+      </div>
   )
 }
 export default CalendarMenu
