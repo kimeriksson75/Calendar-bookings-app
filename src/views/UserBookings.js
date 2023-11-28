@@ -49,7 +49,7 @@ const UserBookings = props => {
     )}
 
   const renderBookings = () =>
-  (<div className="user-bookings-container">
+  (<>
     {
     sortedUserBookings.map((booking) => {
       const timeslots = renderTimeslots(booking);
@@ -65,7 +65,7 @@ const UserBookings = props => {
     
     })
   }
-  </div>)
+  </>)
 
   const userErrorMessage = () => {
     newMessage({
@@ -77,7 +77,7 @@ const UserBookings = props => {
 
   return (
     <div className="page-container">
-      <InfoBar title="Mina kommande bokningar"/>
+      <InfoBar title="Kommande bokningar" description="- Sorterat i datumordning"/>
         {isSignedIn ?
           (<div>
             {userBookings && renderBookings()}

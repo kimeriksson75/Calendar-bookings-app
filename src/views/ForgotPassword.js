@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
 import { requestNewPassword } from '../actions';
 import RequestPasswordForm from '../components/RequestNewPasswordForm';
 import InfoBar from '../components/InfoBar';
@@ -13,7 +12,7 @@ const forgotPassword = props => {
         requestNewPassword(email);
       }
     return (
-        <Container>
+        <div className="page-container">
             <InfoBar title="Glömt lösenord" />
             <div>
                 <div>
@@ -23,7 +22,7 @@ const forgotPassword = props => {
             <div className="extra" style={{ paddingTop: '12px' }}>
                 <Link className="" to="/user/login">Tillbaka till login</Link>
             </div>
-        </Container>);
+        </div>);
 }
     
 const mapStateToProps = (state) => {
