@@ -15,7 +15,7 @@ const Loader = ({
     return (
         <div className="loader-container">
             <div className={`loader-spinner-wrapper loader-spinner-wrapper${show ? '--show' : ''}`}>
-                <div class="loader-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div className="loader-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </div>
         </div>
     );
