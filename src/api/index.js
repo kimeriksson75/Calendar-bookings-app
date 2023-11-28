@@ -2,10 +2,6 @@ import axios from 'axios';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000';
 const version = process.env.REACT_APP_API_VERSION || 'v1';
 const apiURL = `${apiBaseUrl}/api/${version}`;
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-console.log('process.env.REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL)
-console.log('process.env.REACT_APP_API_VERSION:', process.env.REACT_APP_API_VERSION)
-console.log('apiURL:', apiURL)
 export const bookings = axios.create({
   baseURL: `${apiURL}/bookings`,
 });
@@ -27,8 +23,7 @@ export const apartments = axios.create({
 });
 
 export const requestOptions = () => {
-  const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).data.accessToken : '0000000000';
-
+  const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).data.accessToken : process.env.REACT_APP_ACCESS_TOKEN_SECRET;
   const headers = {
     'Content-Type': 'application/json',
     'authorization': `Bearer ${token}`,
