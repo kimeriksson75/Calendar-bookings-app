@@ -4,5 +4,9 @@
     position: sticky;
     top: 0;
     width: 100%;
-    margin: 12px 0;
+    margin: 12px 0 24px;
+
+    p {
+        margin-top: -8px;
+    }
 }

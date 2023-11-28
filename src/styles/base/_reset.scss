@@ -30,3 +30,9 @@ ul {
 form .field > label {
     color: var(--white)!important;
 }
+form .field > select,
+form .field > input {
+
+    background-color: var(--gray)!important;
+    color: var(--gray-dark)!important;
+}
