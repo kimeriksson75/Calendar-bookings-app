@@ -18,8 +18,8 @@ const UpcomingUserBookings = ({ selectedService, user, userBookings }) => {
     const renderTimeslots = ({ timeslots = [], alternateTimeslots = [] }) => {
         const slots = [...timeslots, ...alternateTimeslots];
         const renderTimeslot = ({ start, end }) => {
-            const rStart = moment.utc(start).tz(moment.tz.guess()).format('HH:mm');
-            const rEnd = moment.utc(end).tz(moment.tz.guess()).format('HH:mm');
+            const rStart = moment.utc(start).local().format('HH:mm');
+            const rEnd = moment.utc(end).local().format('HH:mm');
             return `${rStart} - ${rEnd}`
           }
         return slots?.map((timeslot, i) => timeslot.userid === user._id ?
