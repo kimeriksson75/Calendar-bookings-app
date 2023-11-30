@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InfoBar = ({ title, description }) => {
+const InfoBar = ({ title, description = null }) => {
     return (
         <div className="info-bar">
             <div className="info-bar__title">
