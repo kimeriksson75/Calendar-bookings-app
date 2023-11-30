@@ -3,7 +3,7 @@ import Clock from 'react-live-clock';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import history from '../history';
-import { getServicesByResidence, setSelectedService, getBookingByAuthor } from '../actions';
+import { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByMonth } from '../actions';
 import { find, isEmpty } from 'lodash-fp';
 import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
@@ -17,19 +17,27 @@ const Home = props => {
       services = [],
       selectedService = {}
     },
-    bookingData: { userBookings = [] },
+    bookingData: { userBookings = [], calendarBookings = [] },
     getServicesByResidence,
     setSelectedService,
-    getBookingByAuthor
+    getBookingByAuthor,
+    getBookingsByMonth,
   } = props;
 
   const __currentDate = moment();
+
   useEffect(() => {
     if (!isSignedIn) {
       history.push('/user/login')
     }
   }, [isSignedIn])
   
+  useEffect(() => {
+    if (selectedService && !isEmpty(selectedService)) {
+      //history.push(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}/${__currentDate.format('D')}`)
+    }
+  }, [selectedService, __currentDate]);
+
   useEffect(() => {
     if (services.length > 0) {
       setSelectedService(services[0]);
@@ -51,11 +59,6 @@ const Home = props => {
     }
   }, [isSignedIn, getServicesByResidence, user]);
 
-  useEffect(() => {
-    if (selectedService && !isEmpty(selectedService)) {
-      //history.push(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}/${__currentDate.format('D')}`)
-    }
-  }, [selectedService, __currentDate]);
 
   const [sortedUserBookings, setSortedUserBookings] = React.useState([]);
 
@@ -66,6 +69,13 @@ const Home = props => {
     }
   }, [userBookings])
   
+
+  // useEffect(() => {
+  //   if (selectedService && selectedService._id) {
+  //     getBookingsByMonth(selectedService._id, __currentDate.format());
+  //   }
+  // }, [selectedService, getBookingsByMonth])
+
   const onChangeService = (e, data) => {
     const service = find({ id: data.value }, services)
     setSelectedService(service);
@@ -87,10 +97,10 @@ const Home = props => {
     )
   }
 
-  const renderNextBooking = bookings => {
+  const renderNextUserBooking = bookings => {
     const nextTimeSlot = bookings?.find(booking => moment(booking.date).isAfter(moment().startOf('day')))
-      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment(timeSlot.start).isAfter(moment()));
-    return moment(nextTimeSlot.start).fromNow();
+      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment(timeSlot.start).tz('Europe/Stockholm').isAfter(moment()));
+    return moment(nextTimeSlot?.start).tz('Europe/Stockholm').fromNow();
   }
   return (
     <div className="page-container">
@@ -118,7 +128,7 @@ const Home = props => {
             )}
           {selectedService && sortedUserBookings?.length > 0 && (
             <>
-              <p>{user?.firstname}, din nästa bokning är</p><span> {renderNextBooking(sortedUserBookings)}.</span>
+              <p>{user?.firstname}, din nästa bokning är</p><span> {renderNextUserBooking(sortedUserBookings)}.</span>
             </>
           )}
           </div>
@@ -148,4 +158,4 @@ const mapStateToProps = state => {
     bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor })(Home);
+export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByMonth })(Home);
