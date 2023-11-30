@@ -228,6 +228,8 @@ const CalendarView = props => {
     const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = user._id;
     issuedTimeslot.username = user.lastname;
+    issuedTimeslot.start = moment(issuedTimeslot.start).set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
+    issuedTimeslot.end = moment(issuedTimeslot.end).set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
     const method = emptyApiData ? createBooking : patchBooking;
     await method(currentDayBooking, user._id);
 
@@ -269,6 +271,11 @@ const CalendarView = props => {
     }
     
     let renderTimeslots = isAlternateTimeslots(selectedDay) ? dayBookings.timeslots : dayBookings.alternateTimeslots;
+    const renderTimeslot = ({ start, end }) => {
+      const rStart = moment(start).format('HH:mm');
+      const rEnd = moment(end).format('HH:mm');
+      return `${rStart} - ${rEnd}`
+    }
     return (
         <ul>
           {renderTimeslots?.map((slot, i) => {
@@ -278,7 +285,7 @@ const CalendarView = props => {
                   <i className="large calendar check centered outline icon"></i>
                   :
                   <i className="large calendar centered outline icon"></i>}
-                <div className="calendar-day-bookings__content__timeslot"><strong>{slot?.timeslot || ''}</strong></div>
+                <div className="calendar-day-bookings__content__timeslot"><strong>{renderTimeslot(slot)}</strong></div>
                 <div className="calendar-day-bookings__content__user">{slot?.username || ''}</div>
               </li>
               )
