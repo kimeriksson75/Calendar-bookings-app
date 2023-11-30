@@ -14,9 +14,9 @@ const CalendarMenu = props => {
         <button onClick={() => onChangeMonth(-1)}>
           <Icon name="chevron left" ></Icon>
         </button>
-        <p style={{ textTransform: 'capitalize' }}>
+        <span style={{ textTransform: 'capitalize' }}>
           {`${currentMonthName} ${currentYear}`}
-        </p>
+        </span>
         <button onClick={() => onChangeMonth(1)}>
           <Icon name="chevron right"></Icon>
         </button>
