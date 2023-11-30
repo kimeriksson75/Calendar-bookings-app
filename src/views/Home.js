@@ -20,11 +20,10 @@ const Home = props => {
       services = [],
       selectedService = {}
     },
-    bookingData: { userBookings = [], calendarBookings = [] },
+    bookingData: { userBookings = [] },
     getServicesByResidence,
     setSelectedService,
     getBookingByAuthor,
-    getBookingsByMonth,
   } = props;
 
   const __currentDate = moment();
@@ -72,12 +71,6 @@ const Home = props => {
     }
   }, [userBookings])
   
-
-  // useEffect(() => {
-  //   if (selectedService && selectedService._id) {
-  //     getBookingsByMonth(selectedService._id, __currentDate.format());
-  //   }
-  // }, [selectedService, getBookingsByMonth])
 
   const onChangeService = (e, data) => {
     const service = find({ id: data.value }, services)
@@ -144,7 +137,7 @@ const Home = props => {
             </div>) : <p>Du har inga kommande bokningar.</p>}
             <div className="ui divider"></div>
         </div>
-        {services && services.length > 0 && (
+        {services && services.length > 1 && (
           <div>
             <p>Välj en annan bokningstjänst</p>
             {renderServices(services)}
@@ -161,4 +154,4 @@ const mapStateToProps = state => {
     bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByMonth })(Home);
+export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor })(Home);
