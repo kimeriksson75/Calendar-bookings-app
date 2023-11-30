@@ -1,4 +1,4 @@
-import { users, requestOptions } from '../api';
+import { auth, users, requestOptions } from '../api';
 import { handleError } from './handleError';
 
 export const register = async user => {
@@ -13,7 +13,7 @@ export const register = async user => {
 
 export const signIn = async (username, password) => {
 
-  return await users.post('/authenticate', { username, password }, requestOptions())
+  return await auth.post('/', { username, password }, requestOptions())
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user));

@@ -6,6 +6,10 @@ export const bookings = axios.create({
   baseURL: `${apiURL}/bookings`,
 });
 
+export const auth = axios.create({
+  baseURL: `${apiURL}/auth`,
+});
+
 export const users = axios.create({
   baseURL: `${apiURL}/users`,
 });
