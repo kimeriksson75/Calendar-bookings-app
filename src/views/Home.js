@@ -7,6 +7,9 @@ import { getServicesByResidence, setSelectedService, getBookingByAuthor, getBook
 import { find, isEmpty } from 'lodash-fp';
 import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
+moment.tz.setDefault('Europe/Stockholm');
+
+
 const Home = props => {
   const {
     auth: {
@@ -99,8 +102,8 @@ const Home = props => {
 
   const renderNextUserBooking = bookings => {
     const nextTimeSlot = bookings?.find(booking => moment(booking.date).isAfter(moment().startOf('day')))
-      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment(timeSlot.start).tz('Europe/Stockholm').isAfter(moment()));
-    return moment(nextTimeSlot?.start).tz('Europe/Stockholm').fromNow();
+      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment(timeSlot.start).isAfter(moment()));
+    return moment(nextTimeSlot?.start).fromNow();
   }
   return (
     <div className="page-container">

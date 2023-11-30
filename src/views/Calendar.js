@@ -19,6 +19,7 @@ moment.updateLocale('sv', {
     dow: 1
   }
 });
+moment.tz.setDefault('Europe/Stockholm');
 
 const CalendarView = props => {
 
@@ -228,8 +229,8 @@ const CalendarView = props => {
     const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = user._id;
     issuedTimeslot.username = user.lastname;
-    issuedTimeslot.start = moment(issuedTimeslot.start).tz('Europe/Stockholm').set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
-    issuedTimeslot.end = moment(issuedTimeslot.end).tz('Europe/Stockholm').set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
+    issuedTimeslot.start = moment(issuedTimeslot.start).set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
+    issuedTimeslot.end = moment(issuedTimeslot.end).set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
     const method = emptyApiData ? createBooking : patchBooking;
     await method(currentDayBooking, user._id);
 
@@ -272,8 +273,8 @@ const CalendarView = props => {
     
     let renderTimeslots = isAlternateTimeslots(selectedDay) ? dayBookings.timeslots : dayBookings.alternateTimeslots;
     const renderTimeslot = ({ start, end }) => {
-      const rStart = moment(start).tz('Europe/Stockholm').format('HH:mm');
-      const rEnd = moment(end).tz('Europe/Stockholm').format('HH:mm');
+      const rStart = moment(start).format('HH:mm');
+      const rEnd = moment(end).format('HH:mm');
       return `${rStart} - ${rEnd}`
     }
     return (
