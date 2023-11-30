@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Clock from 'react-live-clock';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import momentTimezone from 'moment-timezone';
 import history from '../history';
 import { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByMonth } from '../actions';
 import { find, isEmpty } from 'lodash-fp';
@@ -96,6 +97,11 @@ const Home = props => {
   const renderNextUserBooking = bookings => {
     const nextTimeSlot = bookings?.find(booking => moment(booking.date).isAfter(moment().startOf('day')))
       .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment(timeSlot.start).isAfter(moment()));
+    console.log('nextTimeSlot utc', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
+    console.log('nextTimeSlot local', moment(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
+    console.log('nextTimeSlot utc local', moment.utc(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
+    console.log('nextTimeSlot utc offset', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
+    console.log('moment.utc(date).tz(moment.tz.guess()', moment.utc(nextTimeSlot?.start).tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm'))
     return moment(nextTimeSlot?.start).fromNow();
   }
   return (
