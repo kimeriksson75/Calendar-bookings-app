@@ -11,8 +11,8 @@
     height: 100%;
 }
 body {
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--dark);
+    color: var(--light);
     font-family: $roboto-slab;
     height: 100dvh;
 }
@@ -22,7 +22,7 @@ p {
 }
 a {
     text-decoration: none;
-    color: var(--white);
+    color: var(--light);
 }
 a:hover {
     color: var(--gray-dark);
@@ -31,11 +31,16 @@ ul {
     list-style: none;
 }
 form .field > label {
-    color: var(--white)!important;
+    color: var(--light)!important;
 }
 form .field > select,
 form .field > input {
-
-    background-color: var(--gray)!important;
-    color: var(--gray-dark)!important;
+    
+    background-color: var(--dark)!important;
+    color: var(--light)!important;
+    
+    body.dark & {
+        background-color: var(--gray)!important;
+        color: var(--gray-dark)!important;
+    }
 }

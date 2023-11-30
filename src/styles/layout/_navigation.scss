@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    background-color: var(--black);
+    background-color: var(--dark);
     overflow: hidden;
 }
 .menu {
@@ -15,8 +15,8 @@
     display: block;
     width: 100%;
     padding: 30px;
-    color: var(--white);
-    background-color: var(--black);
+    color: var(--light);
+    background-color: var(--dark);
     transition: all .2s ease-out;
 
     border: none;
@@ -27,12 +27,12 @@
     color: var(--gray);
     text-decoration: line-through;
     &:hover{
-        background-color: var(--black);
+        background-color: var(--dark);
     }
 }
 .menu button:hover{
-    color: var(--black);
-    background-color: var(--white);
+    color: var(--dark);
+    background-color: var(--light);
     text-decoration: underline;
 
 
@@ -64,7 +64,6 @@
     .menu > button:hover {
         background-color: transparent;
         color: var(--gray);
-        border-left: 4px solid darken($color-nav-button-hover, 20%);
     }
 
     .hamb{

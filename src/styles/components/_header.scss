@@ -1,10 +1,9 @@
 .app-header{
-    background-color: var(--black);
+    background-color: var(--dark);
     position: sticky;
     top: 0;
     width: 100%;
     z-index: 1;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
     
 }
 .app-header-info-bar {
@@ -14,7 +13,7 @@
 /* Logo */
 .logo{
     display: inline-block;
-    color: var(--white);
+    color: var(--light);
     font-size: 24px;
     margin: 14px 10px;
 }

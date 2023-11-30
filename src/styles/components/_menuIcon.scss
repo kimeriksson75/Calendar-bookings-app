@@ -6,7 +6,7 @@
 }/* Style label tag */
 
 .hamb-line {
-    background: var(--white);
+    background: var(--light);
     display: block;
     height: 2px;
     position: relative;
@@ -16,7 +16,7 @@
 
 .hamb-line::before,
 .hamb-line::after{
-    background: var(--white);
+    background: var(--light);
     content: '';
     display: block;
     height: 100%;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { toggleSidebar, logout, unsetSelectedService } from '../actions';
+import { toggleSidebar, logout, unsetSelectedService, setLayout } from '../actions';
 import history from '../history';
 import '../styles/main.scss';
 
@@ -9,6 +9,8 @@ const Header = props => {
   const {
     showSidebar,
     toggleSidebar,
+    layout,
+    setLayout,
     logout,
     unsetSelectedService,
     auth,
@@ -30,6 +32,22 @@ const Header = props => {
     toggleSidebar(false);
     history.push('/user/logout')
   }
+
+  const onToggleLayout = () => {
+    if (layout === 'dark') {
+      setLayout('light');
+    } else {
+      setLayout('dark');
+    }
+  }
+
+  useEffect(() => {
+    if (layout === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  },[layout])
   const onMenuItemClick = async url => {
     toggleSidebar(false);
     delayedNav(url);
@@ -83,17 +101,24 @@ const Header = props => {
                 <button onClick={() => onMenuItemClick('/user/create')}>
                   Ny användare
                 </button>
+            </li>
+              <li>
+                <button onClick={() => onToggleLayout()}>
+                  {!layout || layout === 'light' ? 'Tema - Mörk' : 'Tema - Ljus'}
+                </button>
               </li>
             </ul>
-          </nav>
+        </nav>
       </header>
+      <div className="ui divider" style={{marginTop: '0px'}}></div>
     </>)
 }
 const mapStateToProps = state => {
   return ({
     showSidebar: state.application.showSidebar,
+    layout: state.application.layout,
     auth: state.auth,
     service: state.service
   })
 }
-export default connect(mapStateToProps, { toggleSidebar, logout, unsetSelectedService })(Header);
+export default connect(mapStateToProps, { toggleSidebar, logout, unsetSelectedService, setLayout })(Header);

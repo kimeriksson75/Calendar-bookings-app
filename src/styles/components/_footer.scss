@@ -4,8 +4,8 @@
     z-index: 1;
     width: 100%;
 
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--dark);
+    color: var(--light);
     padding: 12px;
     text-align: center;
     font-size: 14px;
@@ -13,7 +13,7 @@
     line-height: 1.5;
 
     a {
-        color: var(--white);
+        color: var(--light);
         text-decoration: none;
         &:hover {
             text-decoration: underline;

@@ -63,4 +63,6 @@ export const NEW_MESSAGE = 'NEW_MESSAGE';
 
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 
+export const SET_LAYOUT = 'SET_LAYOUT';
+
 export const CLIENT_ID = '303832931161-5v8mqd2di5ben74v8u4qqflks68pvpf6.apps.googleusercontent.com';

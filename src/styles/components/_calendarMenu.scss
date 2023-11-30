@@ -4,10 +4,15 @@
     justify-content: flex-start;
     align-items: center;
     padding: 8px 12px;
-    background-color: var(--gray);
-    color: var(--gray-dark);
-    font-size: 16px;
+    font-size: 1.2rem;
     font-weight: 900;
+
+    body.dark & {
+        background-color: var(--gray);
+        color: var(--gray-dark);
+    }
+    color: var(--dark);
+    background-color: var(--light);
     
     p,
     h3 {
@@ -18,7 +23,10 @@
         border: none;
         background-color: transparent;
         cursor: pointer;
-        color: var(--gray-dark);
+        body.dark & {
+            color: var(--gray-dark);
+        }
+        color: var(--dark);
 
         margin-right: 8px;
         &:last-child {

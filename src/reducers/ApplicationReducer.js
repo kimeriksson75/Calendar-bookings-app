@@ -1,7 +1,8 @@
-import { TOGGLE_SIDEBAR } from '../constants';
+import { TOGGLE_SIDEBAR, SET_LAYOUT } from '../constants';
 
 const INIITAL_STATE = {
-  showSidebar: false
+  showSidebar: false,
+  // layout: 'default'
 }
 
 export default (state = INIITAL_STATE, action) => {
@@ -10,6 +11,8 @@ export default (state = INIITAL_STATE, action) => {
       const { showSidebar } = state;
       const toggleSidebar = action.payload === false ? action.payload : showSidebar ? false : true;
       return { ...state, showSidebar: toggleSidebar };
+    case SET_LAYOUT:
+      return { ...state, layout: action.payload };
     default:
       return state
   }

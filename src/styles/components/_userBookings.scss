@@ -19,7 +19,11 @@
     border-left: 8px solid darken($color-message-success, 20%);;
     background-color: lighten($color-message-success, 10%);
     &:hover {
-        color: var(--white);
+        body.dark & {
+            color: var(--light);
+            background-color: var(--gray-dark);
+        }
+        color: var(--dark);
         background-color: var(--gray-dark);
         border-left: 8px solid darken($color-message-success, 40%);;
 

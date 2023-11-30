@@ -29,8 +29,8 @@
     cursor: pointer;
     border: 1px solid rgba(0,0,0,0.1);
     width: 100%;
-    color: var(--white);
-    background-color: var(--black);
+    color: var(--light);
+    background-color: var(--dark);
     padding-top: 1rem;
     padding-bottom: 1rem;
     position: relative;
@@ -40,8 +40,10 @@
         pointer-events: none;
         text-decoration: line-through;
         border: 1px solid rgba(0,0,0,0.1);
-        background-color: var(--gray-dark);
-
+        background-color: var(--gray);
+        body.dark & {
+            background-color: var(--gray-dark);
+        }
     }
 
     &--invisible {
@@ -55,11 +57,6 @@
         pointer-events: none;
     }
 
-    &--selected {
-        color: var(--gray-dark);
-        background-color: var(--gray);
-    }
-
     &--today {
         background-color: var(--orange);
     }
@@ -67,10 +64,15 @@
     &--weekend {
         color: var(--orange);
     }
-
+    &--selected,
     &:hover {
-        color: var(--gray-dark);
-        background-color: var(--gray); 
+        color: var(--gray);
+        background-color: var(--gray-dark);
+        
+        body.dark & {
+            color: var(--gray-dark);
+            background-color: var(--gray);
+        }
     }
 }
 
@@ -91,8 +93,8 @@
     opacity: 0.1;
 
     &--occupied {
-        border: 1px solid var(--white);
-        background-color: var(--white);
+        border: 1px solid var(--light);
+        background-color: var(--light);
     }
 }
 .calendar-day-bookings-animate {
@@ -135,6 +137,14 @@
         transition: background-color .2s ease-out;
         cursor: pointer;
     }
+    li:hover {
+        body.dark & {
+            color: var(--light);
+            background-color: var(--gray-dark);
+        }
+        background-color: var(--light);
+        color: var(--dark);
+    }
 
     i {
         margin-right: 16px;
@@ -171,12 +181,5 @@
         max-width: 960px;
         width: 100%;
         margin: 0 auto;
-    }
-    .calendar-day-bookings {
-        
-        li:hover {
-            color: var(--white);
-            background-color: var(--gray-dark);
-        }
     }
 }

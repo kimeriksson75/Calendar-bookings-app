@@ -2,7 +2,8 @@ import history from '../history';
 import {
   NEW_MESSAGE,
   TOGGLE_SIDEBAR,
-  SIGN_OUT_SUCCESS
+  SIGN_OUT_SUCCESS,
+  SET_LAYOUT
 } from '../constants';
 import { logout } from './userActions';
 export const newMessage = message => {
@@ -16,6 +17,14 @@ export const toggleSidebar = (value = null) => {
   const payload = typeof value === "boolean" ? value : null;
   return {
     type: TOGGLE_SIDEBAR,
+    payload
+  }
+}
+
+export const setLayout = (payload) => {
+  console.log('payload', payload)
+  return {
+    type: SET_LAYOUT,
     payload
   }
 }
