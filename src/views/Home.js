@@ -95,13 +95,13 @@ const Home = props => {
 
   const renderNextUserBooking = bookings => {
     const nextTimeSlot = bookings?.find(booking => moment(booking.date).isAfter(moment().startOf('day')))
-      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment.utc(timeSlot.start).format().isAfter(moment()));
+      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment.utc(timeSlot.start).isAfter(moment()));
     console.log('nextTimeSlot utc', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
     console.log('nextTimeSlot local', moment(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
     console.log('nextTimeSlot utc local', moment.utc(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
     console.log('nextTimeSlot utc offset', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
     console.log('moment.utc(date).tz(moment.tz.guess()', moment.utc(nextTimeSlot?.start).tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm'))
-    return moment.utc(nextTimeSlot?.start).format().fromNow();
+    return moment.utc(nextTimeSlot?.start).fromNow();
   }
   return (
     <div className="page-container">
