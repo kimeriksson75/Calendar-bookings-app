@@ -272,8 +272,8 @@ const CalendarView = props => {
     
     let renderTimeslots = isAlternateTimeslots(selectedDay) ? dayBookings.timeslots : dayBookings.alternateTimeslots;
     const renderTimeslot = ({ start, end }) => {
-      const rStart = moment.utc(start).format().format('HH:mm');
-      const rEnd = moment.utc(end).format().format('HH:mm');
+      const rStart = moment.utc(start).format('HH:mm');
+      const rEnd = moment.utc(end).format('HH:mm');
       return `${rStart} - ${rEnd}`
     }
     return (
