@@ -22,7 +22,7 @@
 }
 
 .loader-spinner {
-    color: official;
+    color: var(--light);
     display: inline-block;
     position: relative;
     width: 20px;
@@ -41,7 +41,7 @@
     width: 1px;
     height: 5px;
     border-radius: 20%;
-    background: #fff;
+    background: var(--light);
   }
   .loader-spinner div:nth-child(1) {
     transform: rotate(0deg);
