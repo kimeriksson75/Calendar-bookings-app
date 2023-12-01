@@ -3,10 +3,11 @@ import Clock from 'react-live-clock';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import history from '../history';
-import { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByMonth } from '../actions';
+import { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByDateSpan } from '../actions';
 import { find, isEmpty } from 'lodash-fp';
 import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
+import NextAvailableTimeslot from '../components/NextAvailableTimeslot';
 moment.tz.setDefault('Europe/Stockholm');
 
 
@@ -20,10 +21,11 @@ const Home = props => {
       services = [],
       selectedService = {}
     },
-    bookingData: { userBookings = [] },
+    bookingData: { userBookings = [], booking = [] },
     getServicesByResidence,
     setSelectedService,
     getBookingByAuthor,
+    getBookingsByDateSpan
   } = props;
 
   const __currentDate = moment();
@@ -48,7 +50,6 @@ const Home = props => {
 
   useEffect(() => {
     if (user && selectedService?._id) {
-      console.log('selectedService', selectedService)
       getBookingByAuthor(selectedService._id, user._id);
     }
 
@@ -70,6 +71,18 @@ const Home = props => {
       setSortedUserBookings(sortedUserBookings);
     }
   }, [userBookings])
+
+  useEffect(() => {
+    if(selectedService && selectedService._id) {
+      getBookingsByDateSpan(selectedService._id, moment().startOf('day').format(), moment().add({ month: 1 }).endOf('day').format());
+    }
+
+  }, [selectedService, getBookingsByDateSpan])
+
+  useEffect(() => {
+    if (booking && booking.length > 0) {
+    }
+  }, [booking])
   
 
   const onChangeService = (e, data) => {
@@ -96,13 +109,14 @@ const Home = props => {
   const renderNextUserBooking = bookings => {
     const nextTimeSlot = bookings?.find(booking => moment(booking.date).isAfter(moment().startOf('day')))
       .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment.utc(timeSlot.start).isAfter(moment()));
-    console.log('nextTimeSlot utc', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
-    console.log('nextTimeSlot local', moment(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
-    console.log('nextTimeSlot utc local', moment.utc(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
-    console.log('nextTimeSlot utc offset', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
-    console.log('moment.utc(date).tz(moment.tz.guess()', moment.utc(nextTimeSlot?.start).tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm'))
+    // console.log('nextTimeSlot utc', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
+    // console.log('nextTimeSlot local', moment(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
+    // console.log('nextTimeSlot utc local', moment.utc(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
+    // console.log('nextTimeSlot utc offset', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
+    // console.log('moment.utc(date).tz(moment.tz.guess()', moment.utc(nextTimeSlot?.start).tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm'))
     return moment.utc(nextTimeSlot?.start).fromNow();
   }
+
   return (
     <div className="page-container">
       <div className="home">
@@ -127,18 +141,25 @@ const Home = props => {
             </>
             
             )}
-          {selectedService && sortedUserBookings?.length > 0 && (
-            <>
+        </div>
+        {selectedService && booking?.length > 0 && (
+          <>
+          <div className="ui divider"></div>
+            <NextAvailableTimeslot  selectedService={selectedService} bookings={booking} />
+          <div className="ui divider"></div>
+          </>
+        )}
+        {selectedService && sortedUserBookings?.length > 0 && (
+            <div className="home-welcome">
               <p>{user?.firstname}, din nästa bokning är</p><span> {renderNextUserBooking(sortedUserBookings)}.</span>
-            </>
+            </div>
           )}
-          </div>
         <div>
           {userBookings?.length > 0 ? (
             <div>
               <div className="ui divider"></div>
               <p>Dina kommande bokningar</p>
-              {UpcomingUserBookings({ selectedService, user, userBookings })}
+              <UpcomingUserBookings selectedService={selectedService} user={user} userBookings={sortedUserBookings} />
             </div>) : <p>Du har inga kommande bokningar.</p>}
             <div className="ui divider"></div>
         </div>
@@ -159,4 +180,4 @@ const mapStateToProps = state => {
     bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor })(Home);
+export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByDateSpan })(Home);

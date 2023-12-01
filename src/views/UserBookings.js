@@ -30,7 +30,7 @@ const UserBookings = props => {
       <InfoBar title="Kommande bokningar" description="- Sorterat i datumordning"/>
         {isSignedIn ?
           (<div>
-          {userBookings && UpcomingUserBookings({ selectedService, user, userBookings })}
+          {userBookings && (<UpcomingUserBookings userBookings={userBookings} selectedService={selectedService} user={user} />)}
           </div>) : userErrorMessage()
         }
       </div>

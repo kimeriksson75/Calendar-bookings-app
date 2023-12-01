@@ -19,6 +19,14 @@ const getBookingsByDate = async (service, date) => {
     .catch(err => handleError(err))
 }
 
+const getBookingsByDateSpan = async (service, start, end) => {
+  return await bookings.get(`/service/${service}/start/${start}/end/${end}`, requestOptions())
+    .then(booking => {
+      return Promise.resolve(booking);
+    })
+    .catch(err => handleError(err))
+}
+
 const getBookingsByMonth = async (service, date) => {
   return await bookings.get(`/service/${service}/month/${date}`, requestOptions())
     .then(booking => {
@@ -49,6 +57,7 @@ const patchBooking = async (booking, userId) => {
 const bookingService = {
   create,
   getBookingsByDate,
+  getBookingsByDateSpan,
   getBookingsByMonth,
   getBookingsByAuthor,
   patchBooking

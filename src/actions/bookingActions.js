@@ -64,6 +64,27 @@ export const getBookingsByDate = (service, date) => async dispatch => {
     });
 }
 
+export const getBookingsByDateSpan = (service, start, end) => async dispatch => {
+  dispatch({
+    type: FETCH_BOOKINGS,
+    payload: null
+  })
+  bookingsService.getBookingsByDateSpan(service, start, end)
+    .then(booking => {
+      dispatch({
+        type: FETCH_BOOKINGS_SUCCESS,
+        payload: booking.data
+      })
+    })
+    .catch(error => {
+      dispatch({
+        type: FETCH_BOOKINGS_ERROR,
+        payload: null
+      })
+      handleError(error, dispatch);
+    });
+}
+
 export const getBookingsByMonth = (service, date) => async dispatch => {
   dispatch({
     type: FETCH_CALENDAR_BOOKINGS,

@@ -175,6 +175,25 @@
     &__content__timeslot {
         margin-right: 24px;
     }
+
+    &--next-available:hover {
+        body.dark & {
+            color: var(--light);
+            background-color: var(--gray-dark);
+        }
+        background-color: var(--light);
+        color: var(--dark);
+    }
+    &--next-available {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        transition: background-color .2s ease-out;
+        cursor: pointer;
+        
+    }
 }
 
 @media (min-width: $breakpoint-tablet) {
