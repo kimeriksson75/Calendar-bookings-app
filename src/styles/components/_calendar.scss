@@ -137,14 +137,6 @@
         transition: background-color .2s ease-out;
         cursor: pointer;
     }
-    li:hover {
-        body.dark & {
-            color: var(--light);
-            background-color: var(--gray-dark);
-        }
-        background-color: var(--light);
-        color: var(--dark);
-    }
 
     i {
         margin-right: 16px;
@@ -181,5 +173,18 @@
         max-width: 960px;
         width: 100%;
         margin: 0 auto;
+    }
+}
+
+@media(hover: hover) and (pointer: fine) {
+    .calendar-day-bookings {
+        li:hover {
+            body.dark & {
+                color: var(--light);
+                background-color: var(--gray-dark);
+            }
+            background-color: var(--light);
+            color: var(--dark);
+        }
     }
 }
