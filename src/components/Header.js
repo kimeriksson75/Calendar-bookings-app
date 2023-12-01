@@ -73,7 +73,7 @@ const Header = props => {
               <li>
                 <button
                   disabled={!auth.isSignedIn || !selectedService}
-                  onClick={() => onMenuItemClick(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}`)}>
+                  onClick={() => onMenuItemClick(`/${selectedService.id}/calendar/${__currentDate.format('YYYY')}/${__currentDate.format('MM')}/${__currentDate.format('D')}`)}>
                   Kalender
                 </button>
               </li>

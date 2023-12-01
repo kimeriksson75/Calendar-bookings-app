@@ -80,8 +80,7 @@ const CalendarView = props => {
   
   useEffect(() => {
     if (day) {
-      
-      setSelectedDay(day);
+      setSelectedDay(parseInt(day));
       let __currentDate = moment().set({ year, month, date: day }).subtract(1, 'month');
       setSelectedDate(__currentDate);
       setDayBookingsCache(null);
