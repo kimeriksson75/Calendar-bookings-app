@@ -16,6 +16,9 @@
     color: var(--light);
     font-size: 24px;
     margin: 14px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 @media (min-width: $breakpoint-tablet) {

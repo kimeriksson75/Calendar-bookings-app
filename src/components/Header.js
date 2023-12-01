@@ -39,6 +39,7 @@ const Header = props => {
     } else {
       setLayout('dark');
     }
+    toggleSidebar(false);
   }
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const Header = props => {
   return (
     <>
       <header className="app-header">
-          <a href="/" className="logo"><i className="large calendar centered outline icon"></i></a>
+          <button className="logo" onClick={() => onMenuItemClick('/')}><i className="large calendar centered outline icon"></i></button>
         <input
           className="side-menu"
           type="checkbox"

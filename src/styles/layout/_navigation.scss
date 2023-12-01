@@ -30,13 +30,6 @@
         background-color: var(--dark);
     }
 }
-.menu button:hover{
-    color: var(--dark);
-    background-color: var(--light);
-    text-decoration: underline;
-
-
-}
 .nav{
     max-height: 0;
     transition: max-height .2s ease-out;
@@ -68,5 +61,15 @@
 
     .hamb{
         display: none;
+    }
+}
+
+@media(hover: hover) and (pointer: fine) {
+    .menu button:hover{
+        color: var(--dark);
+        background-color: var(--light);
+        text-decoration: underline;
+    
+    
     }
 }
