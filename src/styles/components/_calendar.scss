@@ -88,13 +88,22 @@
     height: 6px;
     width: 6px;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.9);
     margin-top: 2px;
-    opacity: 0.1;
-
+    opacity: .1;
+    
     &--occupied {
         border: 1px solid var(--light);
         background-color: var(--light);
+    }
+    
+    body.dark & {
+        border: 1px solid rgba(255,255,255,0.9);
+
+        &--occupied {
+            border: 1px solid var(--light);
+            background-color: var(--light);
+        }
     }
 }
 .calendar-day-bookings-animate {
