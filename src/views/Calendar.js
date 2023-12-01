@@ -228,8 +228,8 @@ const CalendarView = props => {
     const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = user._id;
     issuedTimeslot.username = user.lastname;
-    issuedTimeslot.start = moment.utc(issuedTimeslot.start).local().set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
-    issuedTimeslot.end = moment.utc(issuedTimeslot.end).local().set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
+    issuedTimeslot.start = moment.utc(issuedTimeslot.start).format().set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
+    issuedTimeslot.end = moment.utc(issuedTimeslot.end).format().set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
     const method = emptyApiData ? createBooking : patchBooking;
     await method(currentDayBooking, user._id);
 
@@ -272,8 +272,8 @@ const CalendarView = props => {
     
     let renderTimeslots = isAlternateTimeslots(selectedDay) ? dayBookings.timeslots : dayBookings.alternateTimeslots;
     const renderTimeslot = ({ start, end }) => {
-      const rStart = moment.utc(start).local().format('HH:mm');
-      const rEnd = moment.utc(end).local().format('HH:mm');
+      const rStart = moment.utc(start).format().format('HH:mm');
+      const rEnd = moment.utc(end).format().format('HH:mm');
       return `${rStart} - ${rEnd}`
     }
     return (
