@@ -28,6 +28,8 @@ const Home = props => {
     getBookingsByDateSpan
   } = props;
 
+  const { timeslots = [], alternateTimeslots = [] } = selectedService || {};
+
   const __currentDate = moment();
 
   useEffect(() => {
@@ -107,14 +109,33 @@ const Home = props => {
   }
 
   const renderNextUserBooking = bookings => {
-    const nextTimeSlot = bookings?.find(booking => moment(booking.date).isAfter(moment().startOf('day')))
-      .timeslots?.find(timeSlot => timeSlot.userid === user._id && moment.utc(timeSlot.start).isAfter(moment()));
-    // console.log('nextTimeSlot utc', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
-    // console.log('nextTimeSlot local', moment(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
-    // console.log('nextTimeSlot utc local', moment.utc(nextTimeSlot?.start).local().format('YYYY-MM-DD HH:mm'))
-    // console.log('nextTimeSlot utc offset', moment.utc(nextTimeSlot?.start).format('YYYY-MM-DD HH:mm'))
-    // console.log('moment.utc(date).tz(moment.tz.guess()', moment.utc(nextTimeSlot?.start).tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm'))
-    return moment.utc(nextTimeSlot?.start).fromNow();
+
+    const isWeekDay = (day) => {
+      const dayOfWeek = moment()
+        .set({ date: day })
+        .isoWeekday();
+      return dayOfWeek !== 6 && dayOfWeek !== 7;
+    }
+    
+    const isAlternateTimeslots = (day) => {
+      console.log()
+      const hasAlternateTimeslots = alternateTimeslots.length > 0;
+      if (!hasAlternateTimeslots) {
+        return true;
+      }
+      return isWeekDay(day);
+    }
+    
+    for (let i = 0; i < bookings.length; i++) {
+      const booking = bookings[i];
+      const issuedTimeslots = isAlternateTimeslots(moment.utc(booking.date).format('D')) ? booking.timeslots : booking.alternateTimeslots;
+      const issuedTimeslot = issuedTimeslots?.find(timeslot =>
+        timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(moment())
+      ) || null;
+      if (issuedTimeslot) {
+        return `${moment.utc(issuedTimeslot.start).fromNow()}`
+      }
+    }
   }
 
   return (
@@ -144,6 +165,7 @@ const Home = props => {
         </div>
         {selectedService && booking?.length > 0 && (
           <>
+          <div className="ui divider"></div>
             <NextAvailableTimeslot  selectedService={selectedService} bookings={booking} />
           <div className="ui divider"></div>
           </>
