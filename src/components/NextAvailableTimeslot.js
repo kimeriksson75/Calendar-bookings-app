@@ -86,11 +86,7 @@ const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
                         <div className="calendar-day-bookings__content__timeslot">{renderTimeslot(availableTimeslot)}</div>
                     </div>
                 </div>
-            ) : (        
-                <div className="next-available-booking__content">
-                    <p>Det finns inga tillgängliga bokningar för {selectedService.name} en månad framåt.</p>
-                </div>
-            )}
+            ) : null}
         </div>
     );
 }

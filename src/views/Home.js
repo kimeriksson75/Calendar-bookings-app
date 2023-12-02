@@ -144,7 +144,6 @@ const Home = props => {
         </div>
         {selectedService && booking?.length > 0 && (
           <>
-          <div className="ui divider"></div>
             <NextAvailableTimeslot  selectedService={selectedService} bookings={booking} />
           <div className="ui divider"></div>
           </>
