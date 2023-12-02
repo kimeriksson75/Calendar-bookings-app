@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import history from '../history';
+moment.tz.setDefault('Europe/Stockholm');
 
 const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
 
@@ -43,12 +44,12 @@ const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
     
     useEffect(() => {
         for (dateSpanStart; dateSpanEnd.isAfter(dateSpanStart); dateSpanStart.add(1, 'day')) {
-            const booking = sortedBookings.find(booking => moment(booking.date).format('YYYY-MM-DD') === moment(dateSpanStart).format('YYYY-MM-DD')) || null;
-            const issuedTimeslots = isAlternateTimeslots(moment(dateSpanStart).format('D')) ? alternateTimeslots : timeslots;
+            const booking = sortedBookings.find(booking => moment.utc(booking.date).format('YYYY-MM-DD') === moment(dateSpanStart).format('YYYY-MM-DD')) || null;
+            const issuedTimeslots = isAlternateTimeslots(moment.utc(dateSpanStart).format('D')) ? alternateTimeslots : timeslots;
             const issuedTimeslot = issuedTimeslots.find(timeslot =>
                 dateSpanStart.set({
-                    hour: moment(timeslot.start).format('HH'),
-                    minute: moment(timeslot.start).format('m')
+                    hour: moment.utc(timeslot.start).format('HH'),
+                    minute: moment.utc(timeslot.start).format('m')
                 }).isAfter(moment())) || null;
             
             if (!booking && issuedTimeslot) {
