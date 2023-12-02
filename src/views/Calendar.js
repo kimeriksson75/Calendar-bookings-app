@@ -192,7 +192,7 @@ const CalendarView = props => {
     if (!hasAlternateTimeslots) {
       return true;
     }
-    return !isWeekDay(day);
+    return isWeekDay(day);
   }
 
   const tempCurrentDayBooking = () => {

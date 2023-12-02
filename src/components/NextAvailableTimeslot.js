@@ -28,16 +28,16 @@ const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
       }
 
     const isWeekDay = (day) => {
-        const dayOfWeek = moment()
-          .set({ date: day })
-          .isoWeekday();
+        const dayOfWeek = moment.utc()
+            .set({ date: day })
+            .isoWeekday();
         return dayOfWeek !== 6 && dayOfWeek !== 7;
     }
     
     const isAlternateTimeslots = (day) => {
         const hasAlternateTimeslots = alternateTimeslots.length > 0;
         if (!hasAlternateTimeslots) {
-          return true;
+            return true;
         }
         return isWeekDay(day);
     }
@@ -45,7 +45,7 @@ const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
     useEffect(() => {
         for (dateSpanStart; dateSpanEnd.isAfter(dateSpanStart); dateSpanStart.add(1, 'day')) {
             const booking = sortedBookings.find(booking => moment.utc(booking.date).format('YYYY-MM-DD') === moment(dateSpanStart).format('YYYY-MM-DD')) || null;
-            const issuedTimeslots = isAlternateTimeslots(moment.utc(dateSpanStart).format('D')) ? alternateTimeslots : timeslots;
+            const issuedTimeslots = isAlternateTimeslots(moment.utc(dateSpanStart).format('D')) ?  timeslots : alternateTimeslots;
             const issuedTimeslot = issuedTimeslots.find(timeslot =>
                 dateSpanStart.set({
                     hour: moment.utc(timeslot.start).format('HH'),
@@ -58,7 +58,7 @@ const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
                 break;
             }
             if (booking) {
-                const existingIssuedTimeslots = isAlternateTimeslots(moment(dateSpanStart).format('D')) ? booking.alternateTimeslots : booking.timeslots;
+                const existingIssuedTimeslots = isAlternateTimeslots(moment(dateSpanStart).format('D')) ? booking.timeslots : booking.alternateTimeslots;
                 const emptyTimeslot = existingIssuedTimeslots.find(timeslot =>
                     timeslot.userid === null && dateSpanStart
                         .set({
