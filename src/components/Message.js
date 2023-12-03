@@ -23,7 +23,7 @@ const UserMessage = props => {
       case 'alert':
         return 'message message--warning';
       case 'error':
-        return 'message message--negative';
+        return 'message message--error';
       case 'success':
         return 'message message--success';
       default:
@@ -46,7 +46,7 @@ const UserMessage = props => {
     <div className={`message-container ${modalOpen && userMessage?.message ? 'message-container-show' : 'message-container-hide'}`}>
       <div className={className(userMessage?.message?.type || '')}>
         <Icon size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
-        <p>{`${userMessage?.message?.description}`}</p>
+        <span>{`${userMessage?.message?.description}`}</span>
         </div>
       </div>
   )

@@ -1,8 +1,6 @@
 .message-container {
     position: fixed;
-    bottom: -42px;
-    // left: 50%;
-    // transform: translateX(-50%);
+    bottom: -66px;
     padding: 0 12px;
     transition: all 0.2s ease-out;
     width: 100%;
@@ -10,7 +8,7 @@
     z-index: 2;
     &-show {
         opacity: 1;
-        bottom: 0;
+        bottom: 8px;
     }
 
 }
@@ -22,39 +20,42 @@
     align-items: center;
     padding: 8px;
     background-color: var(--orange);
-    border: 1px solid rgba(0,0,0,0.2);
+    // border: 8px solid rgba(0,0,0,0.2);
     border-radius: 0;
     color: var(--light);
     transition: all 0.2s ease-out;
-    // box-shadow: -1px -3px 10px 4px rgba(0,0,0,0.22);
-    // -webkit-box-shadow: -1px -3px 10px 4px rgba(0,0,0,0.22);
-    // -moz-box-shadow: -1px -3px 10px 4px rgba(0,0,0,0.22);
-
-    p {
+    -webkit-box-shadow: -2px 0px 11px 2px rgba(0,0,0,0.25); 
+    box-shadow: -2px 0px 11px 2px rgba(0,0,0,0.25);
+    i {
+        font-size: 1.2rem;
+        margin-left: 4px;
+    }
+    span {
         padding: 0;
-        margin: 0;
+        margin: 4px 0 4px 8px;
+        line-height: 1rem;
     }
     &--success {
         background-color: lighten($color-message-success, 20%);
         color: darken($color-message-success, 20%);
-        border: 1px solid darken($color-message-success, 20%);
+        border: 2px solid darken($color-message-success, 20%);
     }
 
     &--error {
         background-color: lighten($color-message-error, 0%);
         color: var(--light);
-        border: 1px solid darken($color-message-error, 60%);
+        border: 2px solid rgba(0,0,0,.2);
     }
 
     &--warning {
         background-color: lighten($color-message-warning, 20%);
         color: darken($color-message-warning, 20%);
-        border: 1px solid darken($color-message-warning, 20%);
+        border: 2px solid darken($color-message-warning, 20%);
     }
 
     &--info {
         background-color: lighten($color-message-info, 20%);
         color: darken($color-message-info, 20%);
-        border: 1px solid darken($color-message-info, 20%);
+        border: 2px solid darken($color-message-info, 20%);
     }
 }
