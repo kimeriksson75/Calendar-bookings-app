@@ -103,8 +103,10 @@ let CreateUserForm = props => {
       <Field name="repeatpassword" component={renderInput} label="Upprepa lösenord:" type="password" autoComplete="password"></Field>
       <Field name="residence" component={renderSelect} label="Bostadshus:" defaultOption="Välj bostadshus" options={residences} type="select" autoComplete="residence"></Field>
       <Field name="apartment" component={renderSelect} label="Lägenhetsnummer:" defaultOption="Välj lägenhetsnummer" options={apartments} type="text" autoComplete="apartment"></Field>
-      <button className="ui button primary" disabled={pristine} loading={submitting.toString()} type="submit">Skicka in</button>
-      <button className="ui button secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
+      <div className="button-group">
+        <button className="button button--primary" disabled={pristine} loading={submitting.toString()} type="submit">Skicka in</button>
+        <button className="button button--secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
+      </div>
     </form>
   )
 }

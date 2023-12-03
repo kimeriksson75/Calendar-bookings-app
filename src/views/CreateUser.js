@@ -12,7 +12,7 @@ const CreateUser = props => {
   return (
     <>
       <div className="page-container">
-        <InfoBar title="Skapa användare" />
+        <InfoBar title="Ny användare" />
         <CreateUserForm onSubmit={onSubmit} />
       </div>
     </>
