@@ -171,7 +171,7 @@ const Home = props => {
         )}
         {selectedService && sortedUserBookings?.length > 0 && (
             <div className="home-welcome">
-              <p>{user?.firstname}, din nästa bokning är</p><span> {renderNextUserBooking(sortedUserBookings)}.</span>
+              <h3>Din nästa bokning är<span> {renderNextUserBooking(sortedUserBookings)}.</span></h3>
             </div>
           )}
         <div>

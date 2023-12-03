@@ -26,13 +26,13 @@ const Login = props => {
         <InfoBar title="Login" />
         <div>
           <LoginForm onSubmit={onSubmit} />
-        </div>
-        <div className="extra" style={{ paddingTop: '12px' }}>
+      </div>
+      <div className="ui divider"></div>
+        <div className="button-group extra">
           <Link className="" to="/user/forgot-password">Glömt lösenord?</Link>
+          <Link className="" to="/user/create">Ny användare</Link>
         </div>
-        <div className="extra" style={{ paddingTop: '12px' }}>
-          <Link className="" to="/user/create">Eller skapa en ny användare</Link>
-        </div>
+      <div className="ui divider"></div>
       </div>)
 }
 const mapStateToProps = (state) => {
