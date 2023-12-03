@@ -175,7 +175,7 @@
     &--vacant {
         color: darken($color-calendar-day-slot--vacant, 40%);
         border-left: 8px solid darken($color-calendar-day-slot--vacant, 20%);
-        background-color: lighten($color-calendar-day-slot--vacant, 0%);
+        background-color: rgba(0,0,0,0.05);
     }
 
     &--booked {
@@ -188,14 +188,7 @@
         margin-right: 24px;
     }
 
-    &--next-available:hover {
-        body.dark & {
-            color: var(--light);
-            background-color: var(--gray-dark);
-        }
-        background-color: var(--light);
-        color: var(--dark);
-    }
+    
     &--next-available {
         display: flex;
         flex-direction: row;
@@ -203,6 +196,7 @@
         justify-content: space-between;
         padding: 8px 12px;
         transition: background-color .2s ease-out;
+        background-color: rgba(0,0,0,0.05);
         cursor: pointer;
         
     }
@@ -219,6 +213,15 @@
 @media(hover: hover) and (pointer: fine) {
     .calendar-day-bookings {
         li:hover {
+            body.dark & {
+                color: var(--light);
+                background-color: var(--gray-dark);
+            }
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        &--next-available:hover {
             body.dark & {
                 color: var(--light);
                 background-color: var(--gray-dark);
