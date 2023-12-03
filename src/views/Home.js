@@ -8,6 +8,7 @@ import { find, isEmpty } from 'lodash-fp';
 import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
 import NextAvailableTimeslot from '../components/NextAvailableTimeslot';
+import duration from '../utils/duration';
 moment.tz.setDefault('Europe/Stockholm');
 
 
@@ -131,9 +132,10 @@ const Home = props => {
       const issuedTimeslots = isAlternateTimeslots(moment.utc(booking.date).format('D')) ? booking.timeslots : booking.alternateTimeslots;
       const issuedTimeslot = issuedTimeslots?.find(timeslot =>
         timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(moment())
-      ) || null;
+        ) || null;
       if (issuedTimeslot) {
-        return `${moment.utc(issuedTimeslot.start).fromNow()}`
+        const renderDuration = duration({ start: moment(), end: issuedTimeslot.start });
+        return renderDuration
       }
     }
   }
@@ -171,7 +173,8 @@ const Home = props => {
         )}
         {selectedService && sortedUserBookings?.length > 0 && (
             <div className="home-welcome">
-              <h3>Din nästa bokning är<span> {renderNextUserBooking(sortedUserBookings)}.</span></h3>
+            <h3>Din nästa bokning är om</h3>
+            <span> {renderNextUserBooking(sortedUserBookings)}.</span>
             </div>
           )}
         <div>

@@ -8,10 +8,14 @@
 }
 
 .home-welcome {
+    h3 {
+        margin-bottom: 4px;
+    }
     p {
         line-height: 1rem;
     }
     span {
+        font-weight: 700;
         color: var(--orange);
     }
 }
