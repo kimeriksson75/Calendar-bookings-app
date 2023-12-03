@@ -47,8 +47,10 @@ const LoginForm = props => {
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
       <Field name="username" component={renderField} label="Användarnamn:" type="text" autoComplete="username"></Field>
       <Field name="password" component={renderField} label="Lösenord:" type="password" autoComplete="password"></Field>
-      <button className="ui button primary" disabled={pristine} loading={submitting.toString()} type="submit">Login</button>
-      <button className="ui button secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
+      <div className="button-group">
+        <button className="button button--primary" disabled={pristine} loading={submitting.toString()} type="submit">Login</button>
+        <button className="button button--secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>
+      </div>
     </form>
   )
 }
