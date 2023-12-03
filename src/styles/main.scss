@@ -5,11 +5,12 @@
 @import 'layout/page.scss';
 @import 'components/header.scss';
 @import 'components/footer.scss';
-@import 'components/home.scss';
+@import 'views/home.scss';
+@import 'views/calendar.scss';
+@import 'views/userBookings.scss';
 @import 'components/message.scss';
 @import 'components/loader.scss';
 @import 'components/infoBar.scss';
 @import 'components/menuIcon.scss';
-@import 'components/calendar.scss';
 @import 'components/calendarMenu.scss';
-@import 'components/userBookings.scss';
+@import 'components/button.scss';
