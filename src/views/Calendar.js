@@ -8,7 +8,6 @@ import CalendarMenu from '../components/CalendarMenu';
 import InfoBar from '../components/InfoBar';
 import {
   getBookingsByMonth,
-  getBookingsByDate,
   createBooking,
   patchBooking,
   newMessage,
@@ -210,16 +209,6 @@ const CalendarView = props => {
     };
   }
 
-  const updateBooking = useCallback(() => {
-    if(!selectedService) return;
-    let _selectedDate = moment()
-      .set({ year, month })
-      .subtract(1, 'month')
-      .set({ day });
-    setSelectedDate(_selectedDate);
-    getBookingsByDate(selectedService.id, _selectedDate.format());
-  }, [selectedService, year, month, day]);
-
   const initiateBooking = async event => {
     let id = event.currentTarget.getAttribute('data-label');
     if (!id) {
@@ -242,8 +231,7 @@ const CalendarView = props => {
     issuedTimeslot.end = moment.utc(issuedTimeslot.end).set({ year, month, date: selectedDay }).subtract({ month: 1 }).toISOString();
     const method = emptyApiData ? createBooking : patchBooking;
     await method(currentDayBooking, user._id);
-    console.log('selectedDate.format()', selectedDate.format())
-    updateBooking();
+    getBookingsByMonth(selectedService?.id, selectedDate.format());
   }
 
   const initiateDeleteBooking = async event => {
@@ -340,4 +328,4 @@ const mapStateToProps = (state, ownProps) => {
     selectedService: state.service.selectedService
   })
 }
-export default connect(mapStateToProps, { getBookingsByMonth, getBookingsByDate, createBooking, patchBooking, newMessage })(CalendarView);
+export default connect(mapStateToProps, { getBookingsByMonth, createBooking, patchBooking, newMessage })(CalendarView);
