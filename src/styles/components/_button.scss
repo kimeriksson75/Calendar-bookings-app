@@ -1,0 +1,64 @@
+.button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+
+    a {
+        text-decoration: none;
+        font-weight: 700;
+        color: var(--dark);
+        background-color: var(--light);
+        padding: 10px 18px;
+        border-radius: 4px;
+        width: 50%;
+        text-align: center;
+        transition: background-color .2s ease-out;
+    }
+}
+
+.button {
+    font-family: $roboto-slab;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+    text-decoration: none;
+    border: none;
+    color: var(--dark);
+    background-color: var(--light);
+    padding: 10px 18px;
+    border-radius: 4px;
+    width: 50%;
+    text-align: center;
+    transition: background-color .2s ease-out;
+
+    &--primary {
+        color: var(--light);
+        background-color: var(--green);
+    }
+
+    &--secondary {
+        color: var(--dark);
+        background-color: var(--light);
+    }
+}
+
+@media (min-width: $breakpoint-tablet) {
+    .button-group {
+        a {
+            width: auto;
+        }
+    }
+}
+
+@media(hover: hover) and (pointer: fine) {
+    a:hover {
+        body.dark & {
+            color: var(--light);
+            background-color: var(--gray-dark);
+        }
+        color: var(--dark);
+        background-color: var(--gray-dark);
+    }
+}
