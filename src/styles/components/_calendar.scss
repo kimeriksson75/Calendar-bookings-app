@@ -76,6 +76,18 @@
     }
 }
 
+@media(hover: hover) and (pointer: fine) {
+    .calendar-day:hover{
+        color: var(--gray);
+        background-color: var(--gray-dark);
+        
+        body.dark & {
+            color: var(--gray-dark);
+            background-color: var(--gray);
+        }
+    }
+}
+
 .sloth-container {
     position: absolute;
     top: 6px;
