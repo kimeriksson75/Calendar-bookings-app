@@ -34,14 +34,14 @@
     max-height: 0;
     transition: max-height .2s ease-out;
     &-open {
-        max-height: 100%;
+        top: 64px;
+        max-height: 100dvh;
     }
 }
 
 @media (min-width: $breakpoint-tablet) {
     .nav{
         max-height: none;
-        top: 0;
         position: relative;
         float: right;
         width: fit-content;
