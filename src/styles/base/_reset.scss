@@ -38,9 +38,32 @@ form .field > input {
     
     background-color: var(--dark)!important;
     color: var(--light)!important;
-    
+
     body.dark & {
         background-color: var(--gray)!important;
         color: var(--gray-dark)!important;
     }
+}
+form {
+    .error {
+        input {
+            border-color: var(--orange)!important;
+            color: var(--dark)!important;
+            body.dark & {
+                background-color: var(--gray)!important;
+                color: var(--gray-dark)!important;
+            }
+        }
+        .error {
+            background-color: var(--orange)!important;
+            color: var(--light)!important;
+            body.dark & {
+                background-color: var(--gray)!important;
+                color: var(--gray-dark)!important;
+            }
+        }
+    }
+}
+form .fields.error .field textarea {
+    border-color: var(--orange)!important;
 }

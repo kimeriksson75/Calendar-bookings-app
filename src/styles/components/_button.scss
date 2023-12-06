@@ -34,13 +34,13 @@
     transition: background-color .2s ease-out;
 
     &--primary {
-        color: var(--light);
-        background-color: var(--green);
+        color: var(--gray-light);
+        background-color: var(--blue);
     }
-
+    
     &--secondary {
-        color: var(--dark);
-        background-color: var(--light);
+        color: var(--gray-light);
+        background-color: var(--orange);
     }
 }
 
