@@ -72,6 +72,7 @@ const renderSelect = ({
 
 let CreateUserForm = props => {
   const {
+    residenceParam,
     handleSubmit,
     reset,
     pristine,
@@ -83,6 +84,7 @@ let CreateUserForm = props => {
     apartments: { apartments = [] }
   } = props;
 
+  console.log(`residenceParam: ${residenceParam}`)
   useEffect(() => {
     getAvailableResidences();
     residence && getAvailableApartments(residence);
@@ -91,7 +93,7 @@ let CreateUserForm = props => {
 
   const onSubmit = formValues => {
     const reducedFormValues = omit('repeatpassword', formValues);
-    props.onSubmit(reducedFormValues);
+    props.onSubmit({ ...reducedFormValues, residence: residenceParam});
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
@@ -101,8 +103,8 @@ let CreateUserForm = props => {
       <Field name="lastname" component={renderInput} label="Efternamn:" type="text" autoComplete="lastname"></Field>
       <Field name="password" component={renderInput} label="Lösenord:" type="password" autoComplete="password"></Field>
       <Field name="repeatpassword" component={renderInput} label="Upprepa lösenord:" type="password" autoComplete="password"></Field>
-      <Field name="residence" component={renderSelect} label="Bostadshus:" defaultOption="Välj bostadshus" options={residences} type="select" autoComplete="residence"></Field>
-      <Field name="apartment" component={renderSelect} label="Lägenhetsnummer:" defaultOption="Välj lägenhetsnummer" options={apartments} type="text" autoComplete="apartment"></Field>
+      {/* <Field name="residence" component={renderSelect} label="Bostadshus:" defaultOption="Välj bostadshus" options={residences} type="select" autoComplete="residence"></Field> */}
+      {/* <Field name="apartment" component={renderSelect} label="Lägenhetsnummer:" defaultOption="Välj lägenhetsnummer" options={apartments} type="text" autoComplete="apartment"></Field> */}
       <div className="button-group">
         <button className="button button--primary" disabled={pristine} loading={submitting.toString()} type="submit">Skicka in</button>
         <button className="button button--secondary" disabled={pristine || submitting} onClick={reset}>Rensa</button>

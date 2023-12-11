@@ -5,6 +5,7 @@ import { createUser } from '../actions';
 import InfoBar from '../components/InfoBar';
 const CreateUser = props => {
   const { createUser } = props;
+  const { residence = ""} = props.match.params;
 
   const onSubmit = formValues => {
     createUser(formValues);
@@ -13,7 +14,7 @@ const CreateUser = props => {
     <>
       <div className="page-container">
         <InfoBar title="Ny användare" />
-        <CreateUserForm onSubmit={onSubmit} />
+        <CreateUserForm onSubmit={onSubmit} residenceParam={residence} />
       </div>
     </>
   );

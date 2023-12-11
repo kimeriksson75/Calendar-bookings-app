@@ -14,7 +14,8 @@ const Header = props => {
     logout,
     unsetSelectedService,
     auth,
-    service: { selectedService = null }
+    service: { selectedService = null },
+    residences,
   } = props;
 
   const __currentDate = moment();
@@ -99,10 +100,10 @@ const Header = props => {
                     Logga in
                   </button>)}</li>
               <li>
-                <button onClick={() => onMenuItemClick('/user/create')}>
+                <button onClick={() => onMenuItemClick(`/user/create/${residences?.residences[0]?._id}`)}>
                   Ny användare
                 </button>
-            </li>
+              </li>
               <li>
                 <button onClick={() => onToggleLayout()}>
                   {!layout || layout === 'light' ? 'Tema - Mörk' : 'Tema - Ljus'}
@@ -119,7 +120,8 @@ const mapStateToProps = state => {
     showSidebar: state.application.showSidebar,
     layout: state.application.layout,
     auth: state.auth,
-    service: state.service
+    service: state.service,
+    residences: state.residences
   })
 }
 export default connect(mapStateToProps, { toggleSidebar, logout, unsetSelectedService, setLayout })(Header);

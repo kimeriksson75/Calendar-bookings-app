@@ -25,7 +25,7 @@ const App = () => {
           <Route path="/user/logout" component={Logout}></Route>
           <Route path="/user/authenticate/:token/:serviceId/:residenceId" component={SignInWithToken}></Route>
           <Route path="/user/forgot-password" component={ForgotPassword}></Route>
-          <Route path="/user/create" component={CreateUser}></Route>
+          <Route path="/user/create/:residence" component={CreateUser}></Route>
           <Route path="/:service/bookings" component={UserBookings}></Route>
           <Route path="/:service/calendar/:year/:month" exact component={Calendar}></Route>
           <Route path="/:service/calendar/:year/:month/:day" exact component={Calendar}></Route>
