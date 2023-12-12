@@ -15,7 +15,6 @@ const Header = props => {
     unsetSelectedService,
     auth,
     service: { selectedService = null },
-    residences,
   } = props;
 
   const __currentDate = moment();
@@ -100,7 +99,7 @@ const Header = props => {
                     Logga in
                   </button>)}</li>
               <li>
-                <button onClick={() => onMenuItemClick(`/user/create/${residences?.residences[0]?._id}`)}>
+                <button onClick={() => onMenuItemClick(`/user/create/${auth?.user?.residence}`)}>
                   Ny användare
                 </button>
               </li>
@@ -121,7 +120,6 @@ const mapStateToProps = state => {
     layout: state.application.layout,
     auth: state.auth,
     service: state.service,
-    residences: state.residences
   })
 }
 export default connect(mapStateToProps, { toggleSidebar, logout, unsetSelectedService, setLayout })(Header);
