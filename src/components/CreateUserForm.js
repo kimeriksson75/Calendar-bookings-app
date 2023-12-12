@@ -84,7 +84,6 @@ let CreateUserForm = props => {
     apartments: { apartments = [] }
   } = props;
 
-  console.log(`residenceParam: ${residenceParam}`)
   useEffect(() => {
     getAvailableResidences();
     residence && getAvailableApartments(residence);
