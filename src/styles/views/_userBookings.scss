@@ -3,8 +3,6 @@
     display: flex;
     flex-direction: column;
 }
-.user-bookings {
-}
 .user-booking {
     display: flex;
     flex-direction: row;
@@ -28,6 +26,13 @@
         border-left: 8px solid darken($color-message-success, 40%);;
 
     }
+}
+
+.user-booking-archived {
+    color: darken($color-calendar-day-slot--occupied, 20%);
+    border-left: 8px solid darken($color-calendar-day-slot--occupied, 20%);
+    background-color: lighten($color-calendar-day-slot--occupied, 10%);
+    pointer-events: none;
 }
 
 .user-booking-timesloth {

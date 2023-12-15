@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { getBookingByAuthor, newMessage } from '../actions';
 import InfoBar from '../components/InfoBar';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
+import ArchivedUserBookings from '../components/ArchivedUserBookings';
 const UserBookings = props => {
   const {
     auth: { user, isSignedIn },
@@ -27,12 +29,15 @@ const UserBookings = props => {
 
   return (
     <div className="page-container">
-      <InfoBar title="Kommande bokningar" description="- Sorterat i datumordning"/>
+      <InfoBar title="Dina kommande bokningar" description="- Sorterat i datumordning"/>
         {isSignedIn ?
           (<div>
           {userBookings && (<UpcomingUserBookings userBookings={userBookings} selectedService={selectedService} user={user} />)}
           </div>) : userErrorMessage()
-        }
+      }
+      <div className="ui divider"></div>
+      <h3>Dina avslutade bokningar i <span>{`${moment().format('MMMM')}`}</span></h3>
+        {userBookings && (<ArchivedUserBookings userBookings={userBookings} selectedService={selectedService} user={user} />)}
       </div>
   )
 }

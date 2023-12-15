@@ -4,7 +4,7 @@ import moment from 'moment';
 moment.tz.setDefault('Europe/Stockholm');
 
 
-const UpcomingUserBookings = ({ selectedService, user, userBookings }) => {
+const ArchivedUserBookings = ({ selectedService, user, userBookings }) => {
     const onBookingClick = url => {
         history.push(url);
       }
@@ -37,11 +37,11 @@ const UpcomingUserBookings = ({ selectedService, user, userBookings }) => {
         <>
             {
                 sortedUserBookings.map((booking) => {
-                if(!moment(booking.date).isAfter(moment())) return null;
+                if(moment(booking.date).isAfter(moment())) return null;
                 const timeslots = renderTimeslots(booking);
                 return Boolean(timeslots.find(value => value !== null)) ? (
                     <div key={booking.id} className="user-bookings">
-                    <div key={booking.id + 1} className="user-booking" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
+                    <div key={booking.id + 1} className="user-booking user-booking-archived" disabled>
                         <i className="large calendar check centered outline icon"></i>
                         <div className="user-booking-date" >{renderDate(booking.date)}</div>
                         <div className="user-booking-timesloth">{timeslots}</div>
@@ -54,4 +54,4 @@ const UpcomingUserBookings = ({ selectedService, user, userBookings }) => {
       </>)
 }
 
-export default UpcomingUserBookings;
+export default ArchivedUserBookings;
