@@ -134,7 +134,7 @@ const Home = props => {
         timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(moment())
         ) || null;
       if (issuedTimeslot) {
-        const renderDuration = duration({ start: moment(), end: moment(issuedTimeslot.start).subtract({ 1 : 'hours' }) });
+        const renderDuration = duration({ start: moment(), end: moment(issuedTimeslot.start).subtract({ hours: 1  }) });
         return renderDuration
       }
     }
@@ -174,7 +174,8 @@ const Home = props => {
         {selectedService && sortedUserBookings?.length > 0 && (
             <div className="home-welcome">
             <h3>Din nästa bokning är om</h3>
-            <span> {renderNextUserBooking(sortedUserBookings)}.</span>
+            <h4><span>{`${renderNextUserBooking(sortedUserBookings)}`}</span></h4>
+            
             </div>
           )}
         <div>

@@ -9,14 +9,25 @@
 
 .home-welcome {
     h3 {
-        margin-bottom: 4px;
+        margin: 24px 0 12px;
     }
     p {
+        margin: 12px 0;
         line-height: 1rem;
     }
+    h4 {
+        margin: 0 0 32px;
+    }
+    h4 > span  {
+        // font-size: 1rem;
+        font-weight: 100;
+        color: var(--gray);
+        background-color: var(--gray-dark);
+        border: 1px solid var(--gray-dark);
+        // border-radius: 5px;
+        padding: 6px 12px;        
+    }
     span {
-        font-weight: 700;
-        color: var(--orange);
     }
 }
 
