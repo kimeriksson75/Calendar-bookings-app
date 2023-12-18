@@ -37,7 +37,7 @@ const UpcomingUserBookings = ({ selectedService, user, userBookings }) => {
         <>
             {
                 sortedUserBookings.map((booking) => {
-                if(!moment(booking.date).isAfter(moment())) return null;
+                if(!moment(booking.date).isAfter(moment().startOf('day'))) return null;
                 const timeslots = renderTimeslots(booking);
                 return Boolean(timeslots.find(value => value !== null)) ? (
                     <div key={booking.id} className="user-bookings">

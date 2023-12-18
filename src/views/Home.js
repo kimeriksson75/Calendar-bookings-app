@@ -9,6 +9,7 @@ import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
 import NextAvailableTimeslot from '../components/NextAvailableTimeslot';
 import duration from '../utils/duration';
+import Loader from '../components/Loader';
 moment.tz.setDefault('Europe/Stockholm');
 
 
@@ -119,7 +120,6 @@ const Home = props => {
     }
     
     const isAlternateTimeslots = (day) => {
-      console.log()
       const hasAlternateTimeslots = alternateTimeslots.length > 0;
       if (!hasAlternateTimeslots) {
         return true;
@@ -134,7 +134,7 @@ const Home = props => {
         timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(moment())
         ) || null;
       if (issuedTimeslot) {
-        const renderDuration = duration({ start: moment(), end: issuedTimeslot.start });
+        const renderDuration = duration({ start: moment(), end: moment(issuedTimeslot.start).subtract({ 1 : 'hours' }) });
         return renderDuration
       }
     }
