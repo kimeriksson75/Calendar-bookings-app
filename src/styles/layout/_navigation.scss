@@ -24,8 +24,13 @@
 }
 .menu button:disabled {
     cursor: default;
-    color: var(--gray);
+    color: var(--gray-dark);
     text-decoration: line-through;
+
+    body.dark & {
+        color: var(--gray);
+    }
+    
     &:hover{
         background-color: var(--dark);
     }
