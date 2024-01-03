@@ -44,6 +44,11 @@
         background-color: var(--orange);
     }
 }
+.button:disabled {
+    color: var(--gray-light);
+    background-color: rgba(0,0,0,0.3);
+    cursor: not-allowed;
+}
 
 @media (min-width: $breakpoint-tablet) {
     .button-group {
