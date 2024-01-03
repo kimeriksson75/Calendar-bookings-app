@@ -1,33 +1,51 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import loginFormSchema from '../utils/validation/login-form-schema';
 
 const LoginForm = ({onSubmit}) => {
   const [inputs, setInputs] = useState({});
   const [errors, setErrors] = useState({});
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const onHandleChange = (event) => {
+  const isValidForm = () => {
+    setErrors({});
+    const validationResult = loginFormSchema.validate(inputs, { abortEarly: false });
+    if (validationResult.error) {
+      validationResult.error?.details?.map(err => setErrors(errors => ({...errors, [err.path[0]]: err.message})));
+      return false;
+    }
+    return true;
+  }
+
+  useEffect(() => {
+    if (hasSubmitted) {
+      isValidForm();
+    }
+  }, [inputs]);
+
+  const onHandleChange = async (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs(values => ({ ...values, [name]: value }))
+    await setInputs(values => ({ ...values, [name]: value }))
     
   }
 
   const onHandleClear = event => {
     event.preventDefault();
     setInputs({});
-    
+    setErrors({});
   }
 
   const onHandleSubmit = event => {
     event.preventDefault();
-    
-    setErrors({});
-    const validationResult = loginFormSchema.validate(inputs, { abortEarly: false });
-    if (validationResult.error) {
-      validationResult.error?.details?.map(err => setErrors(errors => ({...errors, [err.path[0]]: err.message})));
+    setHasSubmitted(true);
+    if (!isValidForm()) {
       return
     }
     onSubmit({...inputs});
+  }
+
+  const isSubmitDisabled = () => {
+    return Object.keys(errors).length > 0 || Object.keys(inputs).length < 2;
   }
 
   return (
@@ -59,7 +77,7 @@ const LoginForm = ({onSubmit}) => {
         {errors.password ? errors.password : null}
       </div>
       <div className="button-group">
-        <button data-testid="btn-login" className="button button--primary"  type="submit">Logga in</button>
+        <button data-testid="btn-login" className="button button--primary"  type="submit" disabled={isSubmitDisabled()}>Logga in</button>
         <button data-testid="btn-clear" className="button button--secondary" onClick={onHandleClear}>Rensa</button>
       </div>
     </form>

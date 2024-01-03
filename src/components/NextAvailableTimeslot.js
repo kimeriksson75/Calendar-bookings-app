@@ -81,7 +81,7 @@ const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
             {availableTimeslot ? (
                 <div className="next-available-booking__title">
                     <h3>Nästa tillgängliga bokning</h3>
-                    <div className="calendar-day-bookings-animate calendar-day-bookings--vacant calendar-day-bookings--next-available" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(availableDate).format('YYYY')}/${moment(availableDate).format('MM')}/${moment(availableDate).format('DD')}`)}>
+                    <div data-testid="next-available-timeslot-btn" className="calendar-day-bookings-animate calendar-day-bookings--vacant calendar-day-bookings--next-available" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(availableDate).format('YYYY')}/${moment(availableDate).format('MM')}/${moment(availableDate).format('DD')}`)}>
                         <i className="large calendar centered outline icon"></i>
                         <div className="calendar-day-bookings__content__user" >{renderDate(availableDate)}</div>
                         <div className="calendar-day-bookings__content__timeslot">{renderTimeslot(availableTimeslot)}</div>

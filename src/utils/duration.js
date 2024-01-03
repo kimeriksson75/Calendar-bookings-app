@@ -38,10 +38,6 @@ const duration = ({ start, end }) => {
     var minutes = Math.floor(delta / 60) % 60;
     delta -= minutes * 60;
     // console.log('weeks', weeks)
-    console.log('days', days)
-    console.log('hours', hours)
-    console.log('minutes', minutes)
-
 
     return `${renderDays(days)} ${renderHours(hours)} ${renderMinutes(minutes)}`;
 }

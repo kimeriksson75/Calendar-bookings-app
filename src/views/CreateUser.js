@@ -5,23 +5,20 @@ import { createUser } from '../actions';
 import InfoBar from '../components/InfoBar';
 const CreateUser = props => {
   const { createUser } = props;
-  const { residence = ""} = props.match.params;
+  const { residenceId = ""} = props.match.params;
+
 
   const onSubmit = formValues => {
-    createUser(formValues);
+    createUser({ ...formValues, residence: residenceId });
   }
   return (
     <>
       <div className="page-container">
         <InfoBar title="Ny användare" />
-        <CreateUserForm onSubmit={onSubmit} residenceParam={residence} />
+        <CreateUserForm onSubmit={onSubmit} />
       </div>
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return ({
-    user: state.user
-  })
-}
-export default connect(mapStateToProps, { createUser })(CreateUser);
+
+export default connect(null, { createUser })(CreateUser);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { toggleSidebar, logout, unsetSelectedService, setLayout } from '../actions';
 import history from '../history';
-import '../styles/main.scss';
 
 const Header = props => {
   const {
@@ -57,7 +56,7 @@ const Header = props => {
   return (
     <>
       <header className="app-header">
-          <button className="logo" onClick={() => onMenuItemClick('/')}><i className="large calendar centered outline icon"></i></button>
+          <button className="logo" aria-label="logo" onClick={() => onMenuItemClick('/')}><i className="large calendar centered outline icon"></i></button>
         <input
           className="side-menu"
           type="checkbox"

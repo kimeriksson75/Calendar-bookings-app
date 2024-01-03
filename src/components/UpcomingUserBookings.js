@@ -40,12 +40,12 @@ const UpcomingUserBookings = ({ selectedService, user, userBookings }) => {
                 if(!moment(booking.date).isAfter(moment().startOf('day'))) return null;
                 const timeslots = renderTimeslots(booking);
                 return Boolean(timeslots.find(value => value !== null)) ? (
-                    <div key={booking.id} className="user-bookings">
-                    <div key={booking.id + 1} className="user-booking" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
-                        <i className="large calendar check centered outline icon"></i>
-                        <div className="user-booking-date" >{renderDate(booking.date)}</div>
-                        <div className="user-booking-timesloth">{timeslots}</div>
-                    </div>
+                    <div data-testid="upcoming-user-bookings-btn" key={booking._id} className="user-bookings">
+                        <div key={booking._id + 1} className="user-booking" onClick={() => onBookingClick(`/${selectedService.id}/calendar/${moment(booking.date).format('YYYY')}/${moment(booking.date).format('MM')}/${moment(booking.date).format('DD')}`)}>
+                            <i className="large calendar check centered outline icon"></i>
+                            <div className="user-booking-date" >{renderDate(booking.date)}</div>
+                            <div className="user-booking-timesloth">{timeslots}</div>
+                        </div>
                     </div>
                 ) : null;
             

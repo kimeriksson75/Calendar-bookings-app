@@ -47,12 +47,18 @@ const Home = props => {
   }, [selectedService, __currentDate]);
 
   useEffect(() => {
+    if (!isEmpty(selectedService)) {
+      return;
+    }
     if (services.length > 0) {
       setSelectedService(services[0]);
     }
   }, [services, setSelectedService]);
 
   useEffect(() => {
+    // if (userBookings?.length > 0) {
+    //   return;
+    // }
     if (user && selectedService?._id) {
       getBookingByAuthor(selectedService._id, user._id);
     }
@@ -60,6 +66,9 @@ const Home = props => {
   }, [selectedService, getBookingByAuthor, user])
 
   useEffect(() => {
+    if (!isEmpty(selectedService)) {
+      return;
+    }
     isSignedIn && user?.residence && getServicesByResidence(user.residence);
     if (!isSignedIn) {
       // history.push('/user/login')
@@ -68,10 +77,15 @@ const Home = props => {
 
 
   const [sortedUserBookings, setSortedUserBookings] = React.useState([]);
-
+  const removeEmptyUserBooking = userBookings => userBookings
+    .filter(booking =>
+      booking.timeslots.reduce((acc, timeslot) => acc || timeslot.userid === user._id, false) ||
+      booking.alternateTimeslots.reduce((acc, timeslot) => acc || timeslot.userid === user._id, false))
+  
   useEffect(() => {
     if (userBookings && userBookings.length > 0) {
-      const sortedUserBookings = userBookings.sort((a, b) => moment(a.date).diff(moment(b.date)))
+      const reducedUserBookings = removeEmptyUserBooking(userBookings);
+      const sortedUserBookings = reducedUserBookings.sort((a, b) => moment(a.date).diff(moment(b.date)))
       setSortedUserBookings(sortedUserBookings);
     }
   }, [userBookings])
@@ -131,7 +145,7 @@ const Home = props => {
       const booking = bookings[i];
       const issuedTimeslots = isAlternateTimeslots(moment.utc(booking.date).format('D')) ? booking.timeslots : booking.alternateTimeslots;
       const issuedTimeslot = issuedTimeslots?.find(timeslot =>
-        timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(moment())
+        timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(__currentDate)
         ) || null;
       if (issuedTimeslot) {
         const renderDuration = duration({ start: moment(), end: moment(issuedTimeslot.start).subtract({ hours: 1  }) });
@@ -166,13 +180,13 @@ const Home = props => {
             )}
         </div>
         {selectedService && booking?.length > 0 && (
-          <>
-            <NextAvailableTimeslot  selectedService={selectedService} bookings={booking} />
+          <div data-testid="next-available-timeslot">
+            <NextAvailableTimeslot selectedService={selectedService} bookings={booking} />
           <div className="ui divider"></div>
-          </>
+          </div>
         )}
-        {selectedService && sortedUserBookings?.length > 0 && (
-            <div className="home-welcome">
+        {selectedService && userBookings?.length > 0 && sortedUserBookings?.length > 0 && (
+            <div data-testid="next-user-booking" className="home-welcome">
             <h3>Din nästa bokning är om</h3>
             <h4><span>{`${renderNextUserBooking(sortedUserBookings)}`}</span></h4>
             
@@ -180,7 +194,7 @@ const Home = props => {
           )}
         <div>
           {userBookings?.length > 0 ? (
-            <div>
+            <div data-testid="upcoming-user-bookings">
               <div className="ui divider"></div>
               <p>Dina kommande bokningar</p>
               <UpcomingUserBookings selectedService={selectedService} user={user} userBookings={sortedUserBookings} />
