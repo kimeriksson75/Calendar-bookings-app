@@ -18,7 +18,7 @@ moment.updateLocale('sv', {
     dow: 1
   }
 });
-moment.tz.setDefault('Europe/Stockholm');
+// moment.tz.setDefault('Europe/Stockholm');
 
 const CalendarView = props => {
 
@@ -31,7 +31,6 @@ const CalendarView = props => {
     isFetching,
     bookingData: { calendarBookings = [] }
   } = props;
-  
   const { timeslots = [], alternateTimeslots = [] } = selectedService || {};
 
   const { year = "", month = "", day = "" } = props.match.params;
@@ -44,7 +43,6 @@ const CalendarView = props => {
   const [dayBookingsCache, setDayBookingsCache] = useState(null);
   const { updatedBookings } = useSocketIO();
 
-  
   useEffect(() => {
     if (updatedBookings) {
       const { service = null, date = null } = updatedBookings;
@@ -111,20 +109,20 @@ const CalendarView = props => {
     let currentYear = currentDate.year();
     // eslint-disable-next-line
     if (selectedDay == day && day != moment().format('D')) {
-      return (<button key={day + 31} className="calendar-day calendar-day--selected" data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
+      return (<button key={day + 31} className="calendar-day calendar-day--selected" data-item={day} data-testid={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
     }
     else if (currentMonth === moment().month() && String(day) === moment().format('D'))
-      return (<button key={day + 31} className="calendar-day calendar-day--today" data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
+      return (<button key={day + 31} className="calendar-day calendar-day--today" data-item={day} data-testid={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
 
     else if ((currentMonth >= moment().month() && day > moment().format('D')) || currentMonth > moment().month() || currentYear > moment().year())
-      return (<button key={day + 31} className={`calendar-day ${isWeekDay(day) ? '' : 'calendar-day--weekend'}`} data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
+      return (<button key={day + 31} className={`calendar-day ${isWeekDay(day) ? '' : 'calendar-day--weekend'}`} data-item={day} data-testid={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
     // eslint-disable-next-line
     
     else
-      return (<button key={day + 31} className="calendar-day calendar-day--disabled" data-item={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
+      return (<button key={day + 31} className="calendar-day calendar-day--disabled" data-item={day} data-testid={day} onClick={onDayClicked}>{day}{renderCalendarDayBookings(day)}
       </button>);
   }
   
@@ -279,7 +277,7 @@ const CalendarView = props => {
         <ul>
           {renderTimeslots?.map((slot, i) => {
             return (
-              <li className={`calendar-day-bookings-animate calendar-day-bookings${calendarDayBookingsStyle(slot)}`} key={i} data-label={i} onClick={slot.userid ? initiateDeleteBooking : initiateBooking}>
+              <li className={`calendar-day-bookings-animate calendar-day-bookings${calendarDayBookingsStyle(slot)}`} key={i} data-label={i} data-testid={`calendar-day-booking-${i}`} onClick={slot.userid ? initiateDeleteBooking : initiateBooking}>
                 {slot.userid ?
                   <i className="large calendar check centered outline icon"></i>
                   :
@@ -294,8 +292,8 @@ const CalendarView = props => {
     )
   }
   return (
-    <div className="calendar-container">
-      {selectedService && (<InfoBar title={ selectedService.name} />)}
+    <div data-testid="calendar" className="calendar-container">
+      {selectedService && (<InfoBar title={ selectedService?.name} />)}
       
         <div className="calendar-content">
           <CalendarMenu currentDate={currentDate} onChangeMonth={onChangeMonth} />

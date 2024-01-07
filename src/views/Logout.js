@@ -8,7 +8,7 @@ const Logout = () => {
         <InfoBar title="Du är nu utloggad" />
         <div className="ui divider"></div>
         <div className="extra button-group">
-          <Link className="" to="/user/login">Login</Link>
+          <Link className="" to="/user/login">Logga in</Link>
           <Link className="" to="/user/create">Ny användare</Link>
         </div>
         <div className="ui divider"></div>

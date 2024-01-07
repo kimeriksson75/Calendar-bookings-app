@@ -5,7 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Home from '../views/Home';
 import Calendar from '../views/Calendar';
-import UserMessage from '../components/Message';
+import UserMessage from './UserMessage';
 import UserBookings from '../views/UserBookings';
 import CreateUser from '../views/CreateUser';
 import Login from '../views/Login';

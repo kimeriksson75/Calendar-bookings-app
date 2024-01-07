@@ -19,9 +19,12 @@ const forgotPassword = props => {
                 <RequestPasswordForm onSubmit={onSubmit} />
                 </div>
             </div>
-            <div className="extra" style={{ paddingTop: '12px' }}>
+            <div className="ui divider"></div>
+            <div className="button-group">
                 <Link className="" to="/user/login">Tillbaka till login</Link>
+                <Link className="" to="/user/create">Ny användare</Link>
             </div>
+            <div className="ui divider"></div>
         </div>);
 }
     

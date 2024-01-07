@@ -2,6 +2,16 @@
     margin: 0 12px 0 12px;
     display: flex;
     flex-direction: column;
+    
+    a {
+        text-decoration: underline;
+    }
+}
+
+.user-bookings {
+    span {
+        text-transform: capitalize;
+    }
 }
 .user-booking {
     display: flex;
@@ -45,6 +55,12 @@
     text-transform: lowercase;
     &:first-letter {
         text-transform: uppercase;
+    }
+}
+
+.user-bookings-error-message {
+    a {
+        text-decoration: underline;
     }
 }
 

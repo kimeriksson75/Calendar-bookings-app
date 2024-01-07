@@ -43,12 +43,12 @@ const UserMessage = props => {
     }
   }
   return (
-    <div className={`message-container ${modalOpen && userMessage?.message ? 'message-container-show' : 'message-container-hide'}`}>
-      <div className={className(userMessage?.message?.type || '')}>
-        <Icon size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
+    <div data-testid="user-message-container" className={`message-container ${modalOpen && userMessage?.message ? 'message-container-show' : 'message-container-hide'}`}>
+      <div data-testid="user-message" className={className(userMessage?.message?.type || '')}>
+        <Icon data-testid="user-message-icon" size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
         <span>{`${userMessage?.message?.description}`}</span>
-        </div>
       </div>
+    </div>
   )
 }
 const mapStateToProps = (state, ownProps) => {

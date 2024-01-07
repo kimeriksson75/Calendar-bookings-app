@@ -10,14 +10,14 @@ const CalendarMenu = props => {
     props.onChangeMonth(value)
   }
   return (
-      <div className="calendar-menu">
-        <button onClick={() => onChangeMonth(-1)}>
+      <div data-testid="calendar-menu" className="calendar-menu">
+        <button data-testid="calendar-menu-prev-month" onClick={() => onChangeMonth(-1)}>
           <Icon name="chevron left" ></Icon>
         </button>
         <span style={{ textTransform: 'capitalize' }}>
           {`${currentMonthName} ${currentYear}`}
         </span>
-        <button onClick={() => onChangeMonth(1)}>
+        <button data-testid="calendar-menu-next-month" onClick={() => onChangeMonth(1)}>
           <Icon name="chevron right"></Icon>
         </button>
       </div>

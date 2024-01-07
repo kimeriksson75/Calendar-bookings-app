@@ -9,7 +9,6 @@ import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
 import NextAvailableTimeslot from '../components/NextAvailableTimeslot';
 import duration from '../utils/duration';
-import Loader from '../components/Loader';
 moment.tz.setDefault('Europe/Stockholm');
 
 

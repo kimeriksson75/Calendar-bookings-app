@@ -1,7 +1,7 @@
 import React from 'react';
 import history from '../history';
 import moment from 'moment';
-moment.tz.setDefault('Europe/Stockholm');
+// moment.tz.setDefault('Europe/Stockholm');
 
 
 const ArchivedUserBookings = ({ selectedService, user, userBookings }) => {

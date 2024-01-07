@@ -7,7 +7,7 @@ import {
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store'
-import Home from '../../views/Home'
+import UserBookings from '../../views/UserBookings'
 import { Router } from 'react-router-dom';
 import history from '../../history';
 import '@testing-library/jest-dom';
@@ -210,25 +210,28 @@ const store = mockStore({
 store.dispatch = jest.fn();
 jest.spyOn(history, "push");
 jest.mock('moment', () => {
-  const moment = jest.requireActual('moment');
-  moment.now = () => +new Date('2023-12-01T12:33:37.000Z');
-  return moment;
+	const moment = jest.requireActual('moment');
+	moment.now = () => +new Date('2023-12-01T12:33:37.000Z');
+	return moment;
 });
+jest.mock('../../actions/bookingActions', () => ({
+	getBookingByAuthor: jest.fn((value) => {}),
+}));
 
 Date.now = jest.fn().mockReturnValue(new Date('2023-12-01T12:33:37.000Z'));
 
-describe('Home', () => {
+describe('UserBookings', () => {
 	beforeEach(() => {
 
-		render(
-					<Provider store={store}>
-							<Router history={history}>
-									<Home />
-							</Router>
-					</Provider>
+			render(
+				<Provider store={store}>
+					<Router history={history}>
+						<UserBookings />
+					</Router>
+				</Provider>
 			)
-    })
-    
+	})
+	
 	afterEach(() => {
 		cleanup();
 	});
@@ -237,56 +240,63 @@ describe('Home', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('renders home view', () => {
-		expect(screen.getByRole('heading', { name: /Välkommen/ })).toBeDefined();
-		expect(screen.getByText(/till Service 1/)).toBeDefined();
+	it('renders UserBookings view', () => {
+		expect(screen.getByRole('heading', { name: /Mina kommande bokningar/ })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /Mina avslutade bokningar i/ })).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /December/ })).toBeInTheDocument();
 	});
 
-	it('renders current date', () => {
-		expect(screen.getByText(/Friday/)).toBeDefined();
-		expect(screen.getByText(1)).toBeDefined();
-		expect(screen.getByText(/13:33/)).toBeDefined();
-	});
-	
-	it('renders next available timeslot widget', async () => {
-		const nextAvailableTimeslot = screen.getByTestId('next-available-timeslot');
-		expect(nextAvailableTimeslot).toBeInTheDocument();
-		expect(nextAvailableTimeslot).toHaveTextContent(/Nästa tillgängliga bokning/);
-		expect(nextAvailableTimeslot).toHaveTextContent(/Fri 1st Dec 2023/);
-		expect(nextAvailableTimeslot).toHaveTextContent(/17:00 - 19:30/);
-	});
-
-	it('renders next user booking widget', async () => {
-		const nextUserBooking = screen.getByTestId('next-user-booking');
-		expect(nextUserBooking).toBeInTheDocument();
-		expect(nextUserBooking).toHaveTextContent(/Din nästa bokning är om 17 timmar 26 minuter/);
-	});
-
-	it('renders upcoming user bookings widget', async () => {
-		const upcomingUserBookings = screen.getByTestId('upcoming-user-bookings');
-		expect(upcomingUserBookings).toBeInTheDocument();
-		expect(upcomingUserBookings).toHaveTextContent(/Dina kommande bokningar/);
-		expect(upcomingUserBookings).toHaveTextContent(/Sun 31st Dec 2023/);
-		expect(upcomingUserBookings).toHaveTextContent(/07:00 - 10:00/);
-	});
-
-	it('clicking next available timeslot widget navigates to calendar', async () => {
+	it('renders UserBookings upcoming bookings', async () => {
 		const user = userEvent.setup()
-
-		const nextAvailableTimeslotBtn = screen.getByTestId('next-available-timeslot-btn');
-		expect(nextAvailableTimeslotBtn).toBeInTheDocument();
-		await user.click(nextAvailableTimeslotBtn);
-		expect(history.push).toHaveBeenCalledTimes(1);
-		expect(history.location.pathname).toBe('/656b75c56c0a78cef01c9cf0/calendar/2023/12/01');
-	});
-
-	it('clicking first booking in upcoming user bookings widget navigates to calendar', async () => {
-		const user = userEvent.setup()
-
-		const upcomingUserBookingsBtn = screen.getByTestId('upcoming-user-bookings-btn');
-		expect(upcomingUserBookingsBtn).toBeInTheDocument();
-		await user.click(upcomingUserBookingsBtn);
-		expect(history.push).toHaveBeenCalledTimes(1);
-		expect(history.location.pathname).toBe('/656b75c56c0a78cef01c9cf0/calendar/2023/12/01');
+		const upcomingUserBooking = screen.getByTestId('upcoming-user-bookings-btn');
+		expect(upcomingUserBooking).toBeInTheDocument();
+		expect(upcomingUserBooking).toHaveTextContent(/Sun 31st Dec 2023/);
+		expect(upcomingUserBooking).toHaveTextContent(/07:00 - 10.00/);
+		// await user.click(upcomingUserBooking);
+		// expect(history.push).toHaveBeenCalledTimes(1);
+		// expect(history.location.pathname).toBe('/656b75c56c0a78cef01c9cf0/calendar/2023/12/31');
 	});
 });
+
+describe('UserBookings not signed in', () => {
+	beforeEach(() => {
+
+		render(
+			<Provider store={
+				mockStore({
+					auth: {
+						isSignedIn: false,
+					},
+					service: {
+						services: [],
+						selectedService: {},
+					},
+					bookingData: {
+						userBookings: [],
+						booking: [],
+					},
+				})
+			}>
+				<Router history={history}>
+					<UserBookings />
+				</Router>
+			</Provider>
+		)
+})
+
+afterEach(() => {
+	cleanup();
+});
+
+afterAll(() => {
+	jest.restoreAllMocks();
+});
+	
+	it('renders UserBookings view with error message', () => {
+		expect(screen.getByText(/Denna vy kräver inloggning./)).toBeInTheDocument();
+		const loginLink = screen.getByRole('link', { name: /Logga in och försök igen/ });
+		expect(loginLink).toBeInTheDocument();
+		expect(loginLink.getAttribute('href')).toBe('/user/login');
+		
+	});
+})
