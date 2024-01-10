@@ -1,13 +1,10 @@
 import React from 'react';
-import history from '../history';
 import moment from 'moment';
 // moment.tz.setDefault('Europe/Stockholm');
 
 
 const ArchivedUserBookings = ({ selectedService, user, userBookings }) => {
-    const onBookingClick = url => {
-        history.push(url);
-      }
+    if(!userBookings) return null;
     const sortedUserBookings = userBookings?.sort((a, b) => moment(a.date).diff(moment(b.date)))
 
     const renderDate = date => {
@@ -34,24 +31,24 @@ const ArchivedUserBookings = ({ selectedService, user, userBookings }) => {
     )}
     
     return (
-        <>
+        <ul>
             {
                 sortedUserBookings.map((booking) => {
-                if(moment(booking.date).isAfter(moment())) return null;
-                const timeslots = renderTimeslots(booking);
-                return Boolean(timeslots.find(value => value !== null)) ? (
-                    <div key={booking.id} className="user-bookings">
-                    <div key={booking.id + 1} className="user-booking user-booking-archived" disabled>
-                        <i className="large calendar check centered outline icon"></i>
-                        <div className="user-booking-date" >{renderDate(booking.date)}</div>
-                        <div className="user-booking-timesloth">{timeslots}</div>
-                    </div>
-                    </div>
-                ) : null;
+                    if(moment(booking.date).isAfter(moment())) return null;
+                    const timeslots = renderTimeslots(booking);
+                    return Boolean(timeslots.find(value => value !== null)) ? (
+                        <li data-testid="archived-user-booking" key={booking._id} className="user-bookings">
+                            <div key={booking.id + 1} className="user-booking user-booking-archived" disabled>
+                                <i className="large calendar check centered outline icon"></i>
+                                <div className="user-booking-date" >{renderDate(booking.date)}</div>
+                                <div className="user-booking-timesloth">{timeslots}</div>
+                            </div>
+                        </li>
+                    ) : null;
             
             })
         }
-      </>)
+      </ul>)
 }
 
 export default ArchivedUserBookings;
