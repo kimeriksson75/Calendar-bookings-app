@@ -15,20 +15,20 @@ export const getAvailableServices = () => async dispatch => {
     type: FETCH_SERVICES,
     payload: null
   })
-  serviceService.getServices()
-    .then(services => {
-      dispatch({
-        type: FETCH_SERVICES_SUCCESS,
-        payload: services.data
-      })
+
+  try {
+    const result = await serviceService.getAvailableServices()
+    dispatch({
+      type: FETCH_SERVICES_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_SERVICES_ERROR,
-        payload: null
-      });
-      handleError(error, dispatch);
-    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_SERVICES_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
 export const getServicesByResidence = residence => async dispatch => {
@@ -36,20 +36,19 @@ export const getServicesByResidence = residence => async dispatch => {
     type: FETCH_SERVICES_BY_RESIDENCE,
     payload: null
   })
-  serviceService.getServicesByResidence(residence)
-    .then(services => {
-      dispatch({
-        type: FETCH_SERVICES_BY_RESIDENCE_SUCCESS,
-        payload: services.data
-      })
+  try {
+    const result = await serviceService.getServicesByResidence(residence)
+    dispatch({
+      type: FETCH_SERVICES_BY_RESIDENCE_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_SERVICES_BY_RESIDENCE_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
-    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_SERVICES_BY_RESIDENCE_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
 export const setSelectedService = service => dispatch => {

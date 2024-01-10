@@ -11,18 +11,18 @@ export const getAvailableResidences = () => async dispatch => {
     type: FETCH_RESIDENCES,
     payload: null
   })
-  residenceService.getResidences()
-    .then(residences => {
-      dispatch({
-        type: FETCH_RESIDENCES_SUCCESS,
-        payload: residences.data
-      })
+
+  try {
+    const result = await residenceService.getAvailableResidences()
+    dispatch({
+      type: FETCH_RESIDENCES_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_RESIDENCES_ERROR,
-        payload: null
-      });
-      handleError(error, dispatch);
-    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_RESIDENCES_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }

@@ -29,10 +29,10 @@ export const createBooking = (booking, userId) => async dispatch => {
   })
 
   try {
-    const createdBooking = await bookingsService.create(booking, userId)
+    const result = await bookingsService.create(booking, userId)
     dispatch({
       type: CREATE_BOOKING_SUCCESS,
-      payload: createdBooking.data
+      payload: result.data
     })
   } catch (error) {  
     dispatch({
@@ -48,20 +48,19 @@ export const getBookingsByDate = (service, date) => async dispatch => {
     type: FETCH_BOOKINGS,
     payload: null
   })
-  bookingsService.getBookingsByDate(service, date)
-    .then(booking => {
-      dispatch({
-        type: FETCH_BOOKINGS_SUCCESS,
-        payload: booking.data
-      })
+  try {
+    const result = await bookingsService.getBookingsByDate(service, date)
+    dispatch({
+      type: FETCH_BOOKINGS_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_BOOKINGS_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
-    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_BOOKINGS_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
 export const getBookingsByDateSpan = (service, start, end) => async dispatch => {
@@ -69,20 +68,20 @@ export const getBookingsByDateSpan = (service, start, end) => async dispatch => 
     type: FETCH_BOOKINGS,
     payload: null
   })
-  bookingsService.getBookingsByDateSpan(service, start, end)
-    .then(booking => {
-      dispatch({
-        type: FETCH_BOOKINGS_SUCCESS,
-        payload: booking.data
-      })
+
+  try {
+    const result = await bookingsService.getBookingsByDateSpan(service, start, end)
+    dispatch({
+      type: FETCH_BOOKINGS_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_BOOKINGS_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
-    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_BOOKINGS_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
 export const getBookingsByMonth = (service, date) => async dispatch => {
@@ -90,42 +89,41 @@ export const getBookingsByMonth = (service, date) => async dispatch => {
     type: FETCH_CALENDAR_BOOKINGS,
     payload: null
   })
-  bookingsService.getBookingsByMonth(service, date)
-    .then(booking => {
-      dispatch({
-        type: FETCH_CALENDAR_BOOKINGS_SUCCESS,
-        payload: booking.data
-      })
+
+  try {
+    const result = await bookingsService.getBookingsByMonth(service, date)
+    dispatch({
+      type: FETCH_CALENDAR_BOOKINGS_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_CALENDAR_BOOKINGS_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
-    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_CALENDAR_BOOKINGS_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
-export const getBookingByAuthor = (service, userId) => async dispatch => {
+export const getBookingsByAuthor = (service, userId) => async dispatch => {
   dispatch({
     type: FETCH_USER_BOOKINGS,
     payload: null
   });
-
-  bookingsService.getBookingsByAuthor(service, userId)
-    .then(booking => {
-      dispatch({
-        type: FETCH_USER_BOOKINGS_SUCCESS,
-        payload: booking.data
-      })
+  try {
+    const result = await bookingsService.getBookingsByAuthor(service, userId)
+    dispatch({
+      type: FETCH_USER_BOOKINGS_SUCCESS,
+      payload: result.data
     })
-    .catch(error => {
-      dispatch({
-        type: FETCH_USER_BOOKINGS_ERROR,
-        payload: null
-      })
-      handleError(error, dispatch);
-    });
+  
+  } catch (error) {
+    dispatch({
+      type: FETCH_USER_BOOKINGS_ERROR,
+      payload: null
+    })
+    handleError(error, dispatch);
+  }
 }
 
 export const patchBooking = (booking, userId) => async dispatch => {

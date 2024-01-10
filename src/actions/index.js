@@ -44,8 +44,8 @@ export const handleError = ({status, statusText, message}, dispatch) => {
       type: SIGN_OUT_SUCCESS,
       payload: null
     });
-    const accessToken = JSON.parse(localStorage.getItem('user')).data.accessToken
-    const refreshToken = JSON.parse(localStorage.getItem('user')).data.refreshToken
+    const accessToken = JSON.parse(localStorage.getItem('user'))?.data?.accessToken
+    const refreshToken = JSON.parse(localStorage.getItem('user'))?.data?.refreshToken
     if (accessToken && refreshToken) {
       history.push('/user/login');
       logout({
