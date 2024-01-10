@@ -1,6 +1,5 @@
 export const handleError = err => {
   if (err.response) {
-    console.log(err.response)
     const { data, status, statusText } = err.response;
     const errorObject  = {
       status,

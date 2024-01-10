@@ -44,7 +44,6 @@ const getBookingsByAuthor = async (service, userId) => {
 }
 
 const patchBooking = async (booking, userId) => {
-  console.log('booking', booking);
   const { _id } = booking;
   const modyfiedBooking = _.omit(booking, ['_id', 'id']);
   return await bookings.patch(`/${userId}/${_id}`, modyfiedBooking, requestOptions())
