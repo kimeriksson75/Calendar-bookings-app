@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getBookingByAuthor } from '../actions';
+import { getBookingsByAuthor } from '../actions';
 import InfoBar from '../components/InfoBar';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
 import ArchivedUserBookings from '../components/ArchivedUserBookings';
@@ -10,13 +10,13 @@ const UserBookings = props => {
     auth: { user, isSignedIn },
     selectedService,
     bookingData: { userBookings },
-    getBookingByAuthor,
+    getBookingsByAuthor,
   } = props;
 
 
   useEffect(() => {
-    if (user && selectedService) getBookingByAuthor(selectedService.id, user._id);
-  }, [user, getBookingByAuthor, selectedService]);
+    if (user && selectedService) getBookingsByAuthor(selectedService.id, user._id);
+  }, [user, getBookingsByAuthor, selectedService]);
 
   return (
     <div className="page-container user-bookings">
@@ -50,4 +50,4 @@ const mapStateToProps = (state) => {
     bookingData: state.bookingData
   });
 }
-export default connect(mapStateToProps, { getBookingByAuthor })(UserBookings);
+export default connect(mapStateToProps, { getBookingsByAuthor })(UserBookings);

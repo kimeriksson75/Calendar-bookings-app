@@ -3,7 +3,7 @@ import Clock from 'react-live-clock';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import history from '../history';
-import { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByDateSpan } from '../actions';
+import { getServicesByResidence, setSelectedService, getBookingsByAuthor, getBookingsByDateSpan } from '../actions';
 import { find, isEmpty } from 'lodash-fp';
 import { Dropdown } from 'semantic-ui-react';
 import UpcomingUserBookings from '../components/UpcomingUserBookings';
@@ -25,7 +25,7 @@ const Home = props => {
     bookingData: { userBookings = [], booking = [] },
     getServicesByResidence,
     setSelectedService,
-    getBookingByAuthor,
+    getBookingsByAuthor,
     getBookingsByDateSpan
   } = props;
 
@@ -59,10 +59,10 @@ const Home = props => {
     //   return;
     // }
     if (user && selectedService?._id) {
-      getBookingByAuthor(selectedService._id, user._id);
+      getBookingsByAuthor(selectedService._id, user._id);
     }
 
-  }, [selectedService, getBookingByAuthor, user])
+  }, [selectedService, getBookingsByAuthor, user])
 
   useEffect(() => {
     if (!isEmpty(selectedService)) {
@@ -217,4 +217,4 @@ const mapStateToProps = state => {
     bookingData: state.bookingData
   })
 }
-export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingByAuthor, getBookingsByDateSpan })(Home);
+export default connect(mapStateToProps, { getServicesByResidence, setSelectedService, getBookingsByAuthor, getBookingsByDateSpan })(Home);

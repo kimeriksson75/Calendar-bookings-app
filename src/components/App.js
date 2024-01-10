@@ -9,7 +9,7 @@ import UserMessage from './UserMessage';
 import UserBookings from '../views/UserBookings';
 import CreateUser from '../views/CreateUser';
 import Login from '../views/Login';
-import SignInWithToken from './SignInWithToken';
+import SignInWithToken from '../views/SignInWithToken';
 import ForgotPassword from '../views/ForgotPassword';
 import Logout from '../views/Logout';
 import Loader from './Loader';
