@@ -1,7 +1,7 @@
 import { residences, requestOptions } from '../api';
 import { handleError } from './handleError';
 
-const getResidences = async () => {
+const getAvailableResidences = async () => {
   return await residences.get(`/`, requestOptions())
     .then(residences => {
       return Promise.resolve(residences);
@@ -10,7 +10,7 @@ const getResidences = async () => {
 }
 
 const residenceService = {
-  getResidences
+  getAvailableResidences
 };
 
 export default residenceService;
