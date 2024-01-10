@@ -3,7 +3,6 @@ import {
 	render,
 	screen,
 	cleanup,
-	waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux';
@@ -12,9 +11,7 @@ import Calendar from '../../views/Calendar'
 import { Router } from 'react-router-dom';
 import history from '../../history';
 import '@testing-library/jest-dom';
-import { createBooking, getBookingsByMonth, patchBooking } from '../../actions';
 import 'setimmediate';
-import SocketMock from 'socket.io-mock';
 // import io from 'socket.io-client';
 // import mockio, {serverSocket, cleanUp } from 'socket.io-client';
 import io from 'socket.io-client';
@@ -161,10 +158,15 @@ const store = mockStore({
 
 store.dispatch = jest.fn();
 jest.spyOn(history, "push");
-jest.mock('../../actions/bookingActions', () => ({
-	getBookingsByMonth: jest.fn((value) => {}),
-	patchBooking: jest.fn((value) => {}),
-	createBooking: jest.fn((value) => {}),
+// jest.mock('../../actions/bookingActions', () => ({
+// 	getBookingsByMonth: jest.fn((value) => {}),
+// 	patchBooking: jest.fn((value) => {}),
+// 	createBooking: jest.fn((value) => {}),
+// }));
+jest.mock('../../services/bookingService', () => ({
+	getBookingsByMonth: jest.fn((value) => mockReturnValueOnce({ data: { booking: {} } })),
+	patchBooking: jest.fn((value) => mockReturnValueOnce({ data: { booking: {}} })),
+	createBooking: jest.fn((value) => mockReturnValueOnce({ data: { booking: {}} })),
 }));
 jest.mock('moment/locale/sv', () => {
 	const moment = jest.requireActual('moment');
@@ -222,6 +224,8 @@ describe('Calendar', () => {
 		expect(selectedDay).toBeInTheDocument();
 		expect(selectedDay).toHaveClass('calendar-day calendar-day--today');
 		expect(screen.getByRole('heading', { name: /Bokningar Fri 1 December/ })).toBeDefined();
+		// expect(store.dispatch).toHaveBeenCalledTimes(1);  // this is good  <--
+
 	});
 
 	it('navigate to next month', async () => {

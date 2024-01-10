@@ -215,7 +215,7 @@ jest.mock('moment', () => {
 	return moment;
 });
 jest.mock('../../actions/bookingActions', () => ({
-	getBookingByAuthor: jest.fn((value) => {}),
+	getBookingsByAuthor: jest.fn((value) => {}),
 }));
 
 Date.now = jest.fn().mockReturnValue(new Date('2023-12-01T12:33:37.000Z'));
