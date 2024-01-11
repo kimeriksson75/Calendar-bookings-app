@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import history from '../history';
-moment.tz.setDefault('Europe/Stockholm');
 
 const NextAvailableTimeslot = ({ bookings = [], selectedService }) => {
 

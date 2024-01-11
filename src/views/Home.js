@@ -139,7 +139,7 @@ const Home = props => {
       }
       return isWeekDay(day);
     }
-    
+    let renderDuration = null;
     for (let i = 0; i < bookings.length; i++) {
       const booking = bookings[i];
       const issuedTimeslots = isAlternateTimeslots(moment.utc(booking.date).format('D')) ? booking.timeslots : booking.alternateTimeslots;
@@ -147,10 +147,19 @@ const Home = props => {
         timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(__currentDate)
         ) || null;
       if (issuedTimeslot) {
-        const renderDuration = duration({ start: moment(), end: moment(issuedTimeslot.start).subtract({ hours: 1  }) });
-        return renderDuration
+        renderDuration = duration({ start: moment(), end: moment(issuedTimeslot.start).subtract({ hours: 1  }) });
+        break;
       }
     }
+    return renderDuration;
+  }
+
+  const isFutureUserBookings = userBookings => {
+    return userBookings.reduce((acc, booking) => {
+      const timeslots = [...booking.timeslots, ...booking.alternateTimeslots];
+      const timeslot = timeslots.find(timeslot => timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(__currentDate));
+      return acc || Boolean(timeslot);
+    }, false)
   }
 
   return (
@@ -184,17 +193,16 @@ const Home = props => {
           <div className="ui divider"></div>
           </div>
         )}
-        {selectedService && userBookings?.length > 0 && sortedUserBookings?.length > 0 && (
+        {selectedService && userBookings?.length > 0 && sortedUserBookings?.length > 0 && isFutureUserBookings(userBookings) && (
             <div data-testid="next-user-booking" className="home-welcome">
-            <h3>Din nästa bokning är om</h3>
-            <h4><span>{`${renderNextUserBooking(sortedUserBookings)}`}</span></h4>
-            
+              <h3>Din nästa bokning är om</h3>
+              <h4><span>{`${renderNextUserBooking(sortedUserBookings)}`}</span></h4>
+              <div className="ui divider"></div>
             </div>
           )}
         <div>
-          {userBookings?.length > 0 ? (
+          {userBookings?.length && isFutureUserBookings(userBookings) > 0 ? (
             <div data-testid="upcoming-user-bookings">
-              <div className="ui divider"></div>
               <p>Dina kommande bokningar</p>
               <UpcomingUserBookings selectedService={selectedService} user={user} userBookings={sortedUserBookings} />
             </div>) : <p>Du har inga kommande bokningar.</p>}

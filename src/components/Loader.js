@@ -13,7 +13,7 @@ const Loader = ({
     }, [isFetching]);
     
     return (
-        <div className="loader-container">
+        <div data-testid="loader" className="loader-container">
             <div className={`loader-spinner-wrapper loader-spinner-wrapper${show ? '--show' : ''}`}>
                 <div className="loader-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </div>

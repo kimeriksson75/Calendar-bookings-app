@@ -55,7 +55,7 @@ const Header = props => {
 
   return (
     <>
-      <header className="app-header">
+      <header data-testid="header" className="app-header">
           <button className="logo" aria-label="logo" onClick={() => onMenuItemClick('/')}><i className="large calendar centered outline icon"></i></button>
         <input
           className="side-menu"
