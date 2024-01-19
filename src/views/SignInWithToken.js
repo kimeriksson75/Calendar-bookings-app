@@ -39,7 +39,6 @@ const SignInWithToken = props => {
 
   useEffect(() => {
     if (!isEmpty(user)) {
-      console.log('isEmpty:', user)
       // history.push(`/${serviceId}/calendar/${moment().format('YYYY')}/${moment().format('MM')}/${moment().format('D')}`);
       history.push('/');
     }

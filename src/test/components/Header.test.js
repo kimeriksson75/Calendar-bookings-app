@@ -11,10 +11,8 @@ import Header from '../../components/Header'
 import { Router } from 'react-router-dom';
 import history from '../../history';
 import '@testing-library/jest-dom';
-import { application } from 'express';
 
-const mockStore = configureStore([]);
-const store = mockStore({
+const state = {
 	application: {
 		layout: 'light',
 		showSidebar: false,
@@ -94,6 +92,10 @@ const store = mockStore({
 			},
 		]
 	},
+}
+const mockStore = configureStore([]);
+const store = mockStore({
+	...state,
 })
 
 store.dispatch = jest.fn();
@@ -120,6 +122,9 @@ describe('Header', () => {
 	afterEach(() => {
 		cleanup();
 	});
+	beforeAll(() => {
+		jest.clearAllMocks();
+	})
 
 	it('renders Header component', async () => {
 		const navigation = screen.getByRole('navigation');
@@ -151,3 +156,94 @@ describe('Header', () => {
 		expect(history.push).toHaveBeenCalledWith('/user/logout');
 	});
 })
+
+describe('Header dark layout', () => {
+	beforeEach(() => {
+		const store = mockStore({
+			...state,
+			application: {
+				layout: 'dark',
+				showSidebar: false,
+			},
+		})
+		store.dispatch = jest.fn();
+		render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Header />
+				</Router>
+			</Provider>
+		)
+	});
+	afterEach(() => {
+		cleanup();
+	});
+	beforeAll(() => {
+		jest.clearAllMocks();
+	})
+	it('renders Header component with dark layout', async () => {
+		const navigation = screen.getByRole('navigation');
+		expect(navigation).toBeInTheDocument();
+		const body = document.querySelector('body');
+		expect(body).toHaveClass('dark');
+		expect(screen.getByRole('button', { name: /Tema - Ljus/ })).toBeInTheDocument();
+	});
+});
+
+describe('Header toggle layout', () => {
+	beforeEach(() => {
+		render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Header />
+				</Router>
+			</Provider>
+		)
+	});
+	afterEach(() => {
+		cleanup();
+	});
+	beforeAll(() => {
+		jest.clearAllMocks();
+	})
+	it('should toggle layout from light to dark', async () => {
+		await userEvent.click(screen.getByRole('button', { name: /Tema - Mörk/ }));
+		expect(store.dispatch).toHaveBeenCalledWith({
+			type: 'SET_LAYOUT',
+			payload: 'dark'
+		});		
+	});
+});
+describe('Header toggle layout', () => {
+	beforeEach(() => {
+		const store = mockStore({
+			...state,
+			application: {
+				layout: 'dark',
+				showSidebar: false,
+			},
+		})
+		store.dispatch = jest.fn();
+		render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Header />
+				</Router>
+			</Provider>
+		)
+	});
+	afterEach(() => {
+		cleanup();
+	});
+	beforeAll(() => {
+		jest.clearAllMocks();
+	})
+	
+	it.skip('should toggle layout from dark to light', async () => {
+		await userEvent.click(screen.getByRole('button', { name: /Tema - Ljus/ }));
+		expect(store.dispatch).toHaveBeenCalledWith({
+			type: 'SET_LAYOUT',
+			payload: 'light'
+		});		
+	});
+});

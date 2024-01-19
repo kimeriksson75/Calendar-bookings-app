@@ -158,7 +158,7 @@ const Home = props => {
     return userBookings.reduce((acc, booking) => {
       const timeslots = [...booking.timeslots, ...booking.alternateTimeslots];
       const timeslot = timeslots.find(timeslot => timeslot.userid === user._id && moment.utc(timeslot.start).isAfter(__currentDate));
-      return acc || Boolean(timeslot);
+      return acc || !!timeslot;
     }, false)
   }
 

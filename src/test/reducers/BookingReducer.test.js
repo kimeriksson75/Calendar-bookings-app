@@ -195,3 +195,13 @@ describe('BookingReducer edit booking', () => {
         expect(newState.isFetching).toEqual(false);
     });
 });
+
+describe('BookingReducer handle default state', () => {
+    it('should return default state', () => {
+        const newState = BookingReducer(initialState, {
+            type: 'default',
+            payload: null
+        });
+        expect(newState).toEqual(initialState);
+    });
+});

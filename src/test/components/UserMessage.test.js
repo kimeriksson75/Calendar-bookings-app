@@ -10,7 +10,8 @@ import UserMessage from '../../components/UserMessage'
 import { Router } from 'react-router-dom';
 import history from '../../history';
 import '@testing-library/jest-dom';
-import e from 'express';
+import { act } from 'react-dom/test-utils';
+
 
 const mockStore = configureStore([]);
 const store = mockStore({
@@ -100,6 +101,44 @@ describe('UserMessage info', () => {
 	});
 });
 
+describe('UserMessage warning', () => {
+	beforeEach(() => {
+		render(
+			<Provider store={
+				mockStore({
+					userMessage: {
+						message: {
+							type: 'alert',
+							description: 'Du måste vara inloggad för att boka.',
+						}
+					},
+				})
+			}>
+				<Router history={history}>
+					<UserMessage />
+				</Router>
+			</Provider>
+		)
+	})
+	
+	afterEach(() => {
+		cleanup();
+	});
+
+	it('renders info user message', async () => {
+		const userMessageContainer = screen.getByTestId('user-message-container');
+		expect(userMessageContainer).toBeInTheDocument();
+		expect(userMessageContainer).toHaveClass('message-container message-container-show');
+		const userMessage = screen.getByTestId('user-message');
+		expect(userMessage).toBeInTheDocument();
+		expect(userMessage).toHaveClass('message message--warning');
+		const userMessageIcon = screen.getByTestId('user-message-icon');
+		expect(userMessageIcon).toBeInTheDocument();
+		expect(userMessageIcon).toHaveClass('warning sign large icon');
+		expect(userMessage).toHaveTextContent('Du måste vara inloggad för att boka.');
+	});
+});
+
 describe('UserMessage error', () => {
 	beforeEach(() => {
 		render(
@@ -135,5 +174,63 @@ describe('UserMessage error', () => {
 		expect(userMessageIcon).toBeInTheDocument();
 		expect(userMessageIcon).toHaveClass('warning sign large icon');
 		expect(userMessage).toHaveTextContent('Fel användarnamn eller lösenord.');
+	});
+});
+
+describe('UserMessage no message', () => {
+	beforeEach(() => {
+		render(
+			<Provider store={
+				mockStore({
+					userMessage: {
+						message: null
+					},
+				})
+			}>
+				<Router history={history}>
+					<UserMessage />
+				</Router>
+			</Provider>
+		)
+	})
+	
+	afterEach(() => {
+		cleanup();
+	});
+
+	it('renders info user message', async () => {
+		const userMessageContainer = screen.getByTestId('user-message-container');
+		expect(userMessageContainer).toBeInTheDocument();
+		expect(userMessageContainer).toHaveClass('message-container message-container-hide');
+	});
+});
+
+describe('UserMessage success', () => {
+	beforeEach(() => {
+		jest.useFakeTimers(); // Mock the timers
+
+		render(
+			<Provider store={store}>
+				<Router history={history}>
+					<UserMessage />
+				</Router>
+			</Provider>
+		);
+	});
+
+	afterEach(() => {
+		cleanup();
+		jest.clearAllTimers();
+	});
+
+	it('renders the user message and closes it after timeout', async () => {
+		const userMessageContainer = screen.getByTestId('user-message-container');
+		expect(userMessageContainer).toBeInTheDocument();
+		expect(userMessageContainer).toHaveClass('message-container message-container-show');
+		act(() => {
+			jest.advanceTimersByTime(3000); // Advance the timers by 3 seconds (adjust as needed)
+		});
+
+		expect(userMessageContainer).toHaveClass('message-container message-container-hide');
 	});
 });

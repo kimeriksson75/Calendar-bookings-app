@@ -25,7 +25,7 @@ const store = mockStore({
 
 store.dispatch = jest.fn();
 
-describe('Login', () => {
+describe('Forgot password', () => {
   beforeEach(() => {
     render(
         <Provider store={store}>
