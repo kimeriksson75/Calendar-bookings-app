@@ -28,7 +28,6 @@ export const apartments = axios.create({
 
 export const requestOptions = () => {
   const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).data.accessToken : process.env.REACT_APP_ACCESS_TOKEN_SECRET;
-  console.log('process.env.REACT_APP_ACCESS_TOKEN_SECRET', process.env.REACT_APP_ACCESS_TOKEN_SECRET);
   const headers = {
     'Content-Type': 'application/json',
     'authorization': `Bearer ${token}`,
