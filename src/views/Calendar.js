@@ -241,7 +241,7 @@ const CalendarView = props => {
     const issuedTimeslot = isAlternateTimeslots(selectedDay) ? currentDayBooking.timeslots[id] : currentDayBooking.alternateTimeslots[id];
     issuedTimeslot.userid = null;
     issuedTimeslot.username = "";
-    await patchBooking(currentDayBooking, user._id);
+    await patchBooking(currentDayBooking, user._id, true);
 
   }
 

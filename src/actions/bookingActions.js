@@ -16,6 +16,7 @@ import {
   EDIT_BOOKING,
   EDIT_BOOKING_ERROR,
   EDIT_BOOKING_SUCCESS,
+  NEW_MESSAGE
 } from '../constants';
 
 import bookingsService from '../services/bookingService';
@@ -33,6 +34,14 @@ export const createBooking = (booking, userId) => async dispatch => {
     dispatch({
       type: CREATE_BOOKING_SUCCESS,
       payload: result.data
+    })
+    dispatch({
+      type: NEW_MESSAGE,
+      payload: {
+        type: 'success',
+        title: 'Bokining registrerad',
+        description: 'Bokining registrerad.'
+      }
     })
   } catch (error) {  
     dispatch({
@@ -126,7 +135,7 @@ export const getBookingsByAuthor = (service, userId) => async dispatch => {
   }
 }
 
-export const patchBooking = (booking, userId) => async dispatch => {
+export const patchBooking = (booking, userId, remove = false) => async dispatch => {
   dispatch({
     type: EDIT_BOOKING,
     payload: null
@@ -137,6 +146,14 @@ export const patchBooking = (booking, userId) => async dispatch => {
     dispatch({
       type: EDIT_BOOKING_SUCCESS,
       payload: patchedBooking.data
+    })
+    dispatch({
+      type: NEW_MESSAGE,
+      payload: {
+        type: 'success',
+        title: 'Bokining uppdaterad',
+        description: `Bokining ${remove ? 'avregistrerad' : 'registrerad'}.`
+      }
     })
   } catch (error) {
     dispatch({

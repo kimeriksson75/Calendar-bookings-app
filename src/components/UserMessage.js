@@ -26,8 +26,10 @@ const UserMessage = props => {
         return 'message message--error';
       case 'success':
         return 'message message--success';
+      case 'info':
+        return 'message message--info';
       default:
-        return 'message message';
+        return 'message message--info';
     }
   }
   const iconClassName = type => {
@@ -45,8 +47,11 @@ const UserMessage = props => {
   return (
     <div data-testid="user-message-container" className={`message-container ${modalOpen && userMessage?.message ? 'message-container-show' : 'message-container-hide'}`}>
       <div data-testid="user-message" className={className(userMessage?.message?.type || '')}>
-        <Icon data-testid="user-message-icon" size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
-        <span>{`${userMessage?.message?.description}`}</span>
+        <div>
+          <Icon data-testid="user-message-icon" size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
+        </div>
+        {/* <p>{`${userMessage?.message?.title}`}</p> */}
+        <div><p>{`${userMessage?.message?.description}`}</p></div>
       </div>
     </div>
   )
