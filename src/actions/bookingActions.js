@@ -39,8 +39,8 @@ export const createBooking = (booking, userId) => async dispatch => {
       type: NEW_MESSAGE,
       payload: {
         type: 'success',
-        title: 'Bokining registrerad',
-        description: 'Bokining registrerad.'
+        title: 'Bokning registrerad',
+        description: 'Bokning registrerad.'
       }
     })
   } catch (error) {  
@@ -151,8 +151,8 @@ export const patchBooking = (booking, userId, remove = false) => async dispatch 
       type: NEW_MESSAGE,
       payload: {
         type: 'success',
-        title: 'Bokining uppdaterad',
-        description: `Bokining ${remove ? 'avregistrerad' : 'registrerad'}.`
+        title: 'Bokning uppdaterad',
+        description: `Bokning ${remove ? 'avregistrerad' : 'registrerad'}.`
       }
     })
   } catch (error) {
