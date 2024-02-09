@@ -244,6 +244,38 @@ describe('UserMessage no message', () => {
 	});
 });
 
+describe('UserMessage closes on button close', () => {
+	beforeEach(() => {
+		jest.useFakeTimers(); // Mock the timers
+
+		render(
+			<Provider store={store}>
+				<Router history={history}>
+					<UserMessage />
+				</Router>
+			</Provider>
+		);
+	});
+
+	afterEach(() => {
+		cleanup();
+	});
+
+	it('renders the user message and closes while clicking on close button', async () => {
+		const userMessage = await screen.findByRole('alert');
+		expect(userMessage).toBeInTheDocument();
+		const closeButton = screen.getByRole('button', { name: /close/ });
+		expect(closeButton).toBeInTheDocument();
+		expect(closeButton).toHaveClass('Toastify__close-button Toastify__close-button--dark');
+		act(() => {
+			closeButton.click();
+		});
+		await waitFor(() => {
+			const closedUserMessage = screen.queryByRole('alert');
+			expect(closedUserMessage).not.toBeInTheDocument();
+		});
+	});
+});
 describe.skip('UserMessage closes after preset timeout', () => {
 	beforeEach(() => {
 		jest.useFakeTimers(); // Mock the timers
