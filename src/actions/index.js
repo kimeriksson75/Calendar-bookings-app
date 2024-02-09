@@ -22,7 +22,6 @@ export const toggleSidebar = (value = null) => {
 }
 
 export const setLayout = (payload) => {
-  console.log('payload', payload)
   return {
     type: SET_LAYOUT,
     payload
