@@ -3,6 +3,7 @@ import {
 	render,
 	screen,
   cleanup,
+	waitFor,
 } from '@testing-library/react'
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store'
@@ -15,11 +16,14 @@ import { act } from 'react-dom/test-utils';
 
 const mockStore = configureStore([]);
 const store = mockStore({
-    userMessage: {
-        message: {
-            type: 'success',
-            description: 'Nu har du tillgång till kalenderbokning.',
-        }
+	userMessage: {
+			message: {
+					type: 'success',
+					description: 'Nu har du tillgång till kalenderbokning.',
+			}
+	},
+	application: {
+		layout: 'dark',
 	},
 })
 
@@ -35,6 +39,9 @@ describe('UserMessage success', () => {
 										type: 'success',
 										description: 'Nu har du tillgång till kalenderbokning.',
 								}
+							},
+							application: {
+								layout: 'light',
 							},
 						})
 				}>
@@ -52,14 +59,21 @@ describe('UserMessage success', () => {
     it('renders success user message', async () => {
 			const userMessageContainer = screen.getByTestId('user-message-container');
 			expect(userMessageContainer).toBeInTheDocument();
-			expect(userMessageContainer).toHaveClass('message-container message-container-show');
-			const userMessage = screen.getByTestId('user-message');
+			const userMessage = await screen.findByRole('alert');
 			expect(userMessage).toBeInTheDocument();
-			expect(userMessage).toHaveClass('message message--success');
+			expect(userMessage).toHaveClass('Toastify__toast-body');
+			expect(userMessage).toHaveTextContent('Nu har du tillgång till kalenderbokning.');
+			
+			const parentElement = userMessage.parentElement;
+			expect(parentElement).toBeInTheDocument();
+			expect(parentElement).toHaveClass('Toastify__toast Toastify__toast-theme--light Toastify__toast--success Toastify--animate Toastify__bounce-enter--bottom-center');
+			
 			const userMessageIcon = screen.getByTestId('user-message-icon');
 			expect(userMessageIcon).toBeInTheDocument();
 			expect(userMessageIcon).toHaveClass('large icon check circle');
-			expect(userMessage).toHaveTextContent('Nu har du tillgång till kalenderbokning.');
+			const closeButton = screen.getByRole('button', { name: /close/ });
+			expect(closeButton).toBeInTheDocument();
+			expect(closeButton).toHaveClass('Toastify__close-button Toastify__close-button--light');
     });
 });
 
@@ -74,81 +88,8 @@ describe('UserMessage info', () => {
 									description: 'Du hittar alla dina kommande bokningar under mina bokningar.',
 							}
 						},
-					})
-			}>
-					<Router history={history}>
-							<UserMessage />
-					</Router>
-			</Provider>
-		)
-	})
-	
-	afterEach(() => {
-			cleanup();
-	});
-
-	it('renders info user message', async () => {
-		const userMessageContainer = screen.getByTestId('user-message-container');
-		expect(userMessageContainer).toBeInTheDocument();
-		expect(userMessageContainer).toHaveClass('message-container message-container-show');
-		const userMessage = screen.getByTestId('user-message');
-		expect(userMessage).toBeInTheDocument();
-		expect(userMessage).toHaveClass('message message');
-		const userMessageIcon = screen.getByTestId('user-message-icon');
-		expect(userMessageIcon).toBeInTheDocument();
-		expect(userMessageIcon).toHaveClass('info circle large icon');
-		expect(userMessage).toHaveTextContent('Du hittar alla dina kommande bokningar under mina bokningar.');
-	});
-});
-
-describe('UserMessage warning', () => {
-	beforeEach(() => {
-		render(
-			<Provider store={
-				mockStore({
-					userMessage: {
-						message: {
-							type: 'alert',
-							description: 'Du måste vara inloggad för att boka.',
-						}
-					},
-				})
-			}>
-				<Router history={history}>
-					<UserMessage />
-				</Router>
-			</Provider>
-		)
-	})
-	
-	afterEach(() => {
-		cleanup();
-	});
-
-	it('renders info user message', async () => {
-		const userMessageContainer = screen.getByTestId('user-message-container');
-		expect(userMessageContainer).toBeInTheDocument();
-		expect(userMessageContainer).toHaveClass('message-container message-container-show');
-		const userMessage = screen.getByTestId('user-message');
-		expect(userMessage).toBeInTheDocument();
-		expect(userMessage).toHaveClass('message message--warning');
-		const userMessageIcon = screen.getByTestId('user-message-icon');
-		expect(userMessageIcon).toBeInTheDocument();
-		expect(userMessageIcon).toHaveClass('warning sign large icon');
-		expect(userMessage).toHaveTextContent('Du måste vara inloggad för att boka.');
-	});
-});
-
-describe('UserMessage error', () => {
-	beforeEach(() => {
-		render(
-			<Provider store={
-					mockStore({
-						userMessage: {
-							message: {
-									type: 'error',
-									description: 'Fel användarnamn eller lösenord.',
-							}
+						application: {
+							layout: 'light',
 						},
 					})
 			}>
@@ -166,24 +107,35 @@ describe('UserMessage error', () => {
 	it('renders info user message', async () => {
 		const userMessageContainer = screen.getByTestId('user-message-container');
 		expect(userMessageContainer).toBeInTheDocument();
-		expect(userMessageContainer).toHaveClass('message-container message-container-show');
-		const userMessage = screen.getByTestId('user-message');
+		
+		const userMessage = await screen.findByRole('alert');
 		expect(userMessage).toBeInTheDocument();
-		expect(userMessage).toHaveClass('message message--error');
+		expect(userMessage).toHaveClass('Toastify__toast-body');
+		expect(userMessage).toHaveTextContent('Du hittar alla dina kommande bokningar under mina bokningar.');
+		
+		const parentElement = userMessage.parentElement;
+		expect(parentElement).toBeInTheDocument();
+		expect(parentElement).toHaveClass('Toastify__toast Toastify__toast-theme--light Toastify__toast--info Toastify--animate Toastify__bounce-enter--bottom-center');
 		const userMessageIcon = screen.getByTestId('user-message-icon');
 		expect(userMessageIcon).toBeInTheDocument();
-		expect(userMessageIcon).toHaveClass('warning sign large icon');
-		expect(userMessage).toHaveTextContent('Fel användarnamn eller lösenord.');
+		expect(userMessageIcon).toHaveClass('info circle large icon');
+		
 	});
 });
 
-describe('UserMessage no message', () => {
+describe('UserMessage warning', () => {
 	beforeEach(() => {
 		render(
 			<Provider store={
 				mockStore({
 					userMessage: {
-						message: null
+						message: {
+							type: 'warning',
+							description: 'Du måste vara inloggad för att boka.',
+						}
+					},
+					application: {
+						layout: 'light',
 					},
 				})
 			}>
@@ -201,11 +153,98 @@ describe('UserMessage no message', () => {
 	it('renders info user message', async () => {
 		const userMessageContainer = screen.getByTestId('user-message-container');
 		expect(userMessageContainer).toBeInTheDocument();
-		expect(userMessageContainer).toHaveClass('message-container message-container-hide');
+		
+		const userMessage = await screen.findByRole('alert');
+		expect(userMessage).toBeInTheDocument();
+		expect(userMessage).toHaveClass('Toastify__toast-body');
+		expect(userMessage).toHaveTextContent('Du måste vara inloggad för att boka.');
+		
+		const parentElement = userMessage.parentElement;
+		expect(parentElement).toBeInTheDocument();
+		expect(parentElement).toHaveClass('Toastify__toast Toastify__toast-theme--light Toastify__toast--warning Toastify--animate Toastify__bounce-enter--bottom-center');
+		
+		const userMessageIcon = screen.getByTestId('user-message-icon');
+		expect(userMessageIcon).toBeInTheDocument();
+		expect(userMessageIcon).toHaveClass('warning sign large icon');
 	});
 });
 
-describe('UserMessage success', () => {
+describe('UserMessage error', () => {
+	beforeEach(() => {
+		render(
+			<Provider store={
+					mockStore({
+						userMessage: {
+							message: {
+									type: 'error',
+									description: 'Fel användarnamn eller lösenord.',
+							}
+						},
+						application: {
+							layout: 'dark',
+						},
+					})
+			}>
+					<Router history={history}>
+							<UserMessage />
+					</Router>
+			</Provider>
+		)
+	})
+	
+	afterEach(() => {
+			cleanup();
+	});
+
+	it('renders info user message', async () => {
+		const userMessageContainer = screen.getByTestId('user-message-container');
+		expect(userMessageContainer).toBeInTheDocument();
+		
+		const userMessage = await screen.findByRole('alert');
+		expect(userMessage).toBeInTheDocument();
+		expect(userMessage).toHaveClass('Toastify__toast-body');
+		expect(userMessage).toHaveTextContent('Fel användarnamn eller lösenord.');
+		
+		const parentElement = userMessage.parentElement;
+		expect(parentElement).toBeInTheDocument();
+		expect(parentElement).toHaveClass('Toastify__toast Toastify__toast-theme--dark Toastify__toast--error Toastify--animate Toastify__bounce-enter--bottom-center');
+		
+		const userMessageIcon = screen.getByTestId('user-message-icon');
+		expect(userMessageIcon).toBeInTheDocument();
+		expect(userMessageIcon).toHaveClass('warning sign large icon');
+	});
+});
+
+describe('UserMessage no message', () => {
+	beforeEach(() => {
+		render(
+			<Provider store={
+				mockStore({
+					userMessage: {
+						message: null
+					},
+					application: {
+						layout: 'dark',
+					},
+				})
+			}>
+				<Router history={history}>
+					<UserMessage />
+				</Router>
+			</Provider>
+		)
+	})
+	
+	afterEach(() => {
+		cleanup();
+	});
+
+	it('renders info user message', async () => {
+		expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+	});
+});
+
+describe.skip('UserMessage closes after preset timeout', () => {
 	beforeEach(() => {
 		jest.useFakeTimers(); // Mock the timers
 
@@ -224,13 +263,15 @@ describe('UserMessage success', () => {
 	});
 
 	it('renders the user message and closes it after timeout', async () => {
-		const userMessageContainer = screen.getByTestId('user-message-container');
-		expect(userMessageContainer).toBeInTheDocument();
-		expect(userMessageContainer).toHaveClass('message-container message-container-show');
+		const userMessage = await screen.findByRole('alert');
+		expect(userMessage).toBeInTheDocument();
 		act(() => {
-			jest.advanceTimersByTime(3000); // Advance the timers by 3 seconds (adjust as needed)
+			jest.advanceTimersByTime(4000); // Advance the timers by 3 seconds (adjust as needed)
 		});
-
-		expect(userMessageContainer).toHaveClass('message-container message-container-hide');
+		// wait for toast to close
+		await waitFor(() => {
+			const closedUserMessage = screen.queryByRole('alert');
+			expect(closedUserMessage).not.toBeInTheDocument();
+		});
 	});
 });

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react'
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 
 const UserMessage = props => {
-  const { userMessage } = props;
+  const { userMessage, layout } = props;
   const timer = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
@@ -12,15 +15,35 @@ const UserMessage = props => {
 
   useEffect(() => {
     clearTimeout(timer.current)
+    
     timer.current = setTimeout(() => {
       setModalOpen(false);
     }, 3000);
     return () => clearTimeout(timer.current);
   }, [modalOpen, userMessage, timer]);
 
+  useEffect(() => {
+    if (!userMessage?.message) {
+      return;
+    }
+    toast[userMessage?.message?.type](userMessage?.message?.description, {
+      position: "bottom-center",
+      autoClose: 3000,
+      draggable: true,
+      transition: Bounce,
+      theme: layout === 'dark' ? 'dark' : 'light',
+      icon: <Icon data-testid="user-message-icon" size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />,
+      testId: 'user-message',
+      // hideProgressBar: false,
+      // closeOnClick: true,
+      // pauseOnHover: true,
+      // progress: undefined,
+    });
+  }, [userMessage]);
+
   const className = type => {
     switch (type) {
-      case 'alert':
+      case 'warning':
         return 'message message--warning';
       case 'error':
         return 'message message--error';
@@ -34,7 +57,7 @@ const UserMessage = props => {
   }
   const iconClassName = type => {
     switch (type) {
-      case 'alert':
+      case 'warning':
         return 'warning sign'
       case 'error':
         return 'warning sign'
@@ -45,20 +68,22 @@ const UserMessage = props => {
     }
   }
   return (
-    <div data-testid="user-message-container" className={`message-container ${modalOpen && userMessage?.message ? 'message-container-show' : 'message-container-hide'}`}>
-      <div data-testid="user-message" className={className(userMessage?.message?.type || '')}>
+    <div data-testid="user-message-container">
+      <ToastContainer data-testid="user-message"/>
+      {/* <div data-testid="user-message" className={className(userMessage?.message?.type || '')}>
         <div>
           <Icon data-testid="user-message-icon" size="large" name={`${iconClassName(userMessage?.message?.type || '')}`} />
         </div>
-        {/* <p>{`${userMessage?.message?.title}`}</p> */}
+        <p>{`${userMessage?.message?.title}`}</p>
         <div><p>{`${userMessage?.message?.description}`}</p></div>
-      </div>
+      </div> */}
     </div>
   )
 }
 const mapStateToProps = (state, ownProps) => {
   return ({
-    userMessage: state.userMessage
+    userMessage: state.userMessage,
+    layout: state.application.layout,
   })
 }
 export default connect(mapStateToProps, {})(UserMessage);

@@ -1,0 +1,45 @@
+.Toastify__toast {
+		border-radius: 0;
+}
+
+.Toastify__toast-theme--dark {
+    background-color: var(--dark);
+}
+
+.Toastify__toast-theme--light {
+    background-color: var(--dark);
+}
+.Toastify__toast--success {
+	.Toastify__toast-icon {
+		color: var(--green);
+	}
+}
+.Toastify__progress-bar--success {
+    background: var(--green);
+}
+
+.Toastify__toast--info {
+	.Toastify__toast-icon {
+		color: var(--blue);
+	}
+}
+.Toastify__progress-bar--info {
+    background: var(--blue);
+}
+.Toastify__toast--warning {
+	.Toastify__toast-icon {
+		color: var(--yellow);
+	}
+}
+.Toastify__progress-bar--warning {
+    background: var(--yellow);
+}
+
+.Toastify__toast--error {
+	.Toastify__toast-icon {
+		color: var(--orange);
+	}
+}
+.Toastify__progress-bar--error {
+    background: var(--orange);
+}
